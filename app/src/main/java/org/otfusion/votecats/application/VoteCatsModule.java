@@ -15,7 +15,7 @@ import dagger.Provides;
 import retrofit.RestAdapter;
 
 @Module(library = true, injects = MainActivity.class)
-public class CatApplicationModule {
+public class VoteCatsModule {
 
     @Provides
     @Singleton
