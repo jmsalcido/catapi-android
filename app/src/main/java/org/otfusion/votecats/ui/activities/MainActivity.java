@@ -31,10 +31,11 @@ public class MainActivity extends CatActivity {
         _bus.register(this);
     }
 
+    // TODO remove this and create a button in UI.
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
-        _catService.execute();
+        _catService.getCatFromApi();
         return true;
     }
 

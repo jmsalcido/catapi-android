@@ -22,7 +22,7 @@ public class CatServiceImpl implements CatService {
     }
 
     @Override
-    public void execute() {
+    public void getCatFromApi() {
         CatApiAsyncTask catApiAsyncTask = new CatApiAsyncTask(_bus, _catApiProvider);
         catApiAsyncTask.execute();
     }
