@@ -5,8 +5,9 @@ import android.os.AsyncTask;
 import com.squareup.otto.Bus;
 
 import org.otfusion.votecats.common.model.Cat;
+import org.otfusion.votecats.providers.CatLoadedEvent;
 
-public class CatApiAsyncTask extends AsyncTask<Void, Void, Cat> {
+public class CatApiAsyncTask extends AsyncTask<Void, Void, CatLoadedEvent> {
 
     private Bus _bus;
     private CatApiProvider _catApiProvider;
@@ -17,14 +18,15 @@ public class CatApiAsyncTask extends AsyncTask<Void, Void, Cat> {
     }
 
     @Override
-    protected Cat doInBackground(Void... voids) {
-        return _catApiProvider.getCatFromProvider();
+    protected CatLoadedEvent doInBackground(Void... voids) {
+        Cat cat = _catApiProvider.getCatFromProvider();
+        return new CatLoadedEvent(cat);
     }
 
     @Override
-    protected void onPostExecute(Cat cat) {
-        super.onPostExecute(cat);
-        getBus().post(cat);
+    protected void onPostExecute(CatLoadedEvent catLoadedEvent) {
+        super.onPostExecute(catLoadedEvent);
+        getBus().post(catLoadedEvent);
     }
 
     protected Bus getBus() {
