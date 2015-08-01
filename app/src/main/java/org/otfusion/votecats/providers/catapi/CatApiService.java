@@ -5,6 +5,6 @@ import retrofit.http.GET;
 public interface CatApiService {
 
     @GET("/api/images/get?format=xml")
-    public CatApiElement getCatApiElementFromEndPoint();
+    CatApiElement getCatApiElementFromEndPoint();
 
 }
