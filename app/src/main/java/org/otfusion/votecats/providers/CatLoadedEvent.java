@@ -14,7 +14,4 @@ public class CatLoadedEvent {
         return _cat;
     }
 
-    public void setCat(Cat cat) {
-        _cat = cat;
-    }
 }
