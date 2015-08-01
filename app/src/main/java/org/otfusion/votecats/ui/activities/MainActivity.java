@@ -22,6 +22,9 @@ import org.otfusion.votecats.ui.gestures.GestureDoubleTap;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MainActivity extends CatActivity {
 
     @Inject
@@ -30,21 +33,23 @@ public class MainActivity extends CatActivity {
     @Inject
     CatServiceImpl _catService;
 
-    private ImageView _catImageView;
-    private Button _loadCatButton;
+    @Bind(R.id.cat_view)
+    ImageView _catImageView;
+
+    @Bind(R.id.load_cat_button)
+    Button _loadCatButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         loadUIElements();
         getBus().register(this);
     }
 
     // TODO inject ui elements
     private void loadUIElements() {
-        _loadCatButton = loadUIElement(R.id.load_cat_button);
-        _catImageView = loadUIElement(R.id.catView);
         _loadCatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,11 +57,6 @@ public class MainActivity extends CatActivity {
                 _loadCatButton.setEnabled(false);
             }
         });
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> T loadUIElement(int id) {
-        return (T) findViewById(id);
     }
 
     @Override
