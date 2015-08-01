@@ -1,9 +1,9 @@
 # catapi-android
-Just a small project to learn how does dependency injection and other frameworks work within Android
-
-The idea came from the pair programming excercise at @Nearsoft for the Android developers that want to join the flock.
+Just a small project to learn how does dependency injection and other frameworks work within Android, the idea came from the pair programming excercise at @Nearsoft for the Android developers that want to join the flock.
 
 Using almost everything from square io to build this.
+
+Basically the idea is to create an app where you can save/favorite some random cat images from the internet.
 
 # Contributions:
 ## How to
@@ -18,3 +18,5 @@ In order to create a pull request and help in the development cycle of this proj
 - pull request to origin/development
 
 Thanks!
+
+PS: Im more a dog person, I should create thedogapi or something like that to create a dog-viewer like Tinder.
