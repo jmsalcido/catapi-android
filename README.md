@@ -5,5 +5,16 @@ The idea came from the pair programming excercise at @Nearsoft for the Android d
 
 Using almost everything from square io to build this.
 
-# How to
+# Contributions:
+## How to
 No idea, first android side project.
+
+## Pull requests
+
+In order to create a pull request and help in the development cycle of this project you should:
+
+- clone project
+- create your branch from development
+- pull request to origin/development
+
+Thanks!
