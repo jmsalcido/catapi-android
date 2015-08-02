@@ -1,6 +1,5 @@
 package org.otfusion.votecats.ui.activities;
 
-import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,7 +9,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -25,12 +23,8 @@ import org.otfusion.votecats.ui.gestures.GestureDoubleTap;
 import javax.inject.Inject;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 public class MainActivity extends CatActivity {
-
-    @Inject
-    Bus _bus;
 
     @Inject
     CatServiceImpl _catService;
@@ -47,16 +41,12 @@ public class MainActivity extends CatActivity {
     private Cat _currentCat;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-
-        loadUIElements();
-        getBus().register(this);
+    protected int getContentLayoutId() {
+        return R.layout.activity_main;
     }
 
-    private void loadUIElements() {
+    @Override
+    protected void loadUIElements() {
         _loadCatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,6 +60,17 @@ public class MainActivity extends CatActivity {
             public void onClick(View view) {
                 FavoriteCatEvent event = new FavoriteCatEvent(getBus(), _currentCat);
                 event.executeEvent("button");
+            }
+        });
+
+        final GestureDoubleTap<FavoriteCatEvent> doubleTapGesture = new GestureDoubleTap<>();
+        _catImageView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                doubleTapGesture.setEvent(new FavoriteCatEvent(getBus(), _currentCat));
+                GestureDetector gestureDetector = new GestureDetector(getApplicationContext(), doubleTapGesture);
+                return gestureDetector.onTouchEvent(motionEvent);
             }
         });
     }
@@ -110,16 +111,6 @@ public class MainActivity extends CatActivity {
                 _loadCatButton.setEnabled(true);
             }
         });
-
-        FavoriteCatEvent favoriteCatEvent = new FavoriteCatEvent(getBus(), _currentCat);
-        GestureDoubleTap<FavoriteCatEvent> doubleTapGesture = new GestureDoubleTap<>(favoriteCatEvent);
-        final GestureDetector gestureDetector = new GestureDetector(getApplicationContext(), doubleTapGesture);
-        _catImageView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return gestureDetector.onTouchEvent(motionEvent);
-            }
-        });
     }
 
     @Subscribe
@@ -129,9 +120,5 @@ public class MainActivity extends CatActivity {
         } else {
             Toast.makeText(this, "There is no cat there.", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private Bus getBus() {
-        return _bus;
     }
 }

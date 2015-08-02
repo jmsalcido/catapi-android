@@ -7,13 +7,9 @@ import org.otfusion.votecats.ui.events.VoteCatEvent;
 
 public class GestureDoubleTap<T extends VoteCatEvent> extends GestureDetector.SimpleOnGestureListener {
 
-    public static final int DOUBLE_TAP_MILLISECONDS = 500;
+    public static final int DOUBLE_TAP_MILLISECONDS = 350;
     private T _event;
     private long _lastPressTime;
-
-    public GestureDoubleTap(T event) {
-        _event = event;
-    }
 
     @Override
     public boolean onDown(MotionEvent e) {
@@ -25,6 +21,10 @@ public class GestureDoubleTap<T extends VoteCatEvent> extends GestureDetector.Si
         }
         _lastPressTime = pressTime;
         return true;
+    }
+
+    public void setEvent(T event) {
+        _event = event;
     }
 
 }

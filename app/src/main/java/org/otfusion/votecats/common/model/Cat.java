@@ -5,7 +5,6 @@ public class Cat {
     private int _id;
     private String _imageUrl;
     private String _providerName;
-    private boolean _isEmpty;
 
     public int getId() {
         return _id;
@@ -31,7 +30,4 @@ public class Cat {
         _providerName = providerName;
     }
 
-    public boolean isEmpty() {
-        return getProviderName() != null && getImageUrl() != null;
-    }
 }

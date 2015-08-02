@@ -1,18 +1,25 @@
 package org.otfusion.votecats.ui.activities;
 
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import org.otfusion.votecats.R;
 
+import butterknife.Bind;
+
 public class FavoriteActivity extends CatActivity {
 
+    @Bind(R.id.favorite_list_view)
+    ListView _favoriteCats;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorite);
+    protected int getContentLayoutId() {
+        return R.layout.activity_favorite;
+    }
+
+    @Override
+    protected void loadUIElements() {
     }
 
     @Override
