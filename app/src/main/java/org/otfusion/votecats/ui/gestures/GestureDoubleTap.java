@@ -3,18 +3,16 @@ package org.otfusion.votecats.ui.gestures;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-import com.squareup.otto.Bus;
+import org.otfusion.votecats.ui.events.VoteCatEvent;
 
-public class GestureDoubleTap<T> extends GestureDetector.SimpleOnGestureListener {
+public class GestureDoubleTap<T extends VoteCatEvent> extends GestureDetector.SimpleOnGestureListener {
 
     public static final int DOUBLE_TAP_MILLISECONDS = 500;
-    private Bus _bus;
-    private T _object;
+    private T _event;
     private long _lastPressTime;
 
-    public GestureDoubleTap(Bus bus, T object) {
-        _bus = bus;
-        _object = object;
+    public GestureDoubleTap(T event) {
+        _event = event;
     }
 
     @Override
@@ -22,22 +20,11 @@ public class GestureDoubleTap<T> extends GestureDetector.SimpleOnGestureListener
         long pressTime = System.currentTimeMillis();
         long elapsedTime = pressTime - _lastPressTime;
         if (elapsedTime <= DOUBLE_TAP_MILLISECONDS) {
-            doEvent();
+            _event.executeEvent("double tap");
             return true;
         }
         _lastPressTime = pressTime;
         return true;
     }
 
-    private void doEvent() {
-        getBus().post(this);
-    }
-
-    public Bus getBus() {
-        return _bus;
-    }
-
-    public T getObject() {
-        return _object;
-    }
 }

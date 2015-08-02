@@ -12,12 +12,14 @@ import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.otfusion.votecats.R;
 import org.otfusion.votecats.common.model.Cat;
 import org.otfusion.votecats.providers.CatLoadedEvent;
 import org.otfusion.votecats.service.CatServiceImpl;
+import org.otfusion.votecats.ui.events.FavoriteCatEvent;
 import org.otfusion.votecats.ui.gestures.GestureDoubleTap;
 
 import javax.inject.Inject;
@@ -39,22 +41,35 @@ public class MainActivity extends CatActivity {
     @Bind(R.id.load_cat_button)
     Button _loadCatButton;
 
+    @Bind(R.id.favorite_cat_button)
+    Button _favoriteCatButton;
+
+    private Cat _currentCat;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
         loadUIElements();
         getBus().register(this);
     }
 
-    // TODO inject ui elements
     private void loadUIElements() {
         _loadCatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                _catService.getCatFromApi();
                 _loadCatButton.setEnabled(false);
+                _catService.getCatFromApi();
+            }
+        });
+
+        _favoriteCatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FavoriteCatEvent event = new FavoriteCatEvent(getBus(), _currentCat);
+                event.executeEvent("button");
             }
         });
     }
@@ -79,10 +94,25 @@ public class MainActivity extends CatActivity {
 
     @Subscribe
     public void handleCatLoadedEvent(CatLoadedEvent catLoadedEvent) {
-        Cat cat = catLoadedEvent.getCat();
-        Picasso.with(getApplicationContext()).load(cat.getImageUrl()).into(_catImageView);
+        _currentCat = catLoadedEvent.getCat();
+        Picasso.with(getApplicationContext()).load(_currentCat.getImageUrl()).into(_catImageView, new Callback() {
+            @Override
+            public void onSuccess() {
+                enableLoadButton();
+            }
 
-        GestureDoubleTap<Cat> doubleTapGesture = new GestureDoubleTap<>(getBus(), cat);
+            @Override
+            public void onError() {
+                enableLoadButton();
+            }
+
+            private void enableLoadButton() {
+                _loadCatButton.setEnabled(true);
+            }
+        });
+
+        FavoriteCatEvent favoriteCatEvent = new FavoriteCatEvent(getBus(), _currentCat);
+        GestureDoubleTap<FavoriteCatEvent> doubleTapGesture = new GestureDoubleTap<>(favoriteCatEvent);
         final GestureDetector gestureDetector = new GestureDetector(getApplicationContext(), doubleTapGesture);
         _catImageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -90,13 +120,15 @@ public class MainActivity extends CatActivity {
                 return gestureDetector.onTouchEvent(motionEvent);
             }
         });
-        _loadCatButton.setEnabled(true);
     }
 
     @Subscribe
-    public void handleDoubleTap(GestureDoubleTap<Cat> gestureDoubleTap) {
-        // do the double tap stuff (like)
-        Toast.makeText(this, "Double Tap: " + gestureDoubleTap.getObject().getImageUrl(), Toast.LENGTH_SHORT).show();
+    public void handleFavoriteCatEvent(FavoriteCatEvent favoriteCatEvent) {
+        if (favoriteCatEvent.getCat() != null) {
+            Toast.makeText(this, "Event from: " + favoriteCatEvent.getSource() + " - " + favoriteCatEvent.getCat().getImageUrl(), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "There is no cat there.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private Bus getBus() {
