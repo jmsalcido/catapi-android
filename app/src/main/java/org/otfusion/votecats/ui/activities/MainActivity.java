@@ -1,5 +1,6 @@
 package org.otfusion.votecats.ui.activities;
 
+import android.content.Intent;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,7 +70,8 @@ public class MainActivity extends CatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 doubleTapGesture.setEvent(new FavoriteCatEvent(getBus(), _currentCat));
-                GestureDetector gestureDetector = new GestureDetector(getApplicationContext(), doubleTapGesture);
+                GestureDetector gestureDetector = new GestureDetector(getApplicationContext(),
+                        doubleTapGesture);
                 return gestureDetector.onTouchEvent(motionEvent);
             }
         });
@@ -78,7 +80,7 @@ public class MainActivity extends CatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -86,7 +88,9 @@ public class MainActivity extends CatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_main_goto_favorite) {
+            Intent intent = new Intent(this, FavoriteActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -96,7 +100,8 @@ public class MainActivity extends CatActivity {
     @Subscribe
     public void handleCatLoadedEvent(CatLoadedEvent catLoadedEvent) {
         _currentCat = catLoadedEvent.getCat();
-        Picasso.with(getApplicationContext()).load(_currentCat.getImageUrl()).into(_catImageView, new Callback() {
+        Picasso.with(getApplicationContext()).load(_currentCat.getImageUrl()).into(_catImageView,
+                new Callback() {
             @Override
             public void onSuccess() {
                 enableLoadButton();
@@ -116,7 +121,8 @@ public class MainActivity extends CatActivity {
     @Subscribe
     public void handleFavoriteCatEvent(FavoriteCatEvent favoriteCatEvent) {
         if (favoriteCatEvent.getCat() != null) {
-            Toast.makeText(this, "Event from: " + favoriteCatEvent.getSource() + " - " + favoriteCatEvent.getCat().getImageUrl(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Event from: " + favoriteCatEvent.getSource() + " - " +
+                    favoriteCatEvent.getCat().getImageUrl(), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "There is no cat there.", Toast.LENGTH_SHORT).show();
         }

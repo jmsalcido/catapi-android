@@ -6,6 +6,7 @@ import com.squareup.otto.Bus;
 import org.otfusion.votecats.providers.catapi.CatApiProvider;
 import org.otfusion.votecats.providers.catapi.CatApiService;
 import org.otfusion.votecats.service.CatServiceImpl;
+import org.otfusion.votecats.ui.activities.FavoriteActivity;
 import org.otfusion.votecats.ui.activities.MainActivity;
 
 import javax.inject.Singleton;
@@ -14,7 +15,10 @@ import dagger.Module;
 import dagger.Provides;
 import retrofit.RestAdapter;
 
-@Module(library = true, injects = MainActivity.class)
+@Module(library = true, injects = {
+        MainActivity.class,
+        FavoriteActivity.class
+})
 public class VoteCatsModule {
 
     @Provides
