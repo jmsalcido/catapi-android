@@ -2,15 +2,16 @@ package org.otfusion.votecats.common.model;
 
 public class Cat {
 
-    private int _id;
+    private String _id;
     private String _imageUrl;
     private String _providerName;
+    private boolean _favorite;
 
-    public int getId() {
+    public String getId() {
         return _id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         _id = id;
     }
 
@@ -30,4 +31,11 @@ public class Cat {
         _providerName = providerName;
     }
 
+    public boolean isFavorite() {
+        return _favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        _favorite = favorite;
+    }
 }
