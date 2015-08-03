@@ -98,6 +98,7 @@ public class MainActivity extends CatActivity {
     }
 
     @Subscribe
+    @SuppressWarnings("unused") // used by the bus
     public void handleCatLoadedEvent(CatLoadedEvent catLoadedEvent) {
         _currentCat = catLoadedEvent.getCat();
         Picasso.with(getApplicationContext()).load(_currentCat.getImageUrl()).into(_catImageView,
@@ -119,16 +120,18 @@ public class MainActivity extends CatActivity {
     }
 
     @Subscribe
+    @SuppressWarnings("unused") // used by the bus
     public void handleFavoriteCatEvent(FavoriteCatEvent favoriteCatEvent) {
         Cat cat = favoriteCatEvent.getCat();
         if (cat != null) {
-            if(cat.isFavorite()) {
+            if(_catService.isCatInFavorites(this, cat)) {
                 Toast.makeText(this, "That cat is already in your collection", Toast.LENGTH_SHORT).show();
 //                cat.setFavorite(false);
 //                _catService.removeCatFromFavorites();
             } else {
                 cat.setFavorite(true);
                 _catService.saveCatToFavorites(this, cat);
+                Toast.makeText(this, "Meow! Saved that.", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(this, "There is no cat there.", Toast.LENGTH_SHORT).show();

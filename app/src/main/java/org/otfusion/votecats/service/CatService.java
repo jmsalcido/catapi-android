@@ -10,4 +10,6 @@ public interface CatService {
 
     long saveCatToFavorites(Context context, Cat cat);
 
+    boolean isCatInFavorites(Context context, Cat cat);
+
 }

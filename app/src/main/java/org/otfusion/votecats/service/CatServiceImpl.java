@@ -9,6 +9,9 @@ import org.otfusion.votecats.providers.catapi.CatApiAsyncTask;
 import org.otfusion.votecats.providers.catapi.CatApiProvider;
 import org.otfusion.votecats.db.repository.FavoriteCatRepository;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 public class CatServiceImpl implements CatService {
@@ -35,6 +38,15 @@ public class CatServiceImpl implements CatService {
     public long saveCatToFavorites(Context context, Cat cat) {
         _favoriteCatRepository.saveFavoriteCat(context, cat);
         return 0;
+    }
+
+    @Override
+    public boolean isCatInFavorites(Context context, Cat cat) {
+        if (cat == null) {
+            return false;
+        }
+        Map<String, Cat> favoriteCatsMap = _favoriteCatRepository.getFavoriteCatsMap(context);
+        return favoriteCatsMap.containsKey(cat.getId());
     }
 
 }

@@ -5,13 +5,14 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class DbUtils {
 
     private DbUtils() {}
 
-    public static <T> List<T> buildListFromCursor(Cursor cursor, DbBuilder<T> dbBuilder) {
-        if (cursor == null || cursor.getCount() > 0) {
+    public static <T> List<T> selectList(Cursor cursor, DbBuilder<T> dbBuilder) {
+        if (cursor == null || cursor.getCount() <= 0) {
             return Collections.emptyList();
         }
         List<T> list = new ArrayList<>();
