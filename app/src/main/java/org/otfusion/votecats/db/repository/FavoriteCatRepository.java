@@ -11,13 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 public class FavoriteCatRepository {
-
-    @Inject
-    public FavoriteCatRepository() {
-    }
 
     public long saveFavoriteCat(Context context, Cat cat) {
         SQLiteDatabase db = getSQLiteWritableDatabase(context);

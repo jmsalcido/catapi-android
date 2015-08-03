@@ -29,6 +29,7 @@ public class VoteCatsModule {
         return new CatServiceImpl(bus, catApiProvider, favoriteCatRepository);
     }
 
+    @Provides
     public FavoriteCatRepository providesFavoriteCatRepository() {
         return new FavoriteCatRepository();
     }
