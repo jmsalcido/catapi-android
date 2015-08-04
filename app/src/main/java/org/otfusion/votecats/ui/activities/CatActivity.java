@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.squareup.otto.Bus;
 
 import org.otfusion.votecats.application.VoteCatsModule;
+import org.otfusion.votecats.application.ApplicationComponent;
+import org.otfusion.votecats.application.VoteCatsApplication;
 
 import javax.inject.Inject;
 
@@ -35,6 +37,14 @@ public abstract class CatActivity extends AppCompatActivity {
         setContentView(getContentLayoutId());
         ButterKnife.bind(this);
         loadUIElements();
+    }
+
+    protected ApplicationComponent getApplicationComponent() {
+        return getVoteCatsApplication().getApplicationComponent();
+    }
+
+    protected VoteCatsApplication getVoteCatsApplication() {
+        return (VoteCatsApplication) getApplication();
     }
 
     protected Bus getBus() {

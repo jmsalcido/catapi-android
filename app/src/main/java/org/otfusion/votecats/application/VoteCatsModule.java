@@ -1,13 +1,13 @@
 package org.otfusion.votecats.application;
 
+import android.content.Context;
+
 import com.mobprofs.retrofit.converters.SimpleXmlConverter;
 import com.squareup.otto.Bus;
 
 import org.otfusion.votecats.providers.catapi.CatApiProvider;
 import org.otfusion.votecats.providers.catapi.CatApiService;
-import org.otfusion.votecats.db.repository.FavoriteCatRepository;
 import org.otfusion.votecats.service.CatServiceImpl;
-import org.otfusion.votecats.ui.activities.FavoriteActivity;
 import org.otfusion.votecats.ui.activities.MainActivity;
 
 import javax.inject.Singleton;
@@ -16,32 +16,29 @@ import dagger.Module;
 import dagger.Provides;
 import retrofit.RestAdapter;
 
-@Module(library = true, injects = {
-        MainActivity.class,
-        FavoriteActivity.class
-})
+@Module(library = true, injects = MainActivity.class)
 public class VoteCatsModule {
+
+    private final VoteCatsApplication _application;
+
+    public VoteCatsModule(VoteCatsApplication application) {
+        _application = application;
+    }
 
     @Provides
     @Singleton
-    public CatServiceImpl providesCatService(Bus bus, CatApiProvider catApiProvider,
-                                             FavoriteCatRepository favoriteCatRepository) {
-        return new CatServiceImpl(bus, catApiProvider, favoriteCatRepository);
+    public CatServiceImpl providesCatService(Bus bus, CatApiProvider catApiProvider) {
+        return new CatServiceImpl(bus, catApiProvider);
     }
 
     @Provides
-    public FavoriteCatRepository providesFavoriteCatRepository() {
-        return new FavoriteCatRepository();
-    }
-
-    @Provides
-    public CatApiProvider providesCatApiProvider(CatApiService catApiService) {
+    public CatApiProvider provideCatApiProvider(CatApiService catApiService) {
         return new CatApiProvider(catApiService);
     }
 
     @Provides
     @Singleton
-    public CatApiService providesCatApiService() {
+    public CatApiService provideCatApiService() {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(CatApiProvider.ENDPOINT)
                 .setConverter(new SimpleXmlConverter())
@@ -51,7 +48,7 @@ public class VoteCatsModule {
 
     @Provides
     @Singleton
-    public Bus providesBus() {
+    public Bus provideBus() {
         return new Bus();
     }
 
