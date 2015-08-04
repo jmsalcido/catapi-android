@@ -17,18 +17,12 @@ import com.squareup.picasso.Picasso;
 import org.otfusion.votecats.R;
 import org.otfusion.votecats.common.model.Cat;
 import org.otfusion.votecats.providers.CatLoadedEvent;
-import org.otfusion.votecats.service.CatServiceImpl;
 import org.otfusion.votecats.ui.events.FavoriteCatEvent;
 import org.otfusion.votecats.ui.gestures.GestureDoubleTap;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 
 public class MainActivity extends CatActivity {
-
-    @Inject
-    CatServiceImpl _catService;
 
     @Bind(R.id.cat_view)
     ImageView _catImageView;
@@ -52,7 +46,7 @@ public class MainActivity extends CatActivity {
             @Override
             public void onClick(View view) {
                 _loadCatButton.setEnabled(false);
-                _catService.getCatFromApi();
+                getCatService().getCatFromApi();
             }
         });
 
@@ -103,20 +97,20 @@ public class MainActivity extends CatActivity {
         _currentCat = catLoadedEvent.getCat();
         Picasso.with(getApplicationContext()).load(_currentCat.getImageUrl()).into(_catImageView,
                 new Callback() {
-            @Override
-            public void onSuccess() {
-                enableLoadButton();
-            }
+                    @Override
+                    public void onSuccess() {
+                        enableLoadButton();
+                    }
 
-            @Override
-            public void onError() {
-                enableLoadButton();
-            }
+                    @Override
+                    public void onError() {
+                        enableLoadButton();
+                    }
 
-            private void enableLoadButton() {
-                _loadCatButton.setEnabled(true);
-            }
-        });
+                    private void enableLoadButton() {
+                        _loadCatButton.setEnabled(true);
+                    }
+                });
     }
 
     @Subscribe
@@ -124,13 +118,13 @@ public class MainActivity extends CatActivity {
     public void handleFavoriteCatEvent(FavoriteCatEvent favoriteCatEvent) {
         Cat cat = favoriteCatEvent.getCat();
         if (cat != null) {
-            if(_catService.isCatInFavorites(this, cat)) {
+            if(getCatService().isCatInFavorites(this, cat)) {
                 Toast.makeText(this, "That cat is already in your collection", Toast.LENGTH_SHORT).show();
 //                cat.setFavorite(false);
-//                _catService.removeCatFromFavorites();
+//                getCatService().removeCatFromFavorites();
             } else {
                 cat.setFavorite(true);
-                _catService.saveCatToFavorites(this, cat);
+                getCatService().saveCatToFavorites(this, cat);
                 Toast.makeText(this, "Meow! Saved that.", Toast.LENGTH_SHORT).show();
             }
         } else {
