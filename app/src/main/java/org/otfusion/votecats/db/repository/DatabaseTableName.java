@@ -1,16 +1,7 @@
 package org.otfusion.votecats.db.repository;
 
-public enum DatabaseTableName {
+public class DatabaseTableName {
 
-    CATS("cats");
+    public final static String CATS = "cats";
 
-    private String _name;
-
-    DatabaseTableName(String name) {
-        _name = name;
-    }
-
-    public String getName() {
-        return _name;
-    }
 }

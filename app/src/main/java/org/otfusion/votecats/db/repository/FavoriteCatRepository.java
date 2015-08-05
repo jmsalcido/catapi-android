@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 
 import org.otfusion.votecats.common.model.Cat;
 
@@ -15,7 +16,7 @@ public class FavoriteCatRepository {
 
     public long saveFavoriteCat(Context context, Cat cat) {
         SQLiteDatabase db = getSQLiteWritableDatabase(context);
-        return db.insert(DatabaseTableName.CATS.getName(), null, buildContentValues(cat));
+        return db.insert(getTableName(), null, buildContentValues(cat));
     }
 
     public Map<String, Cat> getFavoriteCatsMap(Context context) {
@@ -53,8 +54,13 @@ public class FavoriteCatRepository {
     private Cursor readDatabaseCursor(Context context) {
         SQLiteDatabase db = getSQLiteReadableDatabase(context);
         String[] columns = getColumns();
-        return db.query(DatabaseTableName.CATS.getName(), columns, null, null, null,
+        return db.query(getTableName(), columns, null, null, null,
                 null, null);
+    }
+
+    @NonNull
+    private String getTableName() {
+        return DatabaseTableName.CATS;
     }
 
     private String[] getColumns() {
