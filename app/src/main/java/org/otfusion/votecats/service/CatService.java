@@ -1,15 +1,14 @@
 package org.otfusion.votecats.service;
 
-import android.content.Context;
-
 import org.otfusion.votecats.common.model.Cat;
+
+import java.util.List;
 
 public interface CatService {
 
     void getCatFromApi();
-
-    long saveCatToFavorites(Context context, Cat cat);
-
-    boolean isCatInFavorites(Context context, Cat cat);
+    long saveCatToFavorites(Cat cat);
+    boolean isCatInFavorites(Cat cat);
+    List<Cat> getFavoriteCats();
 
 }

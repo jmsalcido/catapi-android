@@ -1,13 +1,11 @@
 package org.otfusion.votecats.service;
 
-import android.content.Context;
-
 import com.squareup.otto.Bus;
 
 import org.otfusion.votecats.common.model.Cat;
+import org.otfusion.votecats.db.repository.FavoriteCatRepository;
 import org.otfusion.votecats.providers.catapi.CatApiAsyncTask;
 import org.otfusion.votecats.providers.catapi.CatApiProvider;
-import org.otfusion.votecats.db.repository.FavoriteCatRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -35,18 +33,23 @@ public class CatServiceImpl implements CatService {
     }
 
     @Override
-    public long saveCatToFavorites(Context context, Cat cat) {
-        _favoriteCatRepository.saveFavoriteCat(context, cat);
+    public long saveCatToFavorites(Cat cat) {
+        _favoriteCatRepository.saveFavoriteCat(cat);
         return 0;
     }
 
     @Override
-    public boolean isCatInFavorites(Context context, Cat cat) {
+    public boolean isCatInFavorites(Cat cat) {
         if (cat == null) {
             return false;
         }
-        Map<String, Cat> favoriteCatsMap = _favoriteCatRepository.getFavoriteCatsMap(context);
+        Map<String, Cat> favoriteCatsMap = _favoriteCatRepository.getFavoriteCatsMap();
         return favoriteCatsMap.containsKey(cat.getId());
+    }
+
+    @Override
+    public List<Cat> getFavoriteCats() {
+        return _favoriteCatRepository.getFavoriteCats();
     }
 
 }

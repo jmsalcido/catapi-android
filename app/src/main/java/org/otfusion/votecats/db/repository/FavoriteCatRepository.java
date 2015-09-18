@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
+import org.otfusion.votecats.application.VoteCatsApplication;
 import org.otfusion.votecats.common.model.Cat;
 
 import java.util.HashMap;
@@ -14,13 +15,19 @@ import java.util.Map;
 
 public class FavoriteCatRepository {
 
-    public long saveFavoriteCat(Context context, Cat cat) {
-        SQLiteDatabase db = getSQLiteWritableDatabase(context);
+    private final Context _context;
+
+    public FavoriteCatRepository() {
+        _context = VoteCatsApplication.getContext();
+    }
+
+    public long saveFavoriteCat(Cat cat) {
+        SQLiteDatabase db = getSQLiteWritableDatabase();
         return db.insert(getTableName(), null, buildContentValues(cat));
     }
 
-    public Map<String, Cat> getFavoriteCatsMap(Context context) {
-        Cursor query = readDatabaseCursor(context);
+    public Map<String, Cat> getFavoriteCatsMap() {
+        Cursor query = readDatabaseCursor();
         final Map<String, Cat> allCats = new HashMap<>();
         DbUtils.selectList(query, new DbBuilder<Cat>() {
             @Override
@@ -33,8 +40,8 @@ public class FavoriteCatRepository {
         return allCats;
     }
 
-    public List<Cat> getFavoriteCats(Context context) {
-        Cursor query = readDatabaseCursor(context);
+    public List<Cat> getFavoriteCats() {
+        Cursor query = readDatabaseCursor();
         return DbUtils.selectList(query, new DbBuilder<Cat>() {
             @Override
             public Cat buildFromCursor(Cursor cursor) {
@@ -51,8 +58,8 @@ public class FavoriteCatRepository {
         return cat;
     }
 
-    private Cursor readDatabaseCursor(Context context) {
-        SQLiteDatabase db = getSQLiteReadableDatabase(context);
+    private Cursor readDatabaseCursor() {
+        SQLiteDatabase db = getSQLiteReadableDatabase();
         String[] columns = getColumns();
         return db.query(getTableName(), columns, null, null, null,
                 null, null);
@@ -64,20 +71,20 @@ public class FavoriteCatRepository {
     }
 
     private String[] getColumns() {
-        return new String[] {
+        return new String[]{
                 "id",
                 "image_url",
                 "provider_name"
         };
     }
 
-    private SQLiteDatabase getSQLiteWritableDatabase(Context context) {
-        VoteCatsDbHelper dbHelper = new VoteCatsDbHelper(context);
+    private SQLiteDatabase getSQLiteWritableDatabase() {
+        VoteCatsDbHelper dbHelper = new VoteCatsDbHelper(getContext());
         return dbHelper.getWritableDatabase();
     }
 
-    private SQLiteDatabase getSQLiteReadableDatabase(Context context) {
-        VoteCatsDbHelper dbHelper = new VoteCatsDbHelper(context);
+    private SQLiteDatabase getSQLiteReadableDatabase() {
+        VoteCatsDbHelper dbHelper = new VoteCatsDbHelper(getContext());
         return dbHelper.getReadableDatabase();
     }
 
@@ -89,4 +96,7 @@ public class FavoriteCatRepository {
         return values;
     }
 
+    public Context getContext() {
+        return _context;
+    }
 }

@@ -118,13 +118,13 @@ public class MainActivity extends CatActivity {
     public void handleFavoriteCatEvent(FavoriteCatEvent favoriteCatEvent) {
         Cat cat = favoriteCatEvent.getCat();
         if (cat != null) {
-            if(getCatService().isCatInFavorites(this, cat)) {
+            if(getCatService().isCatInFavorites(cat)) {
                 Toast.makeText(this, "That cat is already in your collection", Toast.LENGTH_SHORT).show();
 //                cat.setFavorite(false);
 //                getCatService().removeCatFromFavorites();
             } else {
                 cat.setFavorite(true);
-                getCatService().saveCatToFavorites(this, cat);
+                getCatService().saveCatToFavorites(cat);
                 Toast.makeText(this, "Meow! Saved that.", Toast.LENGTH_SHORT).show();
             }
         } else {
