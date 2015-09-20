@@ -83,7 +83,8 @@ public class FavoriteCatRepository {
         return new String[]{
                 "id",
                 "image_url",
-                "provider_name"
+                "provider_name",
+                "name"
         };
     }
 
@@ -102,6 +103,7 @@ public class FavoriteCatRepository {
         values.put("id", cat.getId());
         values.put("image_url", cat.getImageUrl());
         values.put("provider_name", cat.getProviderName());
+        values.put("name", cat.getName());
         return values;
     }
 

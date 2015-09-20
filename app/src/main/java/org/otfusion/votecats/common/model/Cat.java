@@ -5,6 +5,7 @@ public class Cat {
     private String _id;
     private String _imageUrl;
     private String _providerName;
+    private String _name;
     private boolean _favorite;
 
     public String getId() {
@@ -37,5 +38,13 @@ public class Cat {
 
     public void setFavorite(boolean favorite) {
         _favorite = favorite;
+    }
+
+    public String getName() {
+        return _name;
+    }
+
+    public void setName(String name) {
+        _name = name;
     }
 }
