@@ -1,6 +1,6 @@
 package org.otfusion.votecats.ui.activities;
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,28 +10,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.otfusion.votecats.R;
 import org.otfusion.votecats.common.model.Cat;
 import org.otfusion.votecats.providers.CatLoadedEvent;
-import org.otfusion.votecats.service.CatServiceImpl;
+import org.otfusion.votecats.ui.events.FavoriteCatEvent;
 import org.otfusion.votecats.ui.gestures.GestureDoubleTap;
 
-import javax.inject.Inject;
-
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 public class MainActivity extends CatActivity {
-
-    @Inject
-    Bus _bus;
-
-    @Inject
-    CatServiceImpl _catService;
 
     @Bind(R.id.cat_view)
     ImageView _catImageView;
@@ -39,23 +30,43 @@ public class MainActivity extends CatActivity {
     @Bind(R.id.load_cat_button)
     Button _loadCatButton;
 
+    @Bind(R.id.favorite_cat_button)
+    Button _favoriteCatButton;
+
+    private Cat _currentCat;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getApplicationComponent().inject(this);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        loadUIElements();
-        getBus().register(this);
+    protected int getContentLayoutId() {
+        return R.layout.activity_main;
     }
 
-    // TODO inject ui elements
-    private void loadUIElements() {
+    @Override
+    protected void loadContent() {
         _loadCatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                _catService.getCatFromApi();
                 _loadCatButton.setEnabled(false);
+                getCatService().getCatFromApi();
+            }
+        });
+
+        _favoriteCatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FavoriteCatEvent event = new FavoriteCatEvent(getBus(), _currentCat);
+                event.executeEvent("button");
+            }
+        });
+
+        final GestureDoubleTap<FavoriteCatEvent> doubleTapGesture = new GestureDoubleTap<>();
+        _catImageView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                doubleTapGesture.setEvent(new FavoriteCatEvent(getBus(), _currentCat));
+                GestureDetector gestureDetector = new GestureDetector(getApplicationContext(),
+                        doubleTapGesture);
+                return gestureDetector.onTouchEvent(motionEvent);
             }
         });
     }
@@ -63,7 +74,7 @@ public class MainActivity extends CatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -71,7 +82,9 @@ public class MainActivity extends CatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_main_goto_favorite) {
+            Intent intent = new Intent(this, FavoriteActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -79,28 +92,42 @@ public class MainActivity extends CatActivity {
     }
 
     @Subscribe
+    @SuppressWarnings("unused") // used by the bus
     public void handleCatLoadedEvent(CatLoadedEvent catLoadedEvent) {
-        Cat cat = catLoadedEvent.getCat();
-        Picasso.with(getApplicationContext()).load(cat.getImageUrl()).into(_catImageView);
+        _currentCat = catLoadedEvent.getCat();
+        Picasso.with(getApplicationContext()).load(_currentCat.getImageUrl()).into(_catImageView,
+                new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        enableLoadButton();
+                    }
 
-        GestureDoubleTap<Cat> doubleTapGesture = new GestureDoubleTap<>(getBus(), cat);
-        final GestureDetector gestureDetector = new GestureDetector(getApplicationContext(), doubleTapGesture);
-        _catImageView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return gestureDetector.onTouchEvent(motionEvent);
-            }
-        });
-        _loadCatButton.setEnabled(true);
+                    @Override
+                    public void onError() {
+                        enableLoadButton();
+                    }
+
+                    private void enableLoadButton() {
+                        _loadCatButton.setEnabled(true);
+                    }
+                });
     }
 
     @Subscribe
-    public void handleDoubleTap(GestureDoubleTap<Cat> gestureDoubleTap) {
-        // do the double tap stuff (like)
-        Toast.makeText(this, "Double Tap: " + gestureDoubleTap.getObject().getImageUrl(), Toast.LENGTH_SHORT).show();
-    }
-
-    private Bus getBus() {
-        return _bus;
+    @SuppressWarnings("unused") // used by the bus
+    public void handleFavoriteCatEvent(FavoriteCatEvent favoriteCatEvent) {
+        Cat cat = favoriteCatEvent.getCat();
+        if (cat != null) {
+            if (getCatService().isCatInFavorites(cat)) {
+                Toast.makeText(this, "That cat is already in your collection", Toast
+                        .LENGTH_SHORT).show();
+            } else {
+                cat.setFavorite(true);
+                getCatService().saveCatToFavorites(cat);
+                Toast.makeText(this, "Saving that Right Meow!.", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "There is no cat there.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
