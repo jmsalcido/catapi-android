@@ -1,5 +1,7 @@
 package org.otfusion.votecats.service;
 
+import android.support.annotation.NonNull;
+
 import com.squareup.otto.Bus;
 
 import org.otfusion.votecats.common.model.Cat;
@@ -33,16 +35,12 @@ public class CatServiceImpl implements CatService {
     }
 
     @Override
-    public long saveCatToFavorites(Cat cat) {
-        _favoriteCatRepository.saveFavoriteCat(cat);
-        return 0;
+    public long saveCatToFavorites(@NonNull Cat cat) {
+        return _favoriteCatRepository.saveFavoriteCat(cat);
     }
 
     @Override
-    public boolean isCatInFavorites(Cat cat) {
-        if (cat == null) {
-            return false;
-        }
+    public boolean isCatInFavorites(@NonNull Cat cat) {
         Map<String, Cat> favoriteCatsMap = _favoriteCatRepository.getFavoriteCatsMap();
         return favoriteCatsMap.containsKey(cat.getId());
     }

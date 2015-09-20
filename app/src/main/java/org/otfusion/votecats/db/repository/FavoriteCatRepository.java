@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import org.otfusion.votecats.application.VoteCatsApplication;
 import org.otfusion.votecats.common.model.Cat;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,18 +29,25 @@ public class FavoriteCatRepository {
 
     public Map<String, Cat> getFavoriteCatsMap() {
         Cursor query = readDatabaseCursor();
-        final Map<String, Cat> allCats = new HashMap<>();
-        DbUtils.selectList(query, new DbBuilder<Cat>() {
-            @Override
-            public Cat buildFromCursor(Cursor cursor) {
-                Cat cat = buildCatFromCursor(cursor);
-                allCats.put(cat.getId(), cat);
-                return cat;
-            }
-        });
-        return allCats;
+        final Map<String, Cat> cats =
+                DbUtils.selectObject(query, new DbBuilder<Map<String, Cat>>() {
+                    @Override
+                    public Map<String, Cat> buildFromCursor(Cursor cursor) {
+                        Map<String, Cat> result = new HashMap<>();
+                        while (cursor.moveToNext()) {
+                            Cat cat = buildCatFromCursor(cursor);
+                            result.put(cat.getId(), cat);
+                        }
+                        return result;
+                    }
+                });
+        if (cats == null) {
+            return Collections.emptyMap();
+        }
+        return cats;
     }
 
+    @NonNull
     public List<Cat> getFavoriteCats() {
         Cursor query = readDatabaseCursor();
         return DbUtils.selectList(query, new DbBuilder<Cat>() {

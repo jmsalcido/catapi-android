@@ -1,6 +1,7 @@
 package org.otfusion.votecats.ui.activities;
 
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.ListView;
 
 import org.otfusion.votecats.R;
@@ -25,10 +26,17 @@ public class FavoriteActivity extends CatActivity {
 
     @Override
     protected void loadUIElements() {
+        setProgressBarIndeterminateVisibility(false);
+    }
+
+    private void loadListView() {
+        _catService.getFavoriteCats();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setProgressBarIndeterminateVisibility(true);
     }
 }
