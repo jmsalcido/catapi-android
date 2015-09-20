@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 
 import org.otfusion.votecats.application.VoteCatsApplication;
 import org.otfusion.votecats.common.model.Cat;
+import org.otfusion.votecats.util.DbUtils;
 
 import java.util.Collections;
 import java.util.HashMap;

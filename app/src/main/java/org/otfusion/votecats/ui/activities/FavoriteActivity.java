@@ -1,13 +1,13 @@
 package org.otfusion.votecats.ui.activities;
 
 import android.os.Bundle;
-import android.view.Window;
 import android.widget.ListView;
 
 import org.otfusion.votecats.R;
-import org.otfusion.votecats.service.CatService;
+import org.otfusion.votecats.common.model.Cat;
+import org.otfusion.votecats.ui.adapters.FavoriteCatAdapter;
 
-import javax.inject.Inject;
+import java.util.List;
 
 import butterknife.Bind;
 
@@ -16,8 +16,7 @@ public class FavoriteActivity extends CatActivity {
     @Bind(R.id.favorite_list_view)
     ListView _favoriteCats;
 
-    @Inject
-    CatService _catService;
+    private final FavoriteCatAdapter _favoriteCatAdapter = new FavoriteCatAdapter();
 
     @Override
     protected int getContentLayoutId() {
@@ -25,18 +24,17 @@ public class FavoriteActivity extends CatActivity {
     }
 
     @Override
-    protected void loadUIElements() {
-        setProgressBarIndeterminateVisibility(false);
+    protected void loadContent() {
+        _favoriteCats.setAdapter(_favoriteCatAdapter);
     }
 
-    private void loadListView() {
-        _catService.getFavoriteCats();
+    private List<Cat> getFavoriteCats() {
+        return getCatService().getFavoriteCats();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setProgressBarIndeterminateVisibility(true);
+        _favoriteCatAdapter.updateCats(getFavoriteCats());
     }
 }

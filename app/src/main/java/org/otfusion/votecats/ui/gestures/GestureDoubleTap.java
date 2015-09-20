@@ -20,7 +20,7 @@ public class GestureDoubleTap<T extends VoteCatEvent> extends GestureDetector.Si
             return true;
         }
         _lastPressTime = pressTime;
-        return true;
+        return false;
     }
 
     public void setEvent(T event) {

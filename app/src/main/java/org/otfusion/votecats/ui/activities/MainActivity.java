@@ -41,7 +41,7 @@ public class MainActivity extends CatActivity {
     }
 
     @Override
-    protected void loadUIElements() {
+    protected void loadContent() {
         _loadCatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

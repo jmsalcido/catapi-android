@@ -8,7 +8,6 @@ import com.squareup.otto.Bus;
 import org.otfusion.votecats.application.ApplicationComponent;
 import org.otfusion.votecats.application.VoteCatsApplication;
 import org.otfusion.votecats.service.CatService;
-import org.otfusion.votecats.service.CatServiceImpl;
 
 import javax.inject.Inject;
 
@@ -20,7 +19,7 @@ public abstract class CatActivity extends AppCompatActivity {
     Bus _bus;
 
     @Inject
-    CatServiceImpl _catService;
+    CatService _catService;
 
     @Override
     /**
@@ -38,7 +37,7 @@ public abstract class CatActivity extends AppCompatActivity {
         // Set the UI layout and bind the UI elements for all the activities.
         setContentView(getContentLayoutId());
         ButterKnife.bind(this);
-        loadUIElements();
+        loadContent();
     }
 
     protected ApplicationComponent getApplicationComponent() {
@@ -59,5 +58,5 @@ public abstract class CatActivity extends AppCompatActivity {
 
     protected abstract int getContentLayoutId();
 
-    protected abstract void loadUIElements();
+    protected abstract void loadContent();
 }

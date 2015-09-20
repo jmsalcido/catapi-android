@@ -1,7 +1,9 @@
-package org.otfusion.votecats.db.repository;
+package org.otfusion.votecats.util;
 
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+
+import org.otfusion.votecats.db.repository.DbBuilder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +23,7 @@ public class DbUtils {
             T object = dbBuilder.buildFromCursor(cursor);
             list.add(object);
         }
+        cursor.close();
         return list;
     }
 
@@ -32,7 +35,9 @@ public class DbUtils {
         if (isCursorEmpty(cursor)) {
             return null;
         }
-        return dbBuilder.buildFromCursor(cursor);
+        T object = dbBuilder.buildFromCursor(cursor);
+        cursor.close();
+        return object;
     }
 
     public static String getString(Cursor cursor, String columnName) {
