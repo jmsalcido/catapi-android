@@ -19,9 +19,8 @@ public class CatApiProvider implements CatProvider {
 
     @Override
     public Cat getCatFromProvider() {
-        Cat cat = new Cat();
         CatApiElement catApiElementFromEndPoint = _catApiService.getCatApiElementFromEndPoint();
-        cat.setId(catApiElementFromEndPoint.getId());
+        Cat cat = new Cat();
         cat.setImageUrl(catApiElementFromEndPoint.getUrl());
         cat.setProviderName(PROVIDER_NAME);
         return cat;
