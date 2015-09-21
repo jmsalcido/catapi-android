@@ -1,4 +1,4 @@
-package org.otfusion.votecats.providers;
+package org.otfusion.votecats.events;
 
 import org.otfusion.votecats.common.model.Cat;
 

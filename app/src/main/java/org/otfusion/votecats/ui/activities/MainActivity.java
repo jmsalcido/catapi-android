@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 
 import org.otfusion.votecats.R;
 import org.otfusion.votecats.common.model.Cat;
-import org.otfusion.votecats.providers.CatLoadedEvent;
+import org.otfusion.votecats.events.CatLoadedEvent;
 import org.otfusion.votecats.ui.events.FavoriteCatEvent;
 import org.otfusion.votecats.ui.gestures.GestureDoubleTap;
 

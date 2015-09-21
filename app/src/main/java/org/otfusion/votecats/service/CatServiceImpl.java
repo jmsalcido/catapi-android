@@ -49,5 +49,4 @@ public class CatServiceImpl implements CatService {
     public List<Cat> getFavoriteCats() {
         return _favoriteCatRepository.getFavoriteCats();
     }
-
 }

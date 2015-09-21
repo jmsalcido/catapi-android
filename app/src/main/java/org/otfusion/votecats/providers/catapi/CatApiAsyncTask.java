@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import com.squareup.otto.Bus;
 
 import org.otfusion.votecats.common.model.Cat;
-import org.otfusion.votecats.providers.CatLoadedEvent;
+import org.otfusion.votecats.events.CatLoadedEvent;
 
 public class CatApiAsyncTask extends AsyncTask<Void, Void, CatLoadedEvent> {
 
