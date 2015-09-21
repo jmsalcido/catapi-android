@@ -24,6 +24,7 @@ public class CatApiProvider implements CatProvider {
         cat.setId(catApiElementFromEndPoint.getId());
         cat.setImageUrl(catApiElementFromEndPoint.getUrl());
         cat.setProviderName(PROVIDER_NAME);
+        cat.setName(catApiElementFromEndPoint.getId());
         return cat;
     }
 

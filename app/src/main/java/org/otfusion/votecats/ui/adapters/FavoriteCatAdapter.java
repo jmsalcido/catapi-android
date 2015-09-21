@@ -56,7 +56,7 @@ public class FavoriteCatAdapter extends BaseAdapter {
         TextView favoriteCat = ViewHolder.get(convertView, R.id.favorite_cat_list_text);
 
         Cat cat = getItem(position);
-        favoriteCat.setText(cat.getImageUrl());
+        favoriteCat.setText(cat.getName());
 
         return convertView;
     }
