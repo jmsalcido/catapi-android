@@ -20,6 +20,7 @@ ext {
     simpleFmwVersion = "2.7.1"
     simpleXmlConverterVersion = "1.1"
     javaxAnnotationVersion = '10.0-b28'
+    reflectionVersion = "0.9.10"
 
     // Dependencies per project
     appDependencies = [
@@ -34,6 +35,7 @@ ext {
             picasso              : "com.squareup.picasso:picasso:${picassoVersion}",
             otto                 : "com.squareup:otto:${ottoVersion}",
             butterknife          : "com.jakewharton:butterknife:${butterKnifeVersion}",
-            javaxAnnotation      : "org.glassfish:javax.annotation:${javaxAnnotationVersion}"
+            javaxAnnotation      : "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
+            reflection           : "org.reflections:reflections:${reflectionVersion}"
     ]
 }

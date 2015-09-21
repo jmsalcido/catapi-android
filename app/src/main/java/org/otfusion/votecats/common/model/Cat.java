@@ -6,7 +6,6 @@ public class Cat {
     private String _imageUrl;
     private String _providerName;
     private String _name;
-    private boolean _favorite;
 
     public String getId() {
         return _id;
@@ -30,14 +29,6 @@ public class Cat {
 
     public void setProviderName(String providerName) {
         _providerName = providerName;
-    }
-
-    public boolean isFavorite() {
-        return _favorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        _favorite = favorite;
     }
 
     public String getName() {

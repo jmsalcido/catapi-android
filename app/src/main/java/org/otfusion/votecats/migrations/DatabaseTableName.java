@@ -1,4 +1,4 @@
-package org.otfusion.votecats.db.repository;
+package org.otfusion.votecats.migrations;
 
 public class DatabaseTableName {
 

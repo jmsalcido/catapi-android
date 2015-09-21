@@ -1,13 +1,12 @@
 package org.otfusion.votecats.db.repository;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
-import org.otfusion.votecats.application.VoteCatsApplication;
 import org.otfusion.votecats.common.model.Cat;
+import org.otfusion.votecats.migrations.DatabaseTableName;
 import org.otfusion.votecats.util.DbUtils;
 
 import java.util.Collections;
@@ -17,10 +16,7 @@ import java.util.Map;
 
 public class FavoriteCatRepository {
 
-    private final Context _context;
-
     public FavoriteCatRepository() {
-        _context = VoteCatsApplication.getContext();
     }
 
     public long saveFavoriteCat(Cat cat) {
@@ -64,6 +60,7 @@ public class FavoriteCatRepository {
         cat.setId(DbUtils.getString(cursor, "id"));
         cat.setImageUrl(DbUtils.getString(cursor, "image_url"));
         cat.setProviderName(DbUtils.getString(cursor, "provider_name"));
+        cat.setName(DbUtils.getString(cursor, "name"));
         return cat;
     }
 
@@ -89,12 +86,12 @@ public class FavoriteCatRepository {
     }
 
     private SQLiteDatabase getSQLiteWritableDatabase() {
-        VoteCatsDbHelper dbHelper = new VoteCatsDbHelper(getContext());
+        VoteCatsDbHelper dbHelper = new VoteCatsDbHelper();
         return dbHelper.getWritableDatabase();
     }
 
     private SQLiteDatabase getSQLiteReadableDatabase() {
-        VoteCatsDbHelper dbHelper = new VoteCatsDbHelper(getContext());
+        VoteCatsDbHelper dbHelper = new VoteCatsDbHelper();
         return dbHelper.getReadableDatabase();
     }
 
@@ -105,9 +102,5 @@ public class FavoriteCatRepository {
         values.put("provider_name", cat.getProviderName());
         values.put("name", cat.getName());
         return values;
-    }
-
-    public Context getContext() {
-        return _context;
     }
 }

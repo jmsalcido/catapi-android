@@ -122,7 +122,6 @@ public class MainActivity extends CatActivity {
                 Toast.makeText(this, "That cat is already in your collection", Toast
                         .LENGTH_SHORT).show();
             } else {
-                cat.setFavorite(true);
                 getCatService().saveCatToFavorites(cat);
                 Toast.makeText(this, "Saving that Right Meow!.", Toast.LENGTH_SHORT).show();
             }
