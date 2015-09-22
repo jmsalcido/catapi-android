@@ -10,6 +10,8 @@ public interface CatService {
 
     long saveCatToFavorites(Cat cat);
 
+    void deleteFromFavorites(Cat cat);
+
     boolean isCatInFavorites(Cat cat);
 
     List<Cat> getFavoriteCats();

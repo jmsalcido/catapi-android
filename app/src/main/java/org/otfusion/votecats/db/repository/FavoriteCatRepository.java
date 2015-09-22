@@ -24,6 +24,12 @@ public class FavoriteCatRepository {
         return db.insert(getTableName(), null, buildContentValues(cat));
     }
 
+    public void deleteFromFavorites(Cat cat) {
+        SQLiteDatabase db = getSQLiteWritableDatabase();
+        db.delete(DatabaseTableName.CATS, "id = ?", new String[] { cat.getId()});
+        db.close();
+    }
+
     public Map<String, Cat> getFavoriteCatsMap() {
         Cursor query = readDatabaseCursor();
         final Map<String, Cat> cats =

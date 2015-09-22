@@ -25,6 +25,7 @@ public class FavoriteCatAdapter extends BaseAdapter {
 
     public void updateCats(List<Cat> cats) {
         _cats = cats;
+        notifyDataSetChanged();
     }
 
     @Override

@@ -2,4 +2,6 @@
     <string name="app_name">Vote Cats</string>
     <string name="action_main_goto_favorite">Favorite Cats</string>
     <string name="title_activity_favorite">Favorites</string>
+
+    <string name="action_favorite_context_delete">Delete</string>
 </resources>

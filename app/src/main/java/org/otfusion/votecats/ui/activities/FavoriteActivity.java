@@ -1,6 +1,11 @@
 package org.otfusion.votecats.ui.activities;
 
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.otfusion.votecats.R;
@@ -26,6 +31,31 @@ public class FavoriteActivity extends CatActivity {
     @Override
     protected void loadContent() {
         _favoriteCats.setAdapter(_favoriteCatAdapter);
+        registerForContextMenu(_favoriteCats);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo;
+        switch (item.getItemId()) {
+            case R.id.action_favorite_context_delete:
+                List<Cat> favoriteCats = getFavoriteCats();
+                menuInfo = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+                Cat cat = favoriteCats.get(menuInfo.position);
+                getCatService().deleteFromFavorites(cat);
+                updateCats();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo
+            menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.favorite_context_menu, menu);
     }
 
     private List<Cat> getFavoriteCats() {
@@ -35,6 +65,10 @@ public class FavoriteActivity extends CatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        updateCats();
+    }
+
+    private void updateCats() {
         _favoriteCatAdapter.updateCats(getFavoriteCats());
     }
 }
