@@ -2,6 +2,8 @@ package org.otfusion.votecats.ui.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ContextMenu;
+import android.widget.AdapterView;
 
 import com.squareup.otto.Bus;
 
@@ -54,6 +56,11 @@ public abstract class CatActivity extends AppCompatActivity {
 
     protected CatService getCatService() {
         return _catService;
+    }
+
+    protected AdapterView.AdapterContextMenuInfo getAdapterContextMenuInfo(
+            ContextMenu.ContextMenuInfo menuInfo) {
+        return (AdapterView.AdapterContextMenuInfo) menuInfo;
     }
 
     protected abstract int getContentLayoutId();

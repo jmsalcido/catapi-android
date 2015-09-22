@@ -19,9 +19,15 @@ import butterknife.Bind;
 public class FavoriteActivity extends CatActivity {
 
     @Bind(R.id.favorite_list_view)
-    ListView _favoriteCats;
+    protected ListView _favoriteCatsView;
 
-    private final FavoriteCatAdapter _favoriteCatAdapter = new FavoriteCatAdapter();
+    private FavoriteCatAdapter _favoriteCatAdapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        refreshFavoriteCats();
+    }
 
     @Override
     protected int getContentLayoutId() {
@@ -30,24 +36,29 @@ public class FavoriteActivity extends CatActivity {
 
     @Override
     protected void loadContent() {
-        _favoriteCats.setAdapter(_favoriteCatAdapter);
-        registerForContextMenu(_favoriteCats);
+        _favoriteCatAdapter = new FavoriteCatAdapter();
+        _favoriteCatsView.setAdapter(_favoriteCatAdapter);
+        registerForContextMenu(_favoriteCatsView);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo menuInfo;
         switch (item.getItemId()) {
             case R.id.action_favorite_context_delete:
-                List<Cat> favoriteCats = getFavoriteCats();
-                menuInfo = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-                Cat cat = favoriteCats.get(menuInfo.position);
-                getCatService().deleteFromFavorites(cat);
-                updateCats();
+                handleContextMenuDeleteOption(item);
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void handleContextMenuDeleteOption(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo;
+        List<Cat> catFromsAdapter = getFavoriteCatAdapter().getCats();
+        menuInfo = getAdapterContextMenuInfo(item.getMenuInfo());
+        Cat favoritedCat = catFromsAdapter.get(menuInfo.position);
+        getCatService().deleteFromFavorites(favoritedCat);
+        refreshFavoriteCats();
     }
 
     @Override
@@ -62,13 +73,11 @@ public class FavoriteActivity extends CatActivity {
         return getCatService().getFavoriteCats();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        updateCats();
+    private void refreshFavoriteCats() {
+        getFavoriteCatAdapter().updateCats(getFavoriteCats());
     }
 
-    private void updateCats() {
-        _favoriteCatAdapter.updateCats(getFavoriteCats());
+    public FavoriteCatAdapter getFavoriteCatAdapter() {
+        return _favoriteCatAdapter;
     }
 }

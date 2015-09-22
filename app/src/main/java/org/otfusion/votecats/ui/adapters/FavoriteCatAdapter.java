@@ -28,6 +28,10 @@ public class FavoriteCatAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public List<Cat> getCats() {
+        return _cats;
+    }
+
     @Override
     public int getCount() {
         return _cats.size();
