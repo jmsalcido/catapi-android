@@ -8,6 +8,7 @@ import org.otfusion.votecats.db.repository.FavoriteCatRepository;
 import org.otfusion.votecats.providers.catapi.CatApiProvider;
 import org.otfusion.votecats.providers.catapi.CatApiService;
 import org.otfusion.votecats.service.CatService;
+import org.otfusion.votecats.service.images.SaveImageService;
 import org.otfusion.votecats.ui.activities.CatActivity;
 
 import javax.inject.Singleton;
@@ -24,5 +25,6 @@ public interface ApplicationComponent {
     CatApiProvider catApiProvider();
     CatApiService catApiService();
     FavoriteCatRepository favoriteCatRepository();
+    SaveImageService saveImageService();
     Bus bus();
 }

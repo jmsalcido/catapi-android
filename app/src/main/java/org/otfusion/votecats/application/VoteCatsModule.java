@@ -10,6 +10,8 @@ import org.otfusion.votecats.providers.catapi.CatApiProvider;
 import org.otfusion.votecats.providers.catapi.CatApiService;
 import org.otfusion.votecats.service.CatService;
 import org.otfusion.votecats.service.CatServiceImpl;
+import org.otfusion.votecats.service.images.SaveImageService;
+import org.otfusion.votecats.service.images.picasso.SaveImagePicassoServiceImpl;
 
 import javax.inject.Singleton;
 
@@ -35,8 +37,14 @@ public class VoteCatsModule {
     @Provides
     @Singleton
     public CatService provideCatService(Bus bus, CatApiProvider catApiProvider,
-                                             FavoriteCatRepository favoriteCatRepository) {
-        return new CatServiceImpl(bus, catApiProvider, favoriteCatRepository);
+        FavoriteCatRepository favoriteCatRepository, SaveImageService saveImageService) {
+        return new CatServiceImpl(bus, catApiProvider, favoriteCatRepository, saveImageService);
+    }
+
+    @Provides
+    @Singleton
+    public SaveImageService provideSaveImageService() {
+        return new SaveImagePicassoServiceImpl();
     }
 
     @Provides

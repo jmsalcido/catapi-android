@@ -124,7 +124,6 @@ public class MainActivity extends CatActivity {
             } else {
                 getCatService().saveCatToFavorites(cat);
                 Toast.makeText(this, "Saving that Right Meow!.", Toast.LENGTH_SHORT).show();
-//                Picasso.with(getApplicationContext()).load(cat.getImageUrl()).into();
             }
         } else {
             Toast.makeText(this, "There is no cat there.", Toast.LENGTH_SHORT).show();
