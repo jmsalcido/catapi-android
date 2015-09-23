@@ -1,4 +1,4 @@
-package org.otfusion.votecats.ui.events;
+package org.otfusion.votecats.events;
 
 public interface VoteCatEvent {
 

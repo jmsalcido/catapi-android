@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 import org.otfusion.votecats.R;
 import org.otfusion.votecats.common.model.Cat;
 import org.otfusion.votecats.events.CatLoadedEvent;
-import org.otfusion.votecats.ui.events.FavoriteCatEvent;
+import org.otfusion.votecats.events.FavoriteCatEvent;
 import org.otfusion.votecats.ui.gestures.GestureDoubleTap;
 
 import butterknife.Bind;
@@ -124,6 +124,7 @@ public class MainActivity extends CatActivity {
             } else {
                 getCatService().saveCatToFavorites(cat);
                 Toast.makeText(this, "Saving that Right Meow!.", Toast.LENGTH_SHORT).show();
+//                Picasso.with(getApplicationContext()).load(cat.getImageUrl()).into();
             }
         } else {
             Toast.makeText(this, "There is no cat there.", Toast.LENGTH_SHORT).show();

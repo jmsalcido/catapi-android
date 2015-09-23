@@ -20,13 +20,13 @@ public class CatApiAsyncTask extends AsyncTask<Void, Void, CatLoadedEvent> {
     @Override
     protected CatLoadedEvent doInBackground(Void... voids) {
         Cat cat = _catApiProvider.getCatFromProvider();
-        return new CatLoadedEvent(cat);
+        return new CatLoadedEvent(cat, _bus);
     }
 
     @Override
     protected void onPostExecute(CatLoadedEvent catLoadedEvent) {
         super.onPostExecute(catLoadedEvent);
-        getBus().post(catLoadedEvent);
+        catLoadedEvent.executeEvent("cat-api");
     }
 
     protected Bus getBus() {

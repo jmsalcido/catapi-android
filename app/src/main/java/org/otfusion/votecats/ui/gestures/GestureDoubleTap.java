@@ -3,7 +3,7 @@ package org.otfusion.votecats.ui.gestures;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-import org.otfusion.votecats.ui.events.VoteCatEvent;
+import org.otfusion.votecats.events.VoteCatEvent;
 
 public class GestureDoubleTap<T extends VoteCatEvent> extends GestureDetector.SimpleOnGestureListener {
 
