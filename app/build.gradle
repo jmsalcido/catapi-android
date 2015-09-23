@@ -50,6 +50,7 @@ dependencies {
 
     apt appDependencies.daggerCompiler
     compile appDependencies.androidSupport
+    compile appDependencies.designSupport
     compile appDependencies.simpleFmw
     compile appDependencies.simpleFmwXmlConverter
     compile appDependencies.retroFit

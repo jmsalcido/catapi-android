@@ -27,6 +27,7 @@ ext {
             daggerCompiler       : "com.google.dagger:dagger-compiler:${daggerVersion}",
             dagger               : "com.google.dagger:dagger:${daggerVersion}",
             androidSupport       : "com.android.support:appcompat-v7:${supportLibraryVersion}",
+            designSupport        : "com.android.support:design:${supportLibraryVersion}",
             simpleFmw            : "org.simpleframework:simple-xml:${simpleFmwVersion}",
             simpleFmwXmlConverter: "com.mobprofs:retrofit-simplexmlconverter:${simpleXmlConverterVersion}",
             retroFit             : "com.squareup.retrofit:retrofit:${retrofitVersion}",
