@@ -42,11 +42,11 @@ public class MainActivity extends CatActivity {
 
     @Override
     protected void loadContent() {
+        loadCat();
         _loadCatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                _loadCatButton.setEnabled(false);
-                getCatService().getCatFromApi();
+                loadCat();
             }
         });
 
@@ -69,6 +69,11 @@ public class MainActivity extends CatActivity {
                 return gestureDetector.onTouchEvent(motionEvent);
             }
         });
+    }
+
+    private void loadCat() {
+        _loadCatButton.setEnabled(false);
+        getCatService().getCatFromApi();
     }
 
     @Override
@@ -122,6 +127,7 @@ public class MainActivity extends CatActivity {
                 UIUtils.showToast("That cat is already in your collection");
             } else {
                 getCatService().saveCatToFavorites(cat);
+                loadCat();
                 UIUtils.showToast("Saving that right Meow!");
             }
         } else {
