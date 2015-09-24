@@ -8,7 +8,7 @@ import org.otfusion.votecats.common.model.Cat;
 import org.otfusion.votecats.db.repository.FavoriteCatRepository;
 import org.otfusion.votecats.providers.catapi.CatApiAsyncTask;
 import org.otfusion.votecats.providers.catapi.CatApiProvider;
-import org.otfusion.votecats.service.images.SaveImageService;
+import org.otfusion.votecats.service.images.StorageImageService;
 
 import java.util.List;
 import java.util.Map;
@@ -20,15 +20,15 @@ public class CatServiceImpl implements CatService {
     private Bus _bus;
     private CatApiProvider _catApiProvider;
     private final FavoriteCatRepository _favoriteCatRepository;
-    private final SaveImageService _saveImageService;
+    private final StorageImageService _storageImageService;
 
     @Inject
     public CatServiceImpl(Bus bus, CatApiProvider catApiProvider, FavoriteCatRepository
-            favoriteCatRepository, SaveImageService saveImageService) {
+            favoriteCatRepository, StorageImageService storageImageService) {
         _bus = bus;
         _catApiProvider = catApiProvider;
         _favoriteCatRepository = favoriteCatRepository;
-        _saveImageService = saveImageService;
+        _storageImageService = storageImageService;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class CatServiceImpl implements CatService {
     @Override
     public long saveCatToFavorites(@NonNull Cat cat) {
         long catId = _favoriteCatRepository.saveFavoriteCat(cat);
-        _saveImageService.saveImageIntoSD(cat);
+        _storageImageService.saveImageIntoSD(cat);
         return catId;
     }
 

@@ -1,6 +1,7 @@
 package org.otfusion.votecats.db.repository;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -14,9 +15,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 public class FavoriteCatRepository {
 
-    public FavoriteCatRepository() {
+    private final Context _context;
+
+    @Inject
+    public FavoriteCatRepository(Context context) {
+        _context = context;
     }
 
     public long saveFavoriteCat(Cat cat) {
@@ -26,7 +33,7 @@ public class FavoriteCatRepository {
 
     public void deleteFromFavorites(Cat cat) {
         SQLiteDatabase db = getSQLiteWritableDatabase();
-        db.delete(DatabaseTableName.CATS, "id = ?", new String[] { cat.getId()});
+        db.delete(DatabaseTableName.CATS, "id = ?", new String[]{cat.getId()});
         db.close();
     }
 
@@ -92,12 +99,12 @@ public class FavoriteCatRepository {
     }
 
     private SQLiteDatabase getSQLiteWritableDatabase() {
-        VoteCatsDbHelper dbHelper = new VoteCatsDbHelper();
+        VoteCatsDbHelper dbHelper = new VoteCatsDbHelper(_context);
         return dbHelper.getWritableDatabase();
     }
 
     private SQLiteDatabase getSQLiteReadableDatabase() {
-        VoteCatsDbHelper dbHelper = new VoteCatsDbHelper();
+        VoteCatsDbHelper dbHelper = new VoteCatsDbHelper(_context);
         return dbHelper.getReadableDatabase();
     }
 

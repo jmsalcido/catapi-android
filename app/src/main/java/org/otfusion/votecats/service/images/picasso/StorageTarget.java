@@ -9,7 +9,7 @@ import com.squareup.picasso.Target;
 
 import org.otfusion.votecats.application.VoteCatsApplication;
 import org.otfusion.votecats.common.model.Cat;
-import org.otfusion.votecats.service.images.SaveImageService;
+import org.otfusion.votecats.service.images.StorageImageService;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,7 +37,7 @@ public class StorageTarget implements Target {
     }
 
     private File getStorageFile(File directory) throws IOException {
-        File folder = new File(directory, SaveImageService.FOLDER_NAME);
+        File folder = new File(directory, StorageImageService.FOLDER_NAME);
         if (!folder.exists()) {
             folder.mkdir();
         }

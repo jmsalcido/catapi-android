@@ -1,9 +1,9 @@
 package org.otfusion.votecats.db.repository;
 
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import org.otfusion.votecats.application.VoteCatsApplication;
 import org.otfusion.votecats.migrations.Migration;
 import org.otfusion.votecats.migrations.MigrationUtils;
 
@@ -17,8 +17,8 @@ public class VoteCatsDbHelper extends SQLiteOpenHelper {
     private static final List<Migration> MIGRATIONS =
             MigrationUtils.getMigrations(DATABASE_VERSION);
 
-    public VoteCatsDbHelper() {
-        super(VoteCatsApplication.getContext(), DATABASE_NAME, null, DATABASE_VERSION);
+    public VoteCatsDbHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
