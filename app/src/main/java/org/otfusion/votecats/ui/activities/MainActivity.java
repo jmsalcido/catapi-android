@@ -8,7 +8,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Callback;
@@ -19,6 +18,7 @@ import org.otfusion.votecats.common.model.Cat;
 import org.otfusion.votecats.events.CatLoadedEvent;
 import org.otfusion.votecats.events.FavoriteCatEvent;
 import org.otfusion.votecats.ui.gestures.GestureDoubleTap;
+import org.otfusion.votecats.util.UIUtils;
 
 import butterknife.Bind;
 
@@ -119,14 +119,13 @@ public class MainActivity extends CatActivity {
         Cat cat = favoriteCatEvent.getCat();
         if (cat != null) {
             if (getCatService().isCatInFavorites(cat)) {
-                Toast.makeText(this, "That cat is already in your collection", Toast
-                        .LENGTH_SHORT).show();
+                UIUtils.showToast("That cat is already in your collection");
             } else {
                 getCatService().saveCatToFavorites(cat);
-                Toast.makeText(this, "Saving that Right Meow!.", Toast.LENGTH_SHORT).show();
+                UIUtils.showToast("Saving that right Meow!");
             }
         } else {
-            Toast.makeText(this, "There is no cat there.", Toast.LENGTH_SHORT).show();
+            UIUtils.showToast("There is no cat there.");
         }
     }
 }

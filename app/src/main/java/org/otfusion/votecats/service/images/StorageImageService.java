@@ -6,6 +6,8 @@ public interface StorageImageService {
 
     String FOLDER_NAME = "voted_cats";
 
-    void saveImageIntoSD(Cat cat);
+    void saveImageIntoStorage(Cat cat);
+
+    void deleteImageFromStorage(Cat cat);
 
 }

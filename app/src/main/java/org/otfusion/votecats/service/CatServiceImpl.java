@@ -40,13 +40,14 @@ public class CatServiceImpl implements CatService {
     @Override
     public long saveCatToFavorites(@NonNull Cat cat) {
         long catId = _favoriteCatRepository.saveFavoriteCat(cat);
-        _storageImageService.saveImageIntoSD(cat);
+        _storageImageService.saveImageIntoStorage(cat);
         return catId;
     }
 
     @Override
     public void deleteFromFavorites(Cat cat) {
         _favoriteCatRepository.deleteFromFavorites(cat);
+        _storageImageService.deleteImageFromStorage(cat);
     }
 
     @Override
