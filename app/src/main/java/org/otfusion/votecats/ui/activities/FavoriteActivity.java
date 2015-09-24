@@ -1,6 +1,7 @@
 package org.otfusion.votecats.ui.activities;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,6 +12,7 @@ import android.widget.ListView;
 import org.otfusion.votecats.R;
 import org.otfusion.votecats.common.model.Cat;
 import org.otfusion.votecats.ui.adapters.FavoriteCatAdapter;
+import org.otfusion.votecats.util.UIUtils;
 
 import java.util.List;
 
@@ -20,6 +22,9 @@ public class FavoriteActivity extends CatActivity {
 
     @Bind(R.id.favorite_list_view)
     protected ListView _favoriteCatsView;
+
+    @Bind(R.id.favorite_toolbar)
+    Toolbar _toolbar;
 
     private FavoriteCatAdapter _favoriteCatAdapter;
 
@@ -39,6 +44,15 @@ public class FavoriteActivity extends CatActivity {
         _favoriteCatAdapter = new FavoriteCatAdapter();
         _favoriteCatsView.setAdapter(_favoriteCatAdapter);
         registerForContextMenu(_favoriteCatsView);
+        setSupportActionBar(_toolbar);
+        _toolbar.setNavigationIcon(getResources().getDrawable(R.drawable
+                .abc_ic_ab_back_mtrl_am_alpha));
+        _toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override
@@ -46,6 +60,9 @@ public class FavoriteActivity extends CatActivity {
         switch (item.getItemId()) {
             case R.id.action_favorite_context_delete:
                 handleContextMenuDeleteOption(item);
+                return true;
+            case R.id.action_favorite_context_share:
+                UIUtils.showToast("Soon");
                 return true;
             default:
                 return super.onContextItemSelected(item);

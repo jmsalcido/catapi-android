@@ -28,7 +28,9 @@ public class FavoriteCatRepository {
 
     public long saveFavoriteCat(Cat cat) {
         SQLiteDatabase db = getSQLiteWritableDatabase();
-        return db.insert(getTableName(), null, buildContentValues(cat));
+        long result = db.insert(getTableName(), null, buildContentValues(cat));
+        db.close();
+        return result;
     }
 
     public void deleteFromFavorites(Cat cat) {

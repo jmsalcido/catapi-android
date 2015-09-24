@@ -1,6 +1,7 @@
 package org.otfusion.votecats.ui.activities;
 
 import android.content.Intent;
+import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +33,9 @@ public class MainActivity extends CatActivity {
 
     @Bind(R.id.favorite_cat_button)
     Button _favoriteCatButton;
+
+    @Bind(R.id.main_toolbar)
+    Toolbar _toolbar;
 
     private Cat _currentCat;
 
@@ -69,6 +73,8 @@ public class MainActivity extends CatActivity {
                 return gestureDetector.onTouchEvent(motionEvent);
             }
         });
+
+        setSupportActionBar(_toolbar);
     }
 
     private void loadCat() {
