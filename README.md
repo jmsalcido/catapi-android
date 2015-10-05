@@ -1,5 +1,5 @@
 # catapi-android
-Just a small project to learn how does dependency injection and other frameworks work within Android, the idea came from the pair programming excercise at @Nearsoft for the Android developers that want to join the flock.
+Just a small project to learn how does dependency injection and other frameworks work within Android, the idea came from the pair programming excercise at @Nearsoft for Android devs.
 
 Using almost everything from square io to build this.
 
