@@ -53,7 +53,7 @@ public class CatServiceImpl implements CatService {
     @Override
     public boolean isCatInFavorites(@NonNull Cat cat) {
         Map<String, Cat> favoriteCatsMap = favoriteCatRepository.getFavoriteCatsMap();
-        return favoriteCatsMap.containsKey(cat.getId());
+        return favoriteCatsMap.containsKey(cat.getProviderId());
     }
 
     @Override

@@ -35,7 +35,7 @@ public class FavoriteCatRepository {
 
     public void deleteFromFavorites(Cat cat) {
         SQLiteDatabase db = getSQLiteWritableDatabase();
-        db.delete(DatabaseTableName.CATS, "id = ?", new String[]{cat.getId()});
+        db.delete(DatabaseTableName.CATS, "id = ?", new String[]{String.valueOf(cat.getId())});
         db.close();
     }
 
@@ -48,7 +48,7 @@ public class FavoriteCatRepository {
                         Map<String, Cat> result = new HashMap<>();
                         while (cursor.moveToNext()) {
                             Cat cat = buildCatFromCursor(cursor);
-                            result.put(cat.getId(), cat);
+                            result.put(cat.getProviderId(), cat);
                         }
                         return result;
                     }
@@ -72,10 +72,11 @@ public class FavoriteCatRepository {
 
     private Cat buildCatFromCursor(Cursor cursor) {
         Cat cat = new Cat();
-        cat.setId(DbUtils.getString(cursor, "id"));
+        cat.setId(DbUtils.getLong(cursor, "id"));
         cat.setImageUrl(DbUtils.getString(cursor, "image_url"));
-        cat.setProviderName(DbUtils.getString(cursor, "provider_name"));
         cat.setName(DbUtils.getString(cursor, "name"));
+        cat.setProviderId(DbUtils.getString(cursor, "provider_id"));
+        cat.setProviderName(DbUtils.getString(cursor, "provider_name"));
         return cat;
     }
 
@@ -96,6 +97,7 @@ public class FavoriteCatRepository {
                 "id",
                 "image_url",
                 "provider_name",
+                "provider_id",
                 "name"
         };
     }
@@ -112,10 +114,10 @@ public class FavoriteCatRepository {
 
     private ContentValues buildContentValues(Cat cat) {
         ContentValues values = new ContentValues();
-        values.put("id", cat.getId());
         values.put("image_url", cat.getImageUrl());
-        values.put("provider_name", cat.getProviderName());
         values.put("name", cat.getName());
+        values.put("provider_id", cat.getProviderId());
+        values.put("provider_name", cat.getProviderName());
         return values;
     }
 }

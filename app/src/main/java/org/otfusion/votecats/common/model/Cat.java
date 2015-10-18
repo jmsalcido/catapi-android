@@ -2,17 +2,26 @@ package org.otfusion.votecats.common.model;
 
 public class Cat {
 
-    private String id;
+    private long id;
+    private String providerId;
     private String imageUrl;
     private String providerName;
     private String name;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getImageUrl() {
@@ -31,11 +40,11 @@ public class Cat {
         this.providerName = providerName;
     }
 
-    public String getName() {
-        return name;
+    public String getProviderId() {
+        return providerId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
     }
 }

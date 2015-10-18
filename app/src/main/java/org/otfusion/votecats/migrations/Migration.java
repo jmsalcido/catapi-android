@@ -1,6 +1,8 @@
 package org.otfusion.votecats.migrations;
 
+import java.util.List;
+
 public interface Migration {
     int getVersion();
-    String getSQL();
+    List<String> getStatements();
 }

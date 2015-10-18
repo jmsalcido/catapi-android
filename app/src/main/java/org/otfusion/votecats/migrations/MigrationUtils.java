@@ -1,7 +1,6 @@
 package org.otfusion.votecats.migrations;
 
-import org.otfusion.votecats.migrations.files.Migration1;
-import org.otfusion.votecats.migrations.files.Migration2;
+import org.otfusion.votecats.migrations.files.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +13,14 @@ public class MigrationUtils {
         // issue: manually set entire classes... org.reflections did not work.
         addMigration(Migration1.class);
         addMigration(Migration2.class);
+        addMigration(Migration3.class);
     }
 
     private static <T extends Migration> void addMigration(Class<T> migrationClass) {
         try {
             T migration = migrationClass.newInstance();
             MIGRATIONS.add(migration);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -34,7 +32,7 @@ public class MigrationUtils {
     public static List<Migration> getMigrations(int version) {
         List<Migration> versionMigrations = new ArrayList<>();
         for (Migration migration : MIGRATIONS) {
-            if(isUpgradeMigration(migration, version)) {
+            if (isUpgradeMigration(migration, version)) {
                 versionMigrations.add(migration);
             }
         }
