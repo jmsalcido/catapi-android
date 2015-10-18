@@ -11,7 +11,7 @@ public class VoteCatsApplication extends Application {
     public void onCreate() {
         super.onCreate();
         initializeInjector();
-        this.app = this;
+        app = this;
     }
 
     private void initializeInjector() {
