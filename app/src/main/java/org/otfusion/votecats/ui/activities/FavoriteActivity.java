@@ -21,12 +21,12 @@ import butterknife.Bind;
 public class FavoriteActivity extends CatActivity {
 
     @Bind(R.id.favorite_list_view)
-    protected ListView _favoriteCatsView;
+    protected ListView mFavoriteCatsView;
 
     @Bind(R.id.favorite_toolbar)
-    Toolbar _toolbar;
+    Toolbar mToolbar;
 
-    private FavoriteCatAdapter _favoriteCatAdapter;
+    private FavoriteCatAdapter mFavoriteCatAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +41,13 @@ public class FavoriteActivity extends CatActivity {
 
     @Override
     protected void loadContent() {
-        _favoriteCatAdapter = new FavoriteCatAdapter();
-        _favoriteCatsView.setAdapter(_favoriteCatAdapter);
-        registerForContextMenu(_favoriteCatsView);
-        setSupportActionBar(_toolbar);
-        _toolbar.setNavigationIcon(getResources().getDrawable(R.drawable
+        mFavoriteCatAdapter = new FavoriteCatAdapter();
+        mFavoriteCatsView.setAdapter(mFavoriteCatAdapter);
+        registerForContextMenu(mFavoriteCatsView);
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable
                 .abc_ic_ab_back_mtrl_am_alpha));
-        _toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -95,6 +95,6 @@ public class FavoriteActivity extends CatActivity {
     }
 
     public FavoriteCatAdapter getFavoriteCatAdapter() {
-        return _favoriteCatAdapter;
+        return mFavoriteCatAdapter;
     }
 }

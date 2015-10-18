@@ -16,17 +16,17 @@ import javax.inject.Inject;
 
 public class StorageImagePicassoServiceImpl implements StorageImageService {
 
-    private final Context _context;
+    private final Context context;
 
     @Inject
     public StorageImagePicassoServiceImpl(Context context) {
-        _context = context;
+        this.context = context;
     }
 
     @Override
     public void saveImageIntoStorage(Cat cat) {
-        Target target = new StorageTarget(cat, _context);
-        Picasso.with(_context).load(cat.getImageUrl()).into(target);
+        Target target = new StorageTarget(cat, context);
+        Picasso.with(context).load(cat.getImageUrl()).into(target);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class StorageImagePicassoServiceImpl implements StorageImageService {
         File file = FileUtils.getFile(cat);
         if (file != null) {
             file.delete();
-            MediaScannerConnection.scanFile(_context, new String[]{file.getPath()}, null, null);
+            MediaScannerConnection.scanFile(context, new String[]{file.getPath()}, null, null);
         }
     }
 }

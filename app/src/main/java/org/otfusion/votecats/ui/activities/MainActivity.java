@@ -26,18 +26,18 @@ import butterknife.Bind;
 public class MainActivity extends CatActivity {
 
     @Bind(R.id.cat_view)
-    ImageView _catImageView;
+    ImageView mCatImageView;
 
     @Bind(R.id.load_cat_button)
-    Button _loadCatButton;
+    Button mLoadCatButton;
 
     @Bind(R.id.favorite_cat_button)
-    Button _favoriteCatButton;
+    Button mFavoriteCatButton;
 
     @Bind(R.id.main_toolbar)
-    Toolbar _toolbar;
+    Toolbar mToolbar;
 
-    private Cat _currentCat;
+    private Cat mCurrentCat;
 
     @Override
     protected int getContentLayoutId() {
@@ -47,38 +47,38 @@ public class MainActivity extends CatActivity {
     @Override
     protected void loadContent() {
         loadCat();
-        _loadCatButton.setOnClickListener(new View.OnClickListener() {
+        mLoadCatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 loadCat();
             }
         });
 
-        _favoriteCatButton.setOnClickListener(new View.OnClickListener() {
+        mFavoriteCatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FavoriteCatEvent event = new FavoriteCatEvent(getBus(), _currentCat);
+                FavoriteCatEvent event = new FavoriteCatEvent(getBus(), mCurrentCat);
                 event.executeEvent("button");
             }
         });
 
         final GestureDoubleTap<FavoriteCatEvent> doubleTapGesture = new GestureDoubleTap<>();
-        _catImageView.setOnTouchListener(new View.OnTouchListener() {
+        mCatImageView.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                doubleTapGesture.setEvent(new FavoriteCatEvent(getBus(), _currentCat));
+                doubleTapGesture.setEvent(new FavoriteCatEvent(getBus(), mCurrentCat));
                 GestureDetector gestureDetector = new GestureDetector(getApplicationContext(),
                         doubleTapGesture);
                 return gestureDetector.onTouchEvent(motionEvent);
             }
         });
 
-        setSupportActionBar(_toolbar);
+        setSupportActionBar(mToolbar);
     }
 
     private void loadCat() {
-        _loadCatButton.setEnabled(false);
+        mLoadCatButton.setEnabled(false);
         getCatService().getCatFromApi();
     }
 
@@ -105,8 +105,8 @@ public class MainActivity extends CatActivity {
     @Subscribe
     @SuppressWarnings("unused") // used by the bus
     public void handleCatLoadedEvent(CatLoadedEvent catLoadedEvent) {
-        _currentCat = catLoadedEvent.getCat();
-        Picasso.with(getApplicationContext()).load(_currentCat.getImageUrl()).into(_catImageView,
+        mCurrentCat = catLoadedEvent.getCat();
+        Picasso.with(getApplicationContext()).load(mCurrentCat.getImageUrl()).into(mCatImageView,
                 new Callback() {
                     @Override
                     public void onSuccess() {
@@ -119,7 +119,7 @@ public class MainActivity extends CatActivity {
                     }
 
                     private void enableLoadButton() {
-                        _loadCatButton.setEnabled(true);
+                        mLoadCatButton.setEnabled(true);
                     }
                 });
     }

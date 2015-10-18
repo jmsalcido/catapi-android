@@ -11,30 +11,30 @@ import java.io.IOException;
 
 public class SaveImageAsyncTask extends AsyncTask<Void, Void, Void> {
 
-    private final Context _context;
-    private final Bitmap _bitmap;
-    private final File _file;
-    private final FileOutputStream _fileOutputStream;
+    private final Context context;
+    private final Bitmap bitmap;
+    private final File file;
+    private final FileOutputStream fileOutputStream;
 
     public SaveImageAsyncTask(Context context, Bitmap bitmap, File file, FileOutputStream fileOutputStream) {
-        _context = context;
-        _bitmap = bitmap;
-        _file = file;
-        _fileOutputStream = fileOutputStream;
+        this.context = context;
+        this.bitmap = bitmap;
+        this.file = file;
+        this.fileOutputStream = fileOutputStream;
     }
 
 
     @Override
     protected Void doInBackground(Void... params) {
-        _bitmap.compress(Bitmap.CompressFormat.JPEG, 100, _fileOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
         return null;
     }
 
     @Override
     protected void onPostExecute(Void result) {
-        MediaScannerConnection.scanFile(_context, new String[] {_file.getPath()}, null, null);
+        MediaScannerConnection.scanFile(context, new String[] {file.getPath()}, null, null);
         try {
-            _fileOutputStream.close();
+            fileOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

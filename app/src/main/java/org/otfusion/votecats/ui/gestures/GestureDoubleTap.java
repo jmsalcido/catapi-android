@@ -8,23 +8,23 @@ import org.otfusion.votecats.events.VoteCatEvent;
 public class GestureDoubleTap<T extends VoteCatEvent> extends GestureDetector.SimpleOnGestureListener {
 
     public static final int DOUBLE_TAP_MILLISECONDS = 350;
-    private T _event;
-    private long _lastPressTime;
+    private T event;
+    private long lastPressTime;
 
     @Override
     public boolean onDown(MotionEvent e) {
         long pressTime = System.currentTimeMillis();
-        long elapsedTime = pressTime - _lastPressTime;
+        long elapsedTime = pressTime - lastPressTime;
         if (elapsedTime <= DOUBLE_TAP_MILLISECONDS) {
-            _event.executeEvent("double tap");
+            event.executeEvent("double tap");
             return true;
         }
-        _lastPressTime = pressTime;
+        lastPressTime = pressTime;
         return false;
     }
 
     public void setEvent(T event) {
-        _event = event;
+        this.event = event;
     }
 
 }

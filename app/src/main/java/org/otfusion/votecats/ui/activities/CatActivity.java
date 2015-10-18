@@ -18,10 +18,10 @@ import butterknife.ButterKnife;
 public abstract class CatActivity extends AppCompatActivity {
 
     @Inject
-    Bus _bus;
+    Bus bus;
 
     @Inject
-    CatService _catService;
+    CatService catService;
 
     @Override
     /**
@@ -51,11 +51,11 @@ public abstract class CatActivity extends AppCompatActivity {
     }
 
     protected Bus getBus() {
-        return _bus;
+        return bus;
     }
 
     protected CatService getCatService() {
-        return _catService;
+        return catService;
     }
 
     protected AdapterView.AdapterContextMenuInfo getAdapterContextMenuInfo(

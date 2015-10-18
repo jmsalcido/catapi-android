@@ -9,30 +9,30 @@ public class CatApiElement {
 
     @Element(name = "image")
     @Path("data/images/")
-    private Image _image;
+    private Image image;
 
     @Root (name = "image")
     private static class Image {
 
         @Element (name = "id")
-        private String _id;
+        private String id;
         @Element (name = "url")
-        private String _url;
+        private String url;
         @Element (name = "source_url")
-        private String _source;
+        private String source;
 
     }
 
     public String getId() {
-        return _image._id;
+        return image.id;
     }
 
     public String getUrl() {
-        return _image._url;
+        return image.url;
     }
 
     public String getSource() {
-        return _image._source;
+        return image.source;
     }
 
 }

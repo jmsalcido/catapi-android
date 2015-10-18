@@ -6,20 +6,20 @@ import org.otfusion.votecats.common.model.Cat;
 
 public class CatLoadedEvent implements VoteCatEvent {
 
-    private Cat _cat;
-    private Bus _bus;
+    private Cat cat;
+    private Bus bus;
 
     public CatLoadedEvent(Cat cat, Bus bus) {
-        _cat = cat;
-        _bus = bus;
+        this.cat = cat;
+        this.bus = bus;
     }
 
     public Cat getCat() {
-        return _cat;
+        return cat;
     }
 
     @Override
     public void executeEvent(String source) {
-        _bus.post(this);
+        bus.post(this);
     }
 }

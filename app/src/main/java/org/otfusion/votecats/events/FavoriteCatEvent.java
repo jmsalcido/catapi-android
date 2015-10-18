@@ -6,26 +6,26 @@ import org.otfusion.votecats.common.model.Cat;
 
 public class FavoriteCatEvent implements VoteCatEvent {
 
-    private Bus _bus;
-    private Cat _cat;
-    private String _source;
+    private Bus bus;
+    private Cat cat;
+    private String source;
 
     public FavoriteCatEvent(Bus bus, Cat cat) {
-        _bus = bus;
-        _cat = cat;
+        this.bus = bus;
+        this.cat = cat;
     }
 
     @Override
     public void executeEvent(String source) {
-        _source = source;
-        _bus.post(this);
+        this.source = source;
+        bus.post(this);
     }
 
     public Cat getCat() {
-        return _cat;
+        return cat;
     }
 
     public String getSource() {
-        return _source;
+        return source;
     }
 }

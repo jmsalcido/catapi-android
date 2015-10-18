@@ -17,47 +17,47 @@ import javax.inject.Inject;
 
 public class CatServiceImpl implements CatService {
 
-    private Bus _bus;
-    private CatApiProvider _catApiProvider;
-    private final FavoriteCatRepository _favoriteCatRepository;
-    private final StorageImageService _storageImageService;
+    private Bus bus;
+    private CatApiProvider catApiProvider;
+    private final FavoriteCatRepository favoriteCatRepository;
+    private final StorageImageService storageImageService;
 
     @Inject
     public CatServiceImpl(Bus bus, CatApiProvider catApiProvider, FavoriteCatRepository
             favoriteCatRepository, StorageImageService storageImageService) {
-        _bus = bus;
-        _catApiProvider = catApiProvider;
-        _favoriteCatRepository = favoriteCatRepository;
-        _storageImageService = storageImageService;
+        this.bus = bus;
+        this.catApiProvider = catApiProvider;
+        this.favoriteCatRepository = favoriteCatRepository;
+        this.storageImageService = storageImageService;
     }
 
     @Override
     public void getCatFromApi() {
-        CatApiAsyncTask catApiAsyncTask = new CatApiAsyncTask(_bus, _catApiProvider);
+        CatApiAsyncTask catApiAsyncTask = new CatApiAsyncTask(bus, catApiProvider);
         catApiAsyncTask.execute();
     }
 
     @Override
     public long saveCatToFavorites(@NonNull Cat cat) {
-        long catId = _favoriteCatRepository.saveFavoriteCat(cat);
-        _storageImageService.saveImageIntoStorage(cat);
+        long catId = favoriteCatRepository.saveFavoriteCat(cat);
+        storageImageService.saveImageIntoStorage(cat);
         return catId;
     }
 
     @Override
     public void deleteFromFavorites(Cat cat) {
-        _favoriteCatRepository.deleteFromFavorites(cat);
-        _storageImageService.deleteImageFromStorage(cat);
+        favoriteCatRepository.deleteFromFavorites(cat);
+        storageImageService.deleteImageFromStorage(cat);
     }
 
     @Override
     public boolean isCatInFavorites(@NonNull Cat cat) {
-        Map<String, Cat> favoriteCatsMap = _favoriteCatRepository.getFavoriteCatsMap();
+        Map<String, Cat> favoriteCatsMap = favoriteCatRepository.getFavoriteCatsMap();
         return favoriteCatsMap.containsKey(cat.getId());
     }
 
     @Override
     public List<Cat> getFavoriteCats() {
-        return _favoriteCatRepository.getFavoriteCats();
+        return favoriteCatRepository.getFavoriteCats();
     }
 }

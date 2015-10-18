@@ -17,29 +17,29 @@ import java.util.List;
 
 public class FavoriteCatAdapter extends BaseAdapter {
 
-    private List<Cat> _cats;
+    private List<Cat> cats;
 
     public FavoriteCatAdapter() {
-        _cats = Collections.emptyList();
+        cats = Collections.emptyList();
     }
 
     public void updateCats(List<Cat> cats) {
-        _cats = cats;
+        this.cats = cats;
         notifyDataSetChanged();
     }
 
     public List<Cat> getCats() {
-        return _cats;
+        return cats;
     }
 
     @Override
     public int getCount() {
-        return _cats.size();
+        return cats.size();
     }
 
     @Override
     public Cat getItem(int position) {
-        return _cats.get(position);
+        return cats.get(position);
     }
 
     @Override

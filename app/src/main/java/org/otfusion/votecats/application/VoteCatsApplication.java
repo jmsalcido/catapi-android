@@ -4,27 +4,27 @@ import android.app.Application;
 
 public class VoteCatsApplication extends Application {
 
-    private ApplicationComponent _applicationComponent;
-    private static VoteCatsApplication _app;
+    private ApplicationComponent applicationComponent;
+    private static VoteCatsApplication app;
 
     @Override
     public void onCreate() {
         super.onCreate();
         initializeInjector();
-        _app = this;
+        this.app = this;
     }
 
     private void initializeInjector() {
-        _applicationComponent = DaggerApplicationComponent.builder()
-                .voteCatsModule(new VoteCatsModule(this))
+        applicationComponent = DaggerApplicationComponent.builder()
+                .applicationModule(new ApplicationModule(this))
                 .build();
     }
 
     public ApplicationComponent getApplicationComponent() {
-        return _applicationComponent;
+        return applicationComponent;
     }
 
     public static VoteCatsApplication getContext() {
-        return _app;
+        return app;
     }
 }

@@ -20,18 +20,18 @@ import dagger.Provides;
 import retrofit.RestAdapter;
 
 @Module
-public class VoteCatsModule {
+public class ApplicationModule {
 
-    private final VoteCatsApplication _application;
+    private final VoteCatsApplication application;
 
-    public VoteCatsModule(VoteCatsApplication application) {
-        _application = application;
+    public ApplicationModule(VoteCatsApplication application) {
+        this.application = application;
     }
 
     @Provides
     @Singleton
     public Context provideContext() {
-        return _application;
+        return application;
     }
 
     @Provides

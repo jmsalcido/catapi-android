@@ -9,18 +9,18 @@ import org.otfusion.votecats.events.CatLoadedEvent;
 
 public class CatApiAsyncTask extends AsyncTask<Void, Void, CatLoadedEvent> {
 
-    private Bus _bus;
-    private CatApiProvider _catApiProvider;
+    private Bus bus;
+    private CatApiProvider catApiProvider;
 
     public CatApiAsyncTask(Bus bus, CatApiProvider catApiProvider) {
-        _bus = bus;
-        _catApiProvider = catApiProvider;
+        this.bus = bus;
+        this.catApiProvider = catApiProvider;
     }
 
     @Override
     protected CatLoadedEvent doInBackground(Void... voids) {
-        Cat cat = _catApiProvider.getCatFromProvider();
-        return new CatLoadedEvent(cat, _bus);
+        Cat cat = catApiProvider.getCatFromProvider();
+        return new CatLoadedEvent(cat, bus);
     }
 
     @Override
@@ -30,6 +30,6 @@ public class CatApiAsyncTask extends AsyncTask<Void, Void, CatLoadedEvent> {
     }
 
     protected Bus getBus() {
-        return _bus;
+        return bus;
     }
 }

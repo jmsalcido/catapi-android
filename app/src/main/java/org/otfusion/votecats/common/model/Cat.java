@@ -2,40 +2,40 @@ package org.otfusion.votecats.common.model;
 
 public class Cat {
 
-    private String _id;
-    private String _imageUrl;
-    private String _providerName;
-    private String _name;
+    private String id;
+    private String imageUrl;
+    private String providerName;
+    private String name;
 
     public String getId() {
-        return _id;
+        return id;
     }
 
     public void setId(String id) {
-        _id = id;
+        this.id = id;
     }
 
     public String getImageUrl() {
-        return _imageUrl;
+        return imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
-        _imageUrl = imageUrl;
+        this.imageUrl = imageUrl;
     }
 
     public String getProviderName() {
-        return _providerName;
+        return providerName;
     }
 
     public void setProviderName(String providerName) {
-        _providerName = providerName;
+        this.providerName = providerName;
     }
 
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        _name = name;
+        this.name = name;
     }
 }

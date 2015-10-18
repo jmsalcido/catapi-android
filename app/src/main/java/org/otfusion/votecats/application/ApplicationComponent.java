@@ -16,7 +16,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = VoteCatsModule.class)
+@Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
     void inject(CatActivity catActivity);
 

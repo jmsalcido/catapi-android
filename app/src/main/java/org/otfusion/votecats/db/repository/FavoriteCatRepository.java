@@ -19,11 +19,11 @@ import javax.inject.Inject;
 
 public class FavoriteCatRepository {
 
-    private final Context _context;
+    private final Context context;
 
     @Inject
     public FavoriteCatRepository(Context context) {
-        _context = context;
+        this.context = context;
     }
 
     public long saveFavoriteCat(Cat cat) {
@@ -101,12 +101,12 @@ public class FavoriteCatRepository {
     }
 
     private SQLiteDatabase getSQLiteWritableDatabase() {
-        VoteCatsDbHelper dbHelper = new VoteCatsDbHelper(_context);
+        VoteCatsDbHelper dbHelper = new VoteCatsDbHelper(context);
         return dbHelper.getWritableDatabase();
     }
 
     private SQLiteDatabase getSQLiteReadableDatabase() {
-        VoteCatsDbHelper dbHelper = new VoteCatsDbHelper(_context);
+        VoteCatsDbHelper dbHelper = new VoteCatsDbHelper(context);
         return dbHelper.getReadableDatabase();
     }
 

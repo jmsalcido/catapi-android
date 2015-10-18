@@ -16,24 +16,24 @@ import java.io.FileOutputStream;
 
 public class StorageTarget implements Target {
 
-    private final Cat _cat;
-    private final Context _context;
+    private final Cat cat;
+    private final Context context;
 
     public StorageTarget(Cat cat, Context context) {
-        _cat = cat;
-        _context = context;
+        this.cat = cat;
+        this.context = context;
     }
 
     @Override
     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-        File file = FileUtils.getFile(_cat);
+        File file = FileUtils.getFile(cat);
         FileOutputStream fileOutputStream = FileUtils.prepareOutputStream(file);
         if (file == null || fileOutputStream == null) {
             UIUtils.showToast("Error loading storage");
             return;
         }
 
-        SaveImageAsyncTask asyncTask = new SaveImageAsyncTask(_context, bitmap, file,
+        SaveImageAsyncTask asyncTask = new SaveImageAsyncTask(context, bitmap, file,
                 fileOutputStream);
         asyncTask.execute();
     }
