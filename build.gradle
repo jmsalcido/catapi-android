@@ -21,6 +21,6 @@ allprojects {
         versionName = "1.0"
 
         buildToolsVersion = "23.0.1"
-        applicationId = "org.otfusion.votecats"
+        applicationId = "org.otfusion.caturday"
     }
 }
