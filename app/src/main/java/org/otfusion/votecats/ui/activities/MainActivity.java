@@ -106,6 +106,10 @@ public class MainActivity extends CatActivity {
     @SuppressWarnings("unused") // used by the bus
     public void handleCatLoadedEvent(CatLoadedEvent catLoadedEvent) {
         mCurrentCat = catLoadedEvent.getCat();
+        loadImage();
+    }
+
+    private void loadImage() {
         Picasso.with(getApplicationContext()).load(mCurrentCat.getImageUrl()).into(mCatImageView,
                 new Callback() {
                     @Override

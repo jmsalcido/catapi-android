@@ -2,6 +2,7 @@ package org.otfusion.votecats.providers.catapi;
 
 import org.otfusion.votecats.common.model.Cat;
 import org.otfusion.votecats.providers.CatProvider;
+import org.otfusion.votecats.util.ApplicationUtils;
 
 import javax.inject.Inject;
 
@@ -22,7 +23,8 @@ public class CatApiProvider implements CatProvider {
         Cat cat = new Cat();
         CatApiElement catApiElementFromEndPoint = _catApiService.getCatApiElementFromEndPoint();
         cat.setImageUrl(catApiElementFromEndPoint.getUrl());
-        cat.setName(catApiElementFromEndPoint.getId());
+        String catName = ApplicationUtils.generateRandomCatName(catApiElementFromEndPoint.getId());
+        cat.setName(catName);
         cat.setProviderId(catApiElementFromEndPoint.getId());
         cat.setProviderName(PROVIDER_NAME);
         return cat;

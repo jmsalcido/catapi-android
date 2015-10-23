@@ -20,6 +20,6 @@ public abstract class AbstractMigration implements Migration {
     public abstract void addStatements();
 
     protected void addStatement(String sql) {
-        getStatements().add(sql);
+        statements.add(sql);
     }
 }

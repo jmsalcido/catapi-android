@@ -18,7 +18,6 @@ public class Migration2 extends AbstractMigration {
 
     @Override
     public void addStatements() {
-        addStatement("ALTER TABLE " + DatabaseTableName.CATS + " " +
-                "ADD COLUMN name TEXT");
+        addStatement("ALTER TABLE " + DatabaseTableName.CATS + " ADD COLUMN name TEXT");
     }
 }
