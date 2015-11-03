@@ -1,0 +1,42 @@
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+ext {
+
+    // base urls
+    okHttpUrl = "com.squareup.okhttp:okhttp"
+
+    // Dependencies versions
+    daggerVersion = '2.0'
+    retrofitVersion = '1.9.0'
+    okHttpVersion = '2.4.0'
+    picassoVersion = '2.5.0'
+    ottoVersion = '1.3.6'
+    butterKnifeVersion = '7.0.1'
+    supportLibraryVersion = '22.2.1'
+    simpleFmwVersion = "2.7.1"
+    simpleXmlConverterVersion = "1.1"
+    javaxAnnotationVersion = '10.0-b28'
+    reflectionVersion = "0.9.10"
+
+    // Dependencies per project
+    appDependencies = [
+            daggerCompiler       : "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger               : "com.google.dagger:dagger:${daggerVersion}",
+            androidSupport       : "com.android.support:appcompat-v7:${supportLibraryVersion}",
+            designSupport        : "com.android.support:design:${supportLibraryVersion}",
+            simpleFmw            : "org.simpleframework:simple-xml:${simpleFmwVersion}",
+            simpleFmwXmlConverter: "com.mobprofs:retrofit-simplexmlconverter:${simpleXmlConverterVersion}",
+            retroFit             : "com.squareup.retrofit:retrofit:${retrofitVersion}",
+            okHttp               : "${okHttpUrl}:${okHttpVersion}",
+            okHttpConnection     : "${okHttpUrl}-urlconnection:${okHttpVersion}",
+            picasso              : "com.squareup.picasso:picasso:${picassoVersion}",
+            otto                 : "com.squareup:otto:${ottoVersion}",
+            butterknife          : "com.jakewharton:butterknife:${butterKnifeVersion}",
+            javaxAnnotation      : "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
+            reflection           : "org.reflections:reflections:${reflectionVersion}"
+    ]
+}
