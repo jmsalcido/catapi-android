@@ -39,7 +39,7 @@ public abstract class CatActivity extends AppCompatActivity {
         // Set the UI layout and bind the UI elements for all the activities.
         setContentView(getContentLayoutId());
         ButterKnife.bind(this);
-        loadContent();
+        loadUIContent();
     }
 
     protected ApplicationComponent getApplicationComponent() {
@@ -65,5 +65,5 @@ public abstract class CatActivity extends AppCompatActivity {
 
     protected abstract int getContentLayoutId();
 
-    protected abstract void loadContent();
+    protected abstract void loadUIContent();
 }

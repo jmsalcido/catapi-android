@@ -12,13 +12,14 @@ import android.widget.ListView;
 import org.otfusion.caturday.R;
 import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.ui.adapters.FavoriteCatAdapter;
+import org.otfusion.caturday.ui.fragments.callbacks.FavoriteCallback;
 import org.otfusion.caturday.util.UIUtils;
 
 import java.util.List;
 
 import butterknife.Bind;
 
-public class FavoriteActivity extends CatActivity {
+public class FavoriteActivity extends CatActivity implements FavoriteCallback {
 
     @Bind(R.id.favorite_list_view)
     protected ListView mFavoriteCatsView;
@@ -40,11 +41,19 @@ public class FavoriteActivity extends CatActivity {
     }
 
     @Override
-    protected void loadContent() {
+    protected void loadUIContent() {
         mFavoriteCatAdapter = new FavoriteCatAdapter();
         mFavoriteCatsView.setAdapter(mFavoriteCatAdapter);
         registerForContextMenu(mFavoriteCatsView);
         setSupportActionBar(mToolbar);
+
+        mFavoriteCatsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+
         mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable
                 .abc_ic_ab_back_mtrl_am_alpha));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -96,5 +105,10 @@ public class FavoriteActivity extends CatActivity {
 
     public FavoriteCatAdapter getFavoriteCatAdapter() {
         return mFavoriteCatAdapter;
+    }
+
+    @Override
+    public void showFavoritedCatImage() {
+        // show FavoritedCatImage
     }
 }
