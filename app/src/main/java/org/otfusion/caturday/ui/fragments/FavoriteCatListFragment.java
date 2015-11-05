@@ -55,7 +55,7 @@ public class FavoriteCatListFragment extends BaseFragment {
         mFavoriteCatsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                callback.showFavoritedCatImage(mFavoriteCatAdapter.getItem(position));
             }
         });
     }
