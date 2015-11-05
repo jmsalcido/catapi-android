@@ -1,7 +1,10 @@
 package org.otfusion.caturday.util;
 
 import android.app.Activity;
+import android.content.Context;
 
+import org.otfusion.caturday.application.ApplicationComponent;
+import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.ui.fragments.callbacks.FavoriteCallback;
 
 import java.util.Arrays;
@@ -11,6 +14,10 @@ import java.util.Random;
 public class ApplicationUtils {
 
     private ApplicationUtils() {
+    }
+
+    public static VoteCatsApplication getApplication(Activity activity) {
+        return (VoteCatsApplication) activity.getApplication();
     }
 
     @SuppressWarnings("unchecked")

@@ -7,9 +7,9 @@ import android.widget.AdapterView;
 
 import com.squareup.otto.Bus;
 
-import org.otfusion.caturday.application.ApplicationComponent;
 import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.service.CatService;
+import org.otfusion.caturday.util.ApplicationUtils;
 
 import javax.inject.Inject;
 
@@ -31,23 +31,16 @@ public abstract class CatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Inject dependencies
-        getApplicationComponent().inject(this);
+        VoteCatsApplication voteCatsApplication = ApplicationUtils.getApplication(this);
+        voteCatsApplication.getApplicationComponent().inject(this);
 
         // Otto bus registration
-        getBus().register(this);
+        bus.register(this);
 
         // Set the UI layout and bind the UI elements for all the activities.
         setContentView(getContentLayoutId());
         ButterKnife.bind(this);
         loadUIContent();
-    }
-
-    protected ApplicationComponent getApplicationComponent() {
-        return getVoteCatsApplication().getApplicationComponent();
-    }
-
-    protected VoteCatsApplication getVoteCatsApplication() {
-        return (VoteCatsApplication) getApplication();
     }
 
     protected Bus getBus() {
@@ -56,11 +49,6 @@ public abstract class CatActivity extends AppCompatActivity {
 
     protected CatService getCatService() {
         return catService;
-    }
-
-    protected AdapterView.AdapterContextMenuInfo getAdapterContextMenuInfo(
-            ContextMenu.ContextMenuInfo menuInfo) {
-        return (AdapterView.AdapterContextMenuInfo) menuInfo;
     }
 
     protected abstract int getContentLayoutId();

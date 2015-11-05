@@ -3,6 +3,8 @@ package org.otfusion.caturday.ui.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 
+import org.otfusion.caturday.R;
+
 public class FavoriteCatImageFragment extends BaseFragment  {
 
     @Override
@@ -17,7 +19,7 @@ public class FavoriteCatImageFragment extends BaseFragment  {
 
     @Override
     public int getContentLayoutId() {
-        return 0;
+        return R.layout.fragment_favorite_cat_image;
     }
 
     @Override

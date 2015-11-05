@@ -4,21 +4,35 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
-import org.otfusion.caturday.application.ApplicationComponent;
+import com.squareup.otto.Bus;
+
 import org.otfusion.caturday.application.VoteCatsApplication;
+import org.otfusion.caturday.service.CatService;
+import org.otfusion.caturday.util.ApplicationUtils;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
 public abstract class BaseFragment extends Fragment {
 
+    @Inject
+    Bus bus;
+
+    @Inject
+    CatService catService;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        getApplicationComponent().inject(this);
+        VoteCatsApplication voteCatsApplication = ApplicationUtils.getApplication(activity);
+        voteCatsApplication.getApplicationComponent().inject(this);
     }
 
     @Nullable
@@ -31,12 +45,13 @@ public abstract class BaseFragment extends Fragment {
         return view;
     }
 
-    protected ApplicationComponent getApplicationComponent() {
-        return getVoteCatsApplication().getApplicationComponent();
+    protected AdapterView.AdapterContextMenuInfo getAdapterContextMenuInfo(
+            ContextMenu.ContextMenuInfo menuInfo) {
+        return (AdapterView.AdapterContextMenuInfo) menuInfo;
     }
 
-    private VoteCatsApplication getVoteCatsApplication() {
-        return (VoteCatsApplication) getActivity().getApplication();
+    protected Bus getBus() {
+        return bus;
     }
 
     public abstract int getContentLayoutId();
