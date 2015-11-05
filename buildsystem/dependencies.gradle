@@ -21,6 +21,7 @@ ext {
     simpleXmlConverterVersion = "1.1"
     javaxAnnotationVersion = '10.0-b28'
     reflectionVersion = "0.9.10"
+    imageZoomVersion = "+" // from README.md of https://github.com/sephiroth74/ImageViewZoom
 
     // Dependencies per project
     appDependencies = [
@@ -37,6 +38,7 @@ ext {
             otto                 : "com.squareup:otto:${ottoVersion}",
             butterknife          : "com.jakewharton:butterknife:${butterKnifeVersion}",
             javaxAnnotation      : "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
-            reflection           : "org.reflections:reflections:${reflectionVersion}"
+            reflection           : "org.reflections:reflections:${reflectionVersion}",
+            imageZoom            : "it.sephiroth.android.library.imagezoom:imagezoom:${imageZoomVersion}"
     ]
 }
