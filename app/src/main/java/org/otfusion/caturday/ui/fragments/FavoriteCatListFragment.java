@@ -2,6 +2,8 @@ package org.otfusion.caturday.ui.fragments;
 
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,7 +17,7 @@ import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.ui.adapters.FavoriteCatAdapter;
 import org.otfusion.caturday.ui.fragments.callbacks.FavoriteCallback;
 import org.otfusion.caturday.util.ApplicationUtils;
-import org.otfusion.caturday.util.UIUtils;
+import org.otfusion.caturday.util.FileUtils;
 
 import java.util.List;
 
@@ -62,23 +64,36 @@ public class FavoriteCatListFragment extends BaseFragment {
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_favorite_context_delete:
-                handleContextMenuDeleteOption(item);
-                return true;
+                return handleContextMenuDeleteOption(item);
             case R.id.action_favorite_context_share:
-                UIUtils.showToast("Soon");
-                return true;
+                return handleContextMenuShareOption(item);
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    private void handleContextMenuDeleteOption(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo menuInfo;
-        List<Cat> catFromsAdapter = getFavoriteCatAdapter().getCats();
-        menuInfo = getAdapterContextMenuInfo(item.getMenuInfo());
-        Cat favoritedCat = catFromsAdapter.get(menuInfo.position);
+    private boolean handleContextMenuDeleteOption(MenuItem item) {
+        Cat favoritedCat = getObjectForMenuItem(item);
         catService.deleteFromFavorites(favoritedCat);
         refreshFavoriteCats();
+        return true;
+    }
+
+    private Cat getObjectForMenuItem(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo;
+        List<Cat> catFromsAdapter = mFavoriteCatAdapter.getCats();
+        menuInfo = getAdapterContextMenuInfo(item.getMenuInfo());
+        return catFromsAdapter.get(menuInfo.position);
+    }
+
+    private boolean handleContextMenuShareOption(MenuItem item) {
+        String fileName = FileUtils.getFileName(getObjectForMenuItem(item), true);
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(fileName));
+        shareIntent.setType("image/jpeg");
+        startActivity(Intent.createChooser(shareIntent, "Share a cat!"));
+        return true;
     }
 
     @Override
@@ -94,11 +109,7 @@ public class FavoriteCatListFragment extends BaseFragment {
     }
 
     private void refreshFavoriteCats() {
-        getFavoriteCatAdapter().updateCats(getFavoriteCats());
-    }
-
-    public FavoriteCatAdapter getFavoriteCatAdapter() {
-        return mFavoriteCatAdapter;
+        mFavoriteCatAdapter.updateCats(getFavoriteCats());
     }
 
 }
