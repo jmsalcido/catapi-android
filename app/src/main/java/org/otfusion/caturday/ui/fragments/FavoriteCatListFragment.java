@@ -32,6 +32,10 @@ public class FavoriteCatListFragment extends BaseFragment {
 
     private FavoriteCatAdapter mFavoriteCatAdapter;
 
+    public static FavoriteCatListFragment newInstance() {
+        return new FavoriteCatListFragment();
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

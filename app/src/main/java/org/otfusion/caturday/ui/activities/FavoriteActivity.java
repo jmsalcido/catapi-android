@@ -1,9 +1,6 @@
 package org.otfusion.caturday.ui.activities;
 
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.os.Bundle;
-import android.os.Parcel;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -35,10 +32,17 @@ public class FavoriteActivity extends CatActivity implements FavoriteCallback {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                if (!getFragmentManager().popBackStackImmediate()) {
+                    onBackPressed();
+                }
             }
         });
-        showFragment(getUsedFragment());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showFragment(FavoriteCatListFragment.newInstance());
     }
 
     private void showFragment(BaseFragment fragment) {
@@ -47,21 +51,12 @@ public class FavoriteActivity extends CatActivity implements FavoriteCallback {
         fragmentTransaction.commit();
     }
 
-    BaseFragment getUsedFragment() {
-        // should add logic here to check activity status/current fragment in case of being
-        // destroyed, so we can return the used fragment.
-        // or from a service?
-        return new FavoriteCatListFragment();
-    }
-
     @Override
     public void showFavoritedCatImage(Cat cat) {
-        // TODO show FavoritedCatImage fragment
-        // the UsedFragment should be a ListFragment if not, do not display the image! ;)
         BaseFragment fragment = FavoriteCatImageFragment.newInstance(cat);
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.add(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(FAVORITE);
         fragmentTransaction.commit();
     }
 }

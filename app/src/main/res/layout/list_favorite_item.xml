@@ -9,8 +9,10 @@
         android:id="@+id/favorite_cat_list_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:layout_gravity="center_vertical"
         android:drawableLeft="@drawable/abc_btn_check_to_on_mtrl_015"
+        android:drawablePadding="16dp"
         android:text="Favorite Cat"
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:textColor="#000000" />
