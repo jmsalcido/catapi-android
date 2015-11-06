@@ -3,12 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#000"
     android:layout_marginTop="?attr/actionBarSize">
 
     <it.sephiroth.android.library.imagezoom.ImageViewTouch
         android:id="@+id/favorite_cat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="0dp"
         android:scaleType="fitCenter"/>
 
 </LinearLayout>

@@ -55,7 +55,7 @@ public class FavoriteCatAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext())
-                    .inflate(R.layout.list_favorites, parent, false);
+                    .inflate(R.layout.list_favorite_item, parent, false);
         }
 
         TextView favoriteCat = ViewHolder.get(convertView, R.id.favorite_cat_list_text);
