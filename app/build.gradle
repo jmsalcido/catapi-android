@@ -60,5 +60,6 @@ dependencies {
     compile appDependencies.otto
     compile appDependencies.butterknife
     compile appDependencies.dagger
+    compile appDependencies.imageZoom
     provided appDependencies.javaxAnnotation
 }

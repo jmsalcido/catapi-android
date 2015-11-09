@@ -1,38 +1,23 @@
 package org.otfusion.caturday.ui.activities;
 
-import android.os.Bundle;
+import android.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import org.otfusion.caturday.R;
 import org.otfusion.caturday.common.model.Cat;
-import org.otfusion.caturday.ui.adapters.FavoriteCatAdapter;
-import org.otfusion.caturday.util.UIUtils;
-
-import java.util.List;
+import org.otfusion.caturday.ui.fragments.BaseFragment;
+import org.otfusion.caturday.ui.fragments.FavoriteCatImageFragment;
+import org.otfusion.caturday.ui.fragments.FavoriteCatListFragment;
+import org.otfusion.caturday.ui.fragments.callbacks.FavoriteCallback;
 
 import butterknife.Bind;
 
-public class FavoriteActivity extends CatActivity {
+public class FavoriteActivity extends CatActivity implements FavoriteCallback {
 
-    @Bind(R.id.favorite_list_view)
-    protected ListView mFavoriteCatsView;
-
+    public static final String FAVORITE = "favorite";
     @Bind(R.id.favorite_toolbar)
     Toolbar mToolbar;
-
-    private FavoriteCatAdapter mFavoriteCatAdapter;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        refreshFavoriteCats();
-    }
 
     @Override
     protected int getContentLayoutId() {
@@ -40,61 +25,38 @@ public class FavoriteActivity extends CatActivity {
     }
 
     @Override
-    protected void loadContent() {
-        mFavoriteCatAdapter = new FavoriteCatAdapter();
-        mFavoriteCatsView.setAdapter(mFavoriteCatAdapter);
-        registerForContextMenu(mFavoriteCatsView);
+    protected void loadUIContent() {
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable
                 .abc_ic_ab_back_mtrl_am_alpha));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                if (!getFragmentManager().popBackStackImmediate()) {
+                    onBackPressed();
+                }
             }
         });
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_favorite_context_delete:
-                handleContextMenuDeleteOption(item);
-                return true;
-            case R.id.action_favorite_context_share:
-                UIUtils.showToast("Soon");
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
+    protected void onResume() {
+        super.onResume();
+        showFragment(FavoriteCatListFragment.newInstance());
     }
 
-    private void handleContextMenuDeleteOption(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo menuInfo;
-        List<Cat> catFromsAdapter = getFavoriteCatAdapter().getCats();
-        menuInfo = getAdapterContextMenuInfo(item.getMenuInfo());
-        Cat favoritedCat = catFromsAdapter.get(menuInfo.position);
-        getCatService().deleteFromFavorites(favoritedCat);
-        refreshFavoriteCats();
+    private void showFragment(BaseFragment fragment) {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, fragment, FAVORITE);
+        fragmentTransaction.commit();
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo
-            menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.favorite_context_menu, menu);
-    }
-
-    private List<Cat> getFavoriteCats() {
-        return getCatService().getFavoriteCats();
-    }
-
-    private void refreshFavoriteCats() {
-        getFavoriteCatAdapter().updateCats(getFavoriteCats());
-    }
-
-    public FavoriteCatAdapter getFavoriteCatAdapter() {
-        return mFavoriteCatAdapter;
+    public void showFavoritedCatImage(Cat cat) {
+        BaseFragment fragment = FavoriteCatImageFragment.newInstance(cat);
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(FAVORITE);
+        fragmentTransaction.commit();
     }
 }

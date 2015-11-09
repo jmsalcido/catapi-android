@@ -1,6 +1,7 @@
 package org.otfusion.caturday.util;
 
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import org.otfusion.caturday.application.VoteCatsApplication;
@@ -41,6 +42,19 @@ public class FileUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @NonNull
+    public static String getFileName(Cat cat, boolean absolute) {
+        File file = getFile(cat);
+        if (file != null) {
+            if (absolute) {
+                return file.getAbsolutePath();
+            } else {
+                return file.getPath();
+            }
+        }
+        return StringUtils.EMPTY;
     }
 
     private static File getStorageFile(Cat cat, File directory) throws IOException {

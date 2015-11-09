@@ -10,6 +10,7 @@ import org.otfusion.caturday.ui.activities.CatActivity;
 import org.otfusion.caturday.providers.catapi.CatApiProvider;
 import org.otfusion.caturday.providers.catapi.CatApiService;
 import org.otfusion.caturday.service.CatService;
+import org.otfusion.caturday.ui.fragments.BaseFragment;
 
 import javax.inject.Singleton;
 
@@ -19,6 +20,7 @@ import dagger.Component;
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
     void inject(CatActivity catActivity);
+    void inject(BaseFragment fragment);
 
     Context context();
     CatService catService();

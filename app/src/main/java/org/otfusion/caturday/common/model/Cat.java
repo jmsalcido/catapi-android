@@ -1,6 +1,8 @@
 package org.otfusion.caturday.common.model;
 
-public class Cat {
+import java.io.Serializable;
+
+public class Cat implements Serializable {
 
     private long id;
     private String providerId;
