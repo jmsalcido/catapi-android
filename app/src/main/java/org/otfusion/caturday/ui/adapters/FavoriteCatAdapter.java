@@ -75,10 +75,12 @@ public class FavoriteCatAdapter extends BaseAdapter {
         Cat cat = getItem(position);
         favoriteCat.setText(cat.getName());
         String filePath = FileUtils.getFileName(cat, true);
-        Bitmap bitmap = ImageUtils.cropBitmap(BitmapFactory.decodeFile(filePath));
-        Resources resources = VoteCatsApplication.getContext().getResources();
-        Drawable img = new BitmapDrawable(resources, ImageUtils.resizeBitmap(bitmap, 128, 128));
-        favoriteCat.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+        if (!filePath.isEmpty()) {
+            Bitmap bitmap = ImageUtils.cropBitmap(BitmapFactory.decodeFile(filePath));
+            Resources resources = VoteCatsApplication.getContext().getResources();
+            Drawable img = new BitmapDrawable(resources, ImageUtils.resizeBitmap(bitmap, 128, 128));
+            favoriteCat.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+        }
 
         return convertView;
     }

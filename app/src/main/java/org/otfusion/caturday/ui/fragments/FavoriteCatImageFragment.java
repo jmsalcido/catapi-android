@@ -57,7 +57,14 @@ public class FavoriteCatImageFragment extends BaseFragment {
         switch (id) {
             case R.id.action_favorite_menu_share:
                 Cat cat = getCatFromArguments();
-                Intent shareImageIntent = ApplicationUtils.getShareImageIntent(cat);
+                String filePath = FileUtils.getFileName(cat, true);
+                Uri fileUri;
+                if (filePath.isEmpty()) {
+                    fileUri = ApplicationUtils.getLocalBitmapUri(mImageViewTouch);
+                } else {
+                    fileUri = Uri.parse(filePath);
+                }
+                Intent shareImageIntent = ApplicationUtils.getShareImageIntent(fileUri);
                 startActivity(Intent.createChooser(shareImageIntent, "Share a cat!"));
                 return false;
             default:
@@ -85,8 +92,13 @@ public class FavoriteCatImageFragment extends BaseFragment {
     public void loadUIContent() {
         Cat cat = getCatFromArguments();
         mImageViewTouch.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
-        Bitmap bitmap = BitmapFactory.decodeFile(FileUtils.getFileName(cat, true));
-        mImageViewTouch.setImageBitmap(bitmap);
+        String filePath = FileUtils.getFileName(cat, true);
+        if (filePath.isEmpty()) {
+            Picasso.with(getActivity()).load(cat.getImageUrl()).into(mImageViewTouch);
+        } else {
+            Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+            mImageViewTouch.setImageBitmap(bitmap);
+        }
     }
 
     private Cat getCatFromArguments() {

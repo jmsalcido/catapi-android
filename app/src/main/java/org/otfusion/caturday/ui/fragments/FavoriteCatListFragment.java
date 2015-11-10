@@ -18,6 +18,7 @@ import org.otfusion.caturday.ui.adapters.FavoriteCatAdapter;
 import org.otfusion.caturday.ui.fragments.callbacks.FavoriteCallback;
 import org.otfusion.caturday.util.ApplicationUtils;
 import org.otfusion.caturday.util.FileUtils;
+import org.otfusion.caturday.util.UIUtils;
 
 import java.util.List;
 
@@ -92,9 +93,15 @@ public class FavoriteCatListFragment extends BaseFragment {
 
     private boolean handleContextMenuShareOption(MenuItem item) {
         Cat cat = getObjectForMenuItem(item);
-        Intent shareImageIntent = ApplicationUtils.getShareImageIntent(cat);
-        startActivity(Intent.createChooser(shareImageIntent, "Share a cat!"));
-        return true;
+        String filePath = FileUtils.getFileName(cat, true);
+        if (filePath.isEmpty()) {
+            UIUtils.showToast("Could not retrieve the image, try saving it again.");
+            return false;
+        } else {
+            Intent shareImageIntent = ApplicationUtils.getShareImageIntent(Uri.parse(filePath));
+            startActivity(Intent.createChooser(shareImageIntent, "Share a cat!"));
+            return true;
+        }
     }
 
     @Override

@@ -47,7 +47,7 @@ public class FileUtils {
     @NonNull
     public static String getFileName(Cat cat, boolean absolute) {
         File file = getFile(cat);
-        if (file != null) {
+        if (file != null && file.exists()) {
             if (absolute) {
                 return file.getAbsolutePath();
             } else {
@@ -64,7 +64,6 @@ public class FileUtils {
         }
         String externalPath = folder.getPath();
         File file = new File(externalPath, cat.getName() + ".jpg");
-        file.createNewFile();
         return file;
     }
 
