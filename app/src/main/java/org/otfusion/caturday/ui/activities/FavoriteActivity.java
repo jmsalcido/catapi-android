@@ -16,6 +16,7 @@ import butterknife.Bind;
 public class FavoriteActivity extends CatActivity implements FavoriteCallback {
 
     public static final String FAVORITE = "favorite";
+    public static final String IMAGE = "image";
     @Bind(R.id.favorite_toolbar)
     Toolbar mToolbar;
 
@@ -37,12 +38,12 @@ public class FavoriteActivity extends CatActivity implements FavoriteCallback {
                 }
             }
         });
+        showFragment(FavoriteCatListFragment.newInstance());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        showFragment(FavoriteCatListFragment.newInstance());
     }
 
     private void showFragment(BaseFragment fragment) {
@@ -55,8 +56,9 @@ public class FavoriteActivity extends CatActivity implements FavoriteCallback {
     public void showFavoritedCatImage(Cat cat) {
         BaseFragment fragment = FavoriteCatImageFragment.newInstance(cat);
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, fragment);
         fragmentTransaction.addToBackStack(FAVORITE);
+        fragmentTransaction.replace(R.id.fragment_container, fragment, IMAGE);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
     }
 }

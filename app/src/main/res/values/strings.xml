@@ -3,6 +3,7 @@
     <string name="action_main_goto_favorite">Favorite Cats</string>
     <string name="title_activity_favorite">Favorites</string>
 
+    <string name="action_favorite_menu_share">Share</string>
     <string name="action_favorite_context_delete">Delete</string>
     <string name="action_favorite_context_share">Share</string>
 </resources>

@@ -1,12 +1,18 @@
 package org.otfusion.caturday.ui.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
@@ -14,7 +20,9 @@ import com.squareup.picasso.Target;
 
 import org.otfusion.caturday.R;
 import org.otfusion.caturday.common.model.Cat;
+import org.otfusion.caturday.util.ApplicationUtils;
 import org.otfusion.caturday.util.FileUtils;
+import org.otfusion.caturday.util.StringUtils;
 
 import java.io.Serializable;
 
@@ -39,8 +47,28 @@ public class FavoriteCatImageFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.menu_favorite_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_favorite_menu_share:
+                Cat cat = getCatFromArguments();
+                Intent shareImageIntent = ApplicationUtils.getShareImageIntent(cat);
+                startActivity(Intent.createChooser(shareImageIntent, "Share a cat!"));
+                return false;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -55,9 +83,13 @@ public class FavoriteCatImageFragment extends BaseFragment {
 
     @Override
     public void loadUIContent() {
-        Cat cat = (Cat) getArguments().getSerializable(CAT_KEY);
+        Cat cat = getCatFromArguments();
         mImageViewTouch.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         Bitmap bitmap = BitmapFactory.decodeFile(FileUtils.getFileName(cat, true));
         mImageViewTouch.setImageBitmap(bitmap);
+    }
+
+    private Cat getCatFromArguments() {
+        return (Cat) getArguments().getSerializable(CAT_KEY);
     }
 }

@@ -91,12 +91,9 @@ public class FavoriteCatListFragment extends BaseFragment {
     }
 
     private boolean handleContextMenuShareOption(MenuItem item) {
-        String fileName = FileUtils.getFileName(getObjectForMenuItem(item), true);
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(fileName));
-        shareIntent.setType("image/jpeg");
-        startActivity(Intent.createChooser(shareIntent, "Share a cat!"));
+        Cat cat = getObjectForMenuItem(item);
+        Intent shareImageIntent = ApplicationUtils.getShareImageIntent(cat);
+        startActivity(Intent.createChooser(shareImageIntent, "Share a cat!"));
         return true;
     }
 
