@@ -34,6 +34,15 @@
         android:elevation="100dp"
         android:text="Load Cat"/>
 
+    <Button
+        android:id="@+id/share_cat_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:elevation="100dp"
+        android:text="Share" />
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/main_toolbar"
         android:layout_width="match_parent"

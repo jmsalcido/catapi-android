@@ -1,6 +1,7 @@
 package org.otfusion.caturday.ui.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.events.CatLoadedEvent;
 import org.otfusion.caturday.events.FavoriteCatEvent;
 import org.otfusion.caturday.ui.gestures.GestureDoubleTap;
+import org.otfusion.caturday.util.ApplicationUtils;
 import org.otfusion.caturday.util.UIUtils;
 
 import butterknife.Bind;
@@ -30,6 +32,9 @@ public class MainActivity extends CatActivity {
 
     @Bind(R.id.load_cat_button)
     Button mLoadCatButton;
+
+    @Bind(R.id.share_cat_button)
+    Button mShareCatButton;
 
     @Bind(R.id.favorite_cat_button)
     Button mFavoriteCatButton;
@@ -59,6 +64,15 @@ public class MainActivity extends CatActivity {
             public void onClick(View view) {
                 FavoriteCatEvent event = new FavoriteCatEvent(getBus(), mCurrentCat);
                 event.executeEvent("button");
+            }
+        });
+
+        mShareCatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri imageUri = ApplicationUtils.getLocalBitmapUri(mCatImageView);
+                Intent shareImageIntent = ApplicationUtils.getShareImageIntent(imageUri);
+                startActivity(Intent.createChooser(shareImageIntent, "Share a cat!"));
             }
         });
 
