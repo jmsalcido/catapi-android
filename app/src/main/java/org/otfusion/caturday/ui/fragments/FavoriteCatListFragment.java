@@ -22,13 +22,14 @@ import org.otfusion.caturday.util.UIUtils;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
+
 
 public class FavoriteCatListFragment extends BaseFragment {
 
     private FavoriteCallback callback;
 
-    @Bind(R.id.favorite_list_view)
+    @BindView(R.id.favorite_list_view)
     ListView mFavoriteCatsView;
 
     private FavoriteCatAdapter mFavoriteCatAdapter;

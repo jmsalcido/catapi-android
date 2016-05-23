@@ -2,14 +2,13 @@ package org.otfusion.caturday.application;
 
 import android.content.Context;
 
-import com.mobprofs.retrofit.converters.SimpleXmlConverter;
 import com.squareup.otto.Bus;
 
 import org.otfusion.caturday.db.repository.FavoriteCatRepository;
-import org.otfusion.caturday.service.CatServiceImpl;
 import org.otfusion.caturday.providers.catapi.CatApiProvider;
 import org.otfusion.caturday.providers.catapi.CatApiService;
 import org.otfusion.caturday.service.CatService;
+import org.otfusion.caturday.service.CatServiceImpl;
 import org.otfusion.caturday.service.images.StorageImageService;
 import org.otfusion.caturday.service.images.picasso.StorageImagePicassoServiceImpl;
 
@@ -17,7 +16,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit.RestAdapter;
+import retrofit2.Retrofit;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 @Module
 public class ApplicationModule {
@@ -37,7 +37,7 @@ public class ApplicationModule {
     @Provides
     @Singleton
     public CatService provideCatService(Bus bus, CatApiProvider catApiProvider,
-        FavoriteCatRepository favoriteCatRepository, StorageImageService storageImageService) {
+                                        FavoriteCatRepository favoriteCatRepository, StorageImageService storageImageService) {
         return new CatServiceImpl(bus, catApiProvider, favoriteCatRepository, storageImageService);
     }
 
@@ -62,9 +62,8 @@ public class ApplicationModule {
     @Provides
     @Singleton
     public CatApiService provideCatApiService() {
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(CatApiProvider.ENDPOINT)
-                .setConverter(new SimpleXmlConverter())
+        Retrofit restAdapter = new Retrofit.Builder().baseUrl(CatApiProvider.ENDPOINT)
+                .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
         return restAdapter.create(CatApiService.class);
     }

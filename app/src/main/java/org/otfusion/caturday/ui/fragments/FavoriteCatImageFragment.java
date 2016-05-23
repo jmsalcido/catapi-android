@@ -4,36 +4,27 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
-import com.squareup.picasso.Target;
 
 import org.otfusion.caturday.R;
 import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.util.ApplicationUtils;
 import org.otfusion.caturday.util.FileUtils;
-import org.otfusion.caturday.util.StringUtils;
 
-import java.io.Serializable;
-
-import butterknife.Bind;
+import butterknife.BindView;
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
 
 public class FavoriteCatImageFragment extends BaseFragment {
 
     public static final String CAT_KEY = "cat";
-    @Bind(R.id.favorite_cat)
+    @BindView(R.id.favorite_cat)
     ImageViewTouch mImageViewTouch;
 
     public static FavoriteCatImageFragment newInstance(Cat cat) {

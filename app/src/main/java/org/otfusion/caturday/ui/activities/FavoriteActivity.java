@@ -11,13 +11,14 @@ import org.otfusion.caturday.ui.fragments.FavoriteCatImageFragment;
 import org.otfusion.caturday.ui.fragments.FavoriteCatListFragment;
 import org.otfusion.caturday.ui.fragments.callbacks.FavoriteCallback;
 
-import butterknife.Bind;
+import butterknife.BindView;
+
 
 public class FavoriteActivity extends CatActivity implements FavoriteCallback {
 
     public static final String FAVORITE = "favorite";
     public static final String IMAGE = "image";
-    @Bind(R.id.favorite_toolbar)
+    @BindView(R.id.favorite_toolbar)
     Toolbar mToolbar;
 
     @Override

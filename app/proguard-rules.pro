@@ -15,3 +15,26 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+
+-keep class android.support.** { *; }
+-keep interface android.support.** { *; }
+
+-dontwarn com.squareup.okhttp.**
+-keep class com.squareup.okhttp.** { *; }
+
+-dontwarn okio.**
+-keep class okio.** { *; }
+
+-dontwarn okhttp3.**
+-keep class okhttp3.** { *; }
+
+-dontwarn butterknife.**
+-keep class butterknife.** { *; }
+
+-dontwarn org.simpleframework.**
+-keep class org.simpleframework.** { *; }

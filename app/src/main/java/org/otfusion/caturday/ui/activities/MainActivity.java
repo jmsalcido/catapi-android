@@ -23,23 +23,23 @@ import org.otfusion.caturday.ui.gestures.GestureDoubleTap;
 import org.otfusion.caturday.util.ApplicationUtils;
 import org.otfusion.caturday.util.UIUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 public class MainActivity extends CatActivity {
 
-    @Bind(R.id.cat_view)
+    @BindView(R.id.cat_view)
     ImageView mCatImageView;
 
-    @Bind(R.id.load_cat_button)
+    @BindView(R.id.load_cat_button)
     Button mLoadCatButton;
 
-    @Bind(R.id.share_cat_button)
+    @BindView(R.id.share_cat_button)
     Button mShareCatButton;
 
-    @Bind(R.id.favorite_cat_button)
+    @BindView(R.id.favorite_cat_button)
     Button mFavoriteCatButton;
 
-    @Bind(R.id.main_toolbar)
+    @BindView(R.id.main_toolbar)
     Toolbar mToolbar;
 
     private Cat mCurrentCat;

@@ -4,7 +4,12 @@ import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.providers.CatProvider;
 import org.otfusion.caturday.util.ApplicationUtils;
 
+import java.io.IOException;
+
 import javax.inject.Inject;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class CatApiProvider implements CatProvider {
 
@@ -21,11 +26,19 @@ public class CatApiProvider implements CatProvider {
     @Override
     public Cat getCatFromProvider() {
         Cat cat = new Cat();
-        CatApiElement catApiElementFromEndPoint = _catApiService.getCatApiElementFromEndPoint();
-        cat.setImageUrl(catApiElementFromEndPoint.getUrl());
-        String catName = ApplicationUtils.generateRandomCatName(catApiElementFromEndPoint.getId());
+        Call<CatApiElement> catApiElementFromEndPoint = _catApiService.getCatApiElementFromEndPoint();
+        Response<CatApiElement> execute;
+        CatApiElement catApiElement;
+        try {
+            execute = catApiElementFromEndPoint.execute();
+            catApiElement = execute.body();
+        } catch (IOException e) {
+            catApiElement = new CatApiElement();
+        }
+        cat.setImageUrl(catApiElement.getUrl());
+        String catName = ApplicationUtils.generateRandomCatName(catApiElement.getId());
         cat.setName(catName);
-        cat.setProviderId(catApiElementFromEndPoint.getId());
+        cat.setProviderId(catApiElement.getId());
         cat.setProviderName(PROVIDER_NAME);
         return cat;
     }
