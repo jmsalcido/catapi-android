@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="?android:attr/listPreferredItemHeight"
@@ -9,11 +10,16 @@
         android:id="@+id/favorite_cat_list_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:gravity="center_vertical"
         android:layout_gravity="center_vertical"
-        android:drawableLeft="@drawable/abc_btn_check_to_on_mtrl_015"
+        tools:drawableLeft="@drawable/abc_btn_check_to_on_mtrl_015"
         android:drawablePadding="16dp"
-        android:text="Favorite Cat"
+        tools:text="Favorite Cat"
         android:textAppearance="?android:attr/textAppearanceListItem"
-        android:textColor="#000000" />
+        style="@style/AppTheme.ListViews"
+        />
 </LinearLayout>

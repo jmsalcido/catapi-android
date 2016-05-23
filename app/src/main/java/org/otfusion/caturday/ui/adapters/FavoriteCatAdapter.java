@@ -4,20 +4,15 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import org.otfusion.caturday.R;
-import org.otfusion.caturday.util.ApplicationUtils;
 import org.otfusion.caturday.util.FileUtils;
 import org.otfusion.caturday.util.ImageUtils;
 import org.otfusion.caturday.util.ViewHolder;
@@ -78,7 +73,9 @@ public class FavoriteCatAdapter extends BaseAdapter {
         if (!filePath.isEmpty()) {
             Bitmap bitmap = ImageUtils.cropBitmap(BitmapFactory.decodeFile(filePath));
             Resources resources = VoteCatsApplication.getContext().getResources();
-            Drawable img = new BitmapDrawable(resources, ImageUtils.resizeBitmap(bitmap, 128, 128));
+            RoundedBitmapDrawable img =
+                    RoundedBitmapDrawableFactory.create(resources, ImageUtils.resizeBitmap(bitmap, 128, 128));
+            img.setCornerRadius(Math.max(128, 128) / 2.0f);
             favoriteCat.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
         }
 
