@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.squareup.otto.Bus;
 
 import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.service.CatService;
+import org.otfusion.caturday.ui.activities.CatActivity;
 import org.otfusion.caturday.util.ApplicationUtils;
 
 import javax.inject.Inject;
@@ -47,7 +49,19 @@ public abstract class BaseFragment extends Fragment {
         ButterKnife.bind(this, view);
         getBus().register(this);
         loadUIContent();
+        ActionBar supportActionBar = getCatActivity().getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setTitle(getTitle());
+        }
         return view;
+    }
+
+    private CatActivity getCatActivity() {
+        return (CatActivity) getActivity();
+    }
+
+    public String getTitle() {
+        return getActivity().getResources().getString(getTitleId());
     }
 
     protected AdapterView.AdapterContextMenuInfo getAdapterContextMenuInfo(
@@ -66,5 +80,7 @@ public abstract class BaseFragment extends Fragment {
     public abstract int getContentLayoutId();
 
     public abstract void loadUIContent();
+
+    public abstract int getTitleId();
 
 }

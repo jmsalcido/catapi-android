@@ -22,6 +22,7 @@ import org.otfusion.caturday.util.UIUtils;
 
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 
 
@@ -64,6 +65,11 @@ public class FavoriteCatListFragment extends BaseFragment {
                 callback.showFavoritedCatImage(mFavoriteCatAdapter.getItem(position));
             }
         });
+    }
+
+    @Override
+    public int getTitleId() {
+        return R.string.title_activity_favorite;
     }
 
     @Override

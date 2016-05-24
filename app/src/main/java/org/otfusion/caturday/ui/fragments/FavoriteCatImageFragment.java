@@ -92,6 +92,11 @@ public class FavoriteCatImageFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public int getTitleId() {
+        return R.string.title_activity_favorite;
+    }
+
     private Cat getCatFromArguments() {
         return (Cat) getArguments().getSerializable(CAT_KEY);
     }

@@ -26,7 +26,6 @@ public interface ApplicationComponent {
     void inject(BaseFragment fragment);
 
     Context context();
-    Drawer drawer();
     CatService catService();
     CatApiProvider catApiProvider();
     CatApiService catApiService();

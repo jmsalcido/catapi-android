@@ -14,6 +14,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.otfusion.caturday.R;
+import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.events.CatLoadedEvent;
 import org.otfusion.caturday.events.FavoriteCatEvent;
@@ -93,6 +94,11 @@ public class MainFragment extends BaseFragment {
         });
     }
 
+    @Override
+    public int getTitleId() {
+        return R.string.app_name;
+    }
+
     @Subscribe
     @SuppressWarnings("unused") // used by the bus
     public void handleCatLoadedEvent(CatLoadedEvent catLoadedEvent) {
@@ -121,7 +127,7 @@ public class MainFragment extends BaseFragment {
     }
 
     private Context getApplicationContext() {
-        return this.getActivity().getApplicationContext();
+        return VoteCatsApplication.getContext();
     }
 
     @Subscribe
