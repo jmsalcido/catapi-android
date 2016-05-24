@@ -5,8 +5,6 @@ import android.support.v7.widget.Toolbar;
 
 import org.otfusion.caturday.R;
 import org.otfusion.caturday.ui.fragments.MainFragment;
-import org.otfusion.caturday.ui.framework.drawer.Drawer;
-import org.otfusion.caturday.ui.framework.drawer.LeftDrawer;
 
 import butterknife.BindView;
 
@@ -27,9 +25,7 @@ public class MainActivity extends CatActivity {
 
     @Override
     protected void loadUIContent() {
-        // TODO: 5/23/16 move this to AppModule.
-        Drawer drawer = new LeftDrawer(getApplicationContext());
-        drawer.init(findViewById(android.R.id.content));
+        getDrawer().init(findViewById(android.R.id.content));
         setupToolbar();
         startFragment(MainFragment.newInstance());
     }

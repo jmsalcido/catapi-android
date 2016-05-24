@@ -11,6 +11,8 @@ import org.otfusion.caturday.service.CatService;
 import org.otfusion.caturday.service.CatServiceImpl;
 import org.otfusion.caturday.service.images.StorageImageService;
 import org.otfusion.caturday.service.images.picasso.StorageImagePicassoServiceImpl;
+import org.otfusion.caturday.ui.framework.drawer.Drawer;
+import org.otfusion.caturday.ui.framework.drawer.LeftDrawer;
 
 import javax.inject.Singleton;
 
@@ -72,6 +74,12 @@ public class ApplicationModule {
     @Singleton
     public Bus provideBus() {
         return new Bus("varonil");
+    }
+
+    @Provides
+    @Singleton
+    public Drawer provideDrawer(Context context) {
+        return new LeftDrawer(context);
     }
 
 }

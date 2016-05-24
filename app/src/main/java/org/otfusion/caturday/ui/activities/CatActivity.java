@@ -12,6 +12,7 @@ import org.otfusion.caturday.R;
 import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.service.CatService;
 import org.otfusion.caturday.ui.fragments.BaseFragment;
+import org.otfusion.caturday.ui.framework.drawer.Drawer;
 import org.otfusion.caturday.util.ApplicationUtils;
 
 import javax.inject.Inject;
@@ -24,7 +25,7 @@ public abstract class CatActivity extends AppCompatActivity {
     Bus bus;
 
     @Inject
-    CatService catService;
+    Drawer drawer;
 
     @Override
     /**
@@ -60,8 +61,8 @@ public abstract class CatActivity extends AppCompatActivity {
         return bus;
     }
 
-    protected CatService getCatService() {
-        return catService;
+    protected Drawer getDrawer() {
+        return drawer;
     }
 
     protected abstract int getContentLayoutId();

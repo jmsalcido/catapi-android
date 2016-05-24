@@ -59,6 +59,10 @@ public abstract class BaseFragment extends Fragment {
         return bus;
     }
 
+    protected CatService getCatService() {
+        return catService;
+    }
+
     public abstract int getContentLayoutId();
 
     public abstract void loadUIContent();

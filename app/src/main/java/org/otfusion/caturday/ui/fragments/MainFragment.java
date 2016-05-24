@@ -50,7 +50,7 @@ public class MainFragment extends BaseFragment {
 
     private void loadCat() {
         mLoadCatButton.setEnabled(false);
-        catService.getCatFromApi();
+        getCatService().getCatFromApi();
     }
 
     @Override
@@ -129,10 +129,10 @@ public class MainFragment extends BaseFragment {
     public void handleFavoriteCatEvent(FavoriteCatEvent favoriteCatEvent) {
         Cat cat = favoriteCatEvent.getCat();
         if (cat != null) {
-            if (catService.isCatInFavorites(cat)) {
+            if (getCatService().isCatInFavorites(cat)) {
                 UIUtils.showToast("That cat is already in your collection");
             } else {
-                catService.saveCatToFavorites(cat);
+                getCatService().saveCatToFavorites(cat);
                 loadCat();
                 UIUtils.showToast("Saving that right Meow!");
             }

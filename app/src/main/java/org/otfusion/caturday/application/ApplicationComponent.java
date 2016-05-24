@@ -10,7 +10,9 @@ import org.otfusion.caturday.ui.activities.CatActivity;
 import org.otfusion.caturday.providers.catapi.CatApiProvider;
 import org.otfusion.caturday.providers.catapi.CatApiService;
 import org.otfusion.caturday.service.CatService;
+import org.otfusion.caturday.ui.activities.MainActivity;
 import org.otfusion.caturday.ui.fragments.BaseFragment;
+import org.otfusion.caturday.ui.framework.drawer.Drawer;
 
 import javax.inject.Singleton;
 
@@ -20,9 +22,11 @@ import dagger.Component;
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
     void inject(CatActivity catActivity);
+    void inject(MainActivity catActivity);
     void inject(BaseFragment fragment);
 
     Context context();
+    Drawer drawer();
     CatService catService();
     CatApiProvider catApiProvider();
     CatApiService catApiService();
