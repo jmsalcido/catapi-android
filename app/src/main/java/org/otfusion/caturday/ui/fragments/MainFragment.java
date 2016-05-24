@@ -1,0 +1,143 @@
+package org.otfusion.caturday.ui.fragments;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+
+import com.squareup.otto.Subscribe;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import org.otfusion.caturday.R;
+import org.otfusion.caturday.common.model.Cat;
+import org.otfusion.caturday.events.CatLoadedEvent;
+import org.otfusion.caturday.events.FavoriteCatEvent;
+import org.otfusion.caturday.ui.gestures.GestureDoubleTap;
+import org.otfusion.caturday.util.ApplicationUtils;
+import org.otfusion.caturday.util.UIUtils;
+
+import butterknife.BindView;
+
+public class MainFragment extends BaseFragment {
+
+    @BindView(R.id.cat_view)
+    ImageView mCatImageView;
+
+    @BindView(R.id.load_cat_button)
+    Button mLoadCatButton;
+
+    @BindView(R.id.share_cat_button)
+    Button mShareCatButton;
+
+    @BindView(R.id.favorite_cat_button)
+    Button mFavoriteCatButton;
+
+    private Cat mCurrentCat;
+
+    public static MainFragment newInstance() {
+        return new MainFragment();
+    }
+
+    @Override
+    public int getContentLayoutId() {
+        return R.layout.fragment_main;
+    }
+
+    private void loadCat() {
+        mLoadCatButton.setEnabled(false);
+        catService.getCatFromApi();
+    }
+
+    @Override
+    public void loadUIContent() {
+        loadCat();
+        mLoadCatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadCat();
+            }
+        });
+
+        mFavoriteCatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FavoriteCatEvent event = new FavoriteCatEvent(getBus(), mCurrentCat);
+                event.executeEvent("button");
+            }
+        });
+
+        mShareCatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri imageUri = ApplicationUtils.getLocalBitmapUri(mCatImageView);
+                Intent shareImageIntent = ApplicationUtils.getShareImageIntent(imageUri);
+                startActivity(Intent.createChooser(shareImageIntent, "Share a cat!"));
+            }
+        });
+
+        final GestureDoubleTap<FavoriteCatEvent> doubleTapGesture = new GestureDoubleTap<>();
+        mCatImageView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                doubleTapGesture.setEvent(new FavoriteCatEvent(getBus(), mCurrentCat));
+                GestureDetector gestureDetector = new GestureDetector(getApplicationContext(),
+                        doubleTapGesture);
+                return gestureDetector.onTouchEvent(motionEvent);
+            }
+        });
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused") // used by the bus
+    public void handleCatLoadedEvent(CatLoadedEvent catLoadedEvent) {
+        mCurrentCat = catLoadedEvent.getCat();
+        loadImage();
+    }
+
+    private void loadImage() {
+        Context context = getApplicationContext();
+        Picasso.with(context).load(mCurrentCat.getImageUrl()).into(mCatImageView,
+                new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        enableLoadButton();
+                    }
+
+                    @Override
+                    public void onError() {
+                        enableLoadButton();
+                    }
+
+                    private void enableLoadButton() {
+                        mLoadCatButton.setEnabled(true);
+                    }
+                });
+    }
+
+    private Context getApplicationContext() {
+        return this.getActivity().getApplicationContext();
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused") // used by the bus
+    public void handleFavoriteCatEvent(FavoriteCatEvent favoriteCatEvent) {
+        Cat cat = favoriteCatEvent.getCat();
+        if (cat != null) {
+            if (catService.isCatInFavorites(cat)) {
+                UIUtils.showToast("That cat is already in your collection");
+            } else {
+                catService.saveCatToFavorites(cat);
+                loadCat();
+                UIUtils.showToast("Saving that right Meow!");
+            }
+        } else {
+            UIUtils.showToast("There is no cat there.");
+        }
+    }
+}

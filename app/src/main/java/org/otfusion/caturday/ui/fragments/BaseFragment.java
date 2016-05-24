@@ -45,6 +45,7 @@ public abstract class BaseFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(getContentLayoutId(), container, false);
         ButterKnife.bind(this, view);
+        getBus().register(this);
         loadUIContent();
         return view;
     }

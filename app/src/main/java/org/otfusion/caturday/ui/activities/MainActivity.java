@@ -1,48 +1,24 @@
 package org.otfusion.caturday.ui.activities;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.GestureDetector;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-
-import com.squareup.otto.Subscribe;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import org.otfusion.caturday.R;
-import org.otfusion.caturday.common.model.Cat;
-import org.otfusion.caturday.events.CatLoadedEvent;
-import org.otfusion.caturday.events.FavoriteCatEvent;
-import org.otfusion.caturday.ui.gestures.GestureDoubleTap;
-import org.otfusion.caturday.util.ApplicationUtils;
-import org.otfusion.caturday.util.UIUtils;
+import org.otfusion.caturday.ui.fragments.MainFragment;
+import org.otfusion.caturday.ui.framework.drawer.Drawer;
+import org.otfusion.caturday.ui.framework.drawer.LeftDrawer;
 
 import butterknife.BindView;
 
 public class MainActivity extends CatActivity {
 
-    @BindView(R.id.cat_view)
-    ImageView mCatImageView;
-
-    @BindView(R.id.load_cat_button)
-    Button mLoadCatButton;
-
-    @BindView(R.id.share_cat_button)
-    Button mShareCatButton;
-
-    @BindView(R.id.favorite_cat_button)
-    Button mFavoriteCatButton;
-
-    @BindView(R.id.main_toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    private Cat mCurrentCat;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     protected int getContentLayoutId() {
@@ -51,110 +27,14 @@ public class MainActivity extends CatActivity {
 
     @Override
     protected void loadUIContent() {
-        loadCat();
-        mLoadCatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadCat();
-            }
-        });
+        // TODO: 5/23/16 move this to AppModule.
+        Drawer drawer = new LeftDrawer(getApplicationContext());
+        drawer.init(findViewById(android.R.id.content));
+        setupToolbar();
+        startFragment(MainFragment.newInstance());
+    }
 
-        mFavoriteCatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FavoriteCatEvent event = new FavoriteCatEvent(getBus(), mCurrentCat);
-                event.executeEvent("button");
-            }
-        });
-
-        mShareCatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri imageUri = ApplicationUtils.getLocalBitmapUri(mCatImageView);
-                Intent shareImageIntent = ApplicationUtils.getShareImageIntent(imageUri);
-                startActivity(Intent.createChooser(shareImageIntent, "Share a cat!"));
-            }
-        });
-
-        final GestureDoubleTap<FavoriteCatEvent> doubleTapGesture = new GestureDoubleTap<>();
-        mCatImageView.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                doubleTapGesture.setEvent(new FavoriteCatEvent(getBus(), mCurrentCat));
-                GestureDetector gestureDetector = new GestureDetector(getApplicationContext(),
-                        doubleTapGesture);
-                return gestureDetector.onTouchEvent(motionEvent);
-            }
-        });
-
+    private void setupToolbar() {
         setSupportActionBar(mToolbar);
-    }
-
-    private void loadCat() {
-        mLoadCatButton.setEnabled(false);
-        getCatService().getCatFromApi();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_main_goto_favorite) {
-            Intent intent = new Intent(this, FavoriteActivity.class);
-            startActivity(intent);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Subscribe
-    @SuppressWarnings("unused") // used by the bus
-    public void handleCatLoadedEvent(CatLoadedEvent catLoadedEvent) {
-        mCurrentCat = catLoadedEvent.getCat();
-        loadImage();
-    }
-
-    private void loadImage() {
-        Picasso.with(getApplicationContext()).load(mCurrentCat.getImageUrl()).into(mCatImageView,
-                new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        enableLoadButton();
-                    }
-
-                    @Override
-                    public void onError() {
-                        enableLoadButton();
-                    }
-
-                    private void enableLoadButton() {
-                        mLoadCatButton.setEnabled(true);
-                    }
-                });
-    }
-
-    @Subscribe
-    @SuppressWarnings("unused") // used by the bus
-    public void handleFavoriteCatEvent(FavoriteCatEvent favoriteCatEvent) {
-        Cat cat = favoriteCatEvent.getCat();
-        if (cat != null) {
-            if (getCatService().isCatInFavorites(cat)) {
-                UIUtils.showToast("That cat is already in your collection");
-            } else {
-                getCatService().saveCatToFavorites(cat);
-                loadCat();
-                UIUtils.showToast("Saving that right Meow!");
-            }
-        } else {
-            UIUtils.showToast("There is no cat there.");
-        }
     }
 }

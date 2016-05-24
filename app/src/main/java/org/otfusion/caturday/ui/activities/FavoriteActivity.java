@@ -39,18 +39,12 @@ public class FavoriteActivity extends CatActivity implements FavoriteCallback {
                 }
             }
         });
-        showFragment(FavoriteCatListFragment.newInstance());
+        startFragment(FavoriteCatListFragment.newInstance(), FAVORITE);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-    }
-
-    private void showFragment(BaseFragment fragment) {
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, fragment, FAVORITE);
-        fragmentTransaction.commit();
     }
 
     @Override
