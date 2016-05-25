@@ -26,9 +26,6 @@ import butterknife.ButterKnife;
 public abstract class BaseFragment extends Fragment {
 
     @Inject
-    Context mContext;
-
-    @Inject
     Bus bus;
 
     @Inject
@@ -56,7 +53,7 @@ public abstract class BaseFragment extends Fragment {
         return view;
     }
 
-    private CatActivity getCatActivity() {
+    protected CatActivity getCatActivity() {
         return (CatActivity) getActivity();
     }
 

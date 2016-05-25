@@ -9,8 +9,6 @@ import com.squareup.otto.Bus;
 import org.otfusion.caturday.R;
 import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.ui.fragments.BaseFragment;
-import org.otfusion.caturday.ui.framework.drawer.Drawer;
-import org.otfusion.caturday.ui.framework.drawer.LeftDrawer;
 import org.otfusion.caturday.util.ApplicationUtils;
 
 import javax.inject.Inject;
@@ -21,8 +19,6 @@ public abstract class CatActivity extends AppCompatActivity {
 
     @Inject
     Bus bus;
-
-    Drawer drawer;
 
     @Override
     /**
@@ -38,16 +34,10 @@ public abstract class CatActivity extends AppCompatActivity {
         // Otto bus registration
         bus.register(this);
 
-        setupDrawer();
-
         // Set the UI layout and bind the UI elements for all the activities.
         setContentView(getContentLayoutId());
         ButterKnife.bind(this);
         loadUIContent();
-    }
-
-    private void setupDrawer() {
-        drawer = new LeftDrawer(this);
     }
 
     public void startFragment(BaseFragment fragment) {
@@ -60,12 +50,16 @@ public abstract class CatActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    protected Bus getBus() {
-        return bus;
+    public void replaceFragment(BaseFragment fragment) {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
     }
 
-    protected Drawer getDrawer() {
-        return drawer;
+    protected Bus getBus() {
+        return bus;
     }
 
     protected abstract int getContentLayoutId();
