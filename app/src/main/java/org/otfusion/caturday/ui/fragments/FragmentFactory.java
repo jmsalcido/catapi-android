@@ -1,6 +1,6 @@
 package org.otfusion.caturday.ui.fragments;
 
-public class FragmentFactory {
+public final class FragmentFactory {
 
     private FragmentFactory() {
 
