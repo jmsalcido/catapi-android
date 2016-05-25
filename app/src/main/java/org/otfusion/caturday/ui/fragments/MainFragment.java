@@ -3,7 +3,6 @@ package org.otfusion.caturday.ui.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,7 +18,6 @@ import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.events.CatLoadedEvent;
 import org.otfusion.caturday.events.FavoriteCatEvent;
-import org.otfusion.caturday.ui.activities.CatActivity;
 import org.otfusion.caturday.ui.gestures.GestureDoubleTap;
 import org.otfusion.caturday.util.ApplicationUtils;
 import org.otfusion.caturday.util.UIUtils;
@@ -27,6 +25,9 @@ import org.otfusion.caturday.util.UIUtils;
 import butterknife.BindView;
 
 public class MainFragment extends BaseFragment {
+
+
+    public static final String FRAGMENT_TAG = "main";
 
     @BindView(R.id.cat_view)
     ImageView mCatImageView;

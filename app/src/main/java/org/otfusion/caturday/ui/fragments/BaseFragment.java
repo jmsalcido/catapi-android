@@ -53,6 +53,12 @@ public abstract class BaseFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        getBus().unregister(this);
+    }
+
     protected CatActivity getCatActivity() {
         return (CatActivity) getActivity();
     }

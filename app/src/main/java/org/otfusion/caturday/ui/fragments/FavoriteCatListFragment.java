@@ -4,7 +4,6 @@ package org.otfusion.caturday.ui.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,7 +14,6 @@ import android.widget.ListView;
 import org.otfusion.caturday.R;
 import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.common.model.Cat;
-import org.otfusion.caturday.ui.activities.CatActivity;
 import org.otfusion.caturday.ui.adapters.FavoriteCatAdapter;
 import org.otfusion.caturday.ui.fragments.callbacks.ReplaceFragmentCallback;
 import org.otfusion.caturday.util.ApplicationUtils;
@@ -30,6 +28,8 @@ import butterknife.BindView;
 public class FavoriteCatListFragment extends BaseFragment {
 
     private ReplaceFragmentCallback callback;
+
+    public static final String FRAGMENT_TAG = "favorite";
 
     @BindView(R.id.favorite_list_view)
     ListView mFavoriteCatsView;

@@ -51,8 +51,12 @@ public abstract class CatActivity extends AppCompatActivity {
     }
 
     public void replaceFragment(BaseFragment fragment) {
+        replaceFragment(fragment, null);
+    }
+
+    public void replaceFragment(BaseFragment fragment, String tag) {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
