@@ -56,18 +56,21 @@ public class FavoriteCatRepository {
         if (cats == null) {
             return Collections.emptyMap();
         }
+        query.close();
         return cats;
     }
 
     @NonNull
     public List<Cat> getFavoriteCats() {
         Cursor query = readDatabaseCursor();
-        return DbUtils.selectList(query, new DbBuilder<Cat>() {
+        List<Cat> cats = DbUtils.selectList(query, new DbBuilder<Cat>() {
             @Override
             public Cat buildFromCursor(Cursor cursor) {
                 return buildCatFromCursor(cursor);
             }
         });
+        query.close();
+        return cats;
     }
 
     private Cat buildCatFromCursor(Cursor cursor) {

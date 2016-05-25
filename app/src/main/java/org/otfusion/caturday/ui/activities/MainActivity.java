@@ -1,48 +1,42 @@
 package org.otfusion.caturday.ui.activities;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.GestureDetector;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-
-import com.squareup.otto.Subscribe;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import org.otfusion.caturday.R;
-import org.otfusion.caturday.common.model.Cat;
-import org.otfusion.caturday.events.CatLoadedEvent;
-import org.otfusion.caturday.events.FavoriteCatEvent;
-import org.otfusion.caturday.ui.gestures.GestureDoubleTap;
-import org.otfusion.caturday.util.ApplicationUtils;
-import org.otfusion.caturday.util.UIUtils;
+import org.otfusion.caturday.ui.fragments.BaseFragment;
+import org.otfusion.caturday.ui.fragments.FavoriteCatListFragment;
+import org.otfusion.caturday.ui.fragments.FragmentFactory;
+import org.otfusion.caturday.ui.fragments.MainFragment;
+import org.otfusion.caturday.ui.fragments.callbacks.ReplaceFragmentCallback;
 
 import butterknife.BindView;
 
-public class MainActivity extends CatActivity {
+public class MainActivity extends CatActivity implements ReplaceFragmentCallback {
 
-    @BindView(R.id.cat_view)
-    ImageView mCatImageView;
+    public static final int MAIN_FRAGMENT_DRAWER_POSITION = 0;
+    public static final int FAVORITE_FRAGMENT_DRAWER_POSITION = 1;
 
-    @BindView(R.id.load_cat_button)
-    Button mLoadCatButton;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
 
-    @BindView(R.id.share_cat_button)
-    Button mShareCatButton;
+    @BindView(R.id.left_drawer)
+    ListView mDrawerView;
 
-    @BindView(R.id.favorite_cat_button)
-    Button mFavoriteCatButton;
-
-    @BindView(R.id.main_toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    private Cat mCurrentCat;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     protected int getContentLayoutId() {
@@ -51,110 +45,71 @@ public class MainActivity extends CatActivity {
 
     @Override
     protected void loadUIContent() {
-        loadCat();
-        mLoadCatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadCat();
-            }
-        });
-
-        mFavoriteCatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FavoriteCatEvent event = new FavoriteCatEvent(getBus(), mCurrentCat);
-                event.executeEvent("button");
-            }
-        });
-
-        mShareCatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri imageUri = ApplicationUtils.getLocalBitmapUri(mCatImageView);
-                Intent shareImageIntent = ApplicationUtils.getShareImageIntent(imageUri);
-                startActivity(Intent.createChooser(shareImageIntent, "Share a cat!"));
-            }
-        });
-
-        final GestureDoubleTap<FavoriteCatEvent> doubleTapGesture = new GestureDoubleTap<>();
-        mCatImageView.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                doubleTapGesture.setEvent(new FavoriteCatEvent(getBus(), mCurrentCat));
-                GestureDetector gestureDetector = new GestureDetector(getApplicationContext(),
-                        doubleTapGesture);
-                return gestureDetector.onTouchEvent(motionEvent);
-            }
-        });
-
         setSupportActionBar(mToolbar);
+        setupDrawer();
+        startFragment(MainFragment.newInstance(), MainFragment.FRAGMENT_TAG);
     }
 
-    private void loadCat() {
-        mLoadCatButton.setEnabled(false);
-        getCatService().getCatFromApi();
-    }
+    private void setupDrawer() {
+        String[] drawerOptions = {
+                "Start",
+                "Favorites"
+        };
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+        mDrawerView.setAdapter(new ArrayAdapter<>(getApplicationContext(),
+                android.R.layout.simple_list_item_1, drawerOptions));
+        ActionBarDrawerToggle drawerToggle =
+                new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.app_name,
+                        R.string.app_name);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_main_goto_favorite) {
-            Intent intent = new Intent(this, FavoriteActivity.class);
-            startActivity(intent);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Subscribe
-    @SuppressWarnings("unused") // used by the bus
-    public void handleCatLoadedEvent(CatLoadedEvent catLoadedEvent) {
-        mCurrentCat = catLoadedEvent.getCat();
-        loadImage();
-    }
-
-    private void loadImage() {
-        Picasso.with(getApplicationContext()).load(mCurrentCat.getImageUrl()).into(mCatImageView,
-                new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        enableLoadButton();
-                    }
-
-                    @Override
-                    public void onError() {
-                        enableLoadButton();
-                    }
-
-                    private void enableLoadButton() {
-                        mLoadCatButton.setEnabled(true);
-                    }
-                });
-    }
-
-    @Subscribe
-    @SuppressWarnings("unused") // used by the bus
-    public void handleFavoriteCatEvent(FavoriteCatEvent favoriteCatEvent) {
-        Cat cat = favoriteCatEvent.getCat();
-        if (cat != null) {
-            if (getCatService().isCatInFavorites(cat)) {
-                UIUtils.showToast("That cat is already in your collection");
-            } else {
-                getCatService().saveCatToFavorites(cat);
-                loadCat();
-                UIUtils.showToast("Saving that right Meow!");
+        mDrawerLayout.setDrawerListener(drawerToggle);
+        mDrawerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                getFragmentManager().findFragmentByTag("main");
+                String tag = getFragmentTag(position);
+                replaceFragment(getOrCreateFragment(tag), tag);
+                mDrawerLayout.closeDrawer(mDrawerView);
             }
-        } else {
-            UIUtils.showToast("There is no cat there.");
+        });
+    }
+
+    @NonNull
+    private String getFragmentTag(int position) {
+        String tag;
+        switch (position) {
+            case MAIN_FRAGMENT_DRAWER_POSITION:
+                tag = MainFragment.FRAGMENT_TAG;
+                break;
+            case FAVORITE_FRAGMENT_DRAWER_POSITION:
+                tag = FavoriteCatListFragment.FRAGMENT_TAG;
+                break;
+            default:
+                throw new AssertionError("That selection is wrong");
         }
+        return tag;
+    }
+
+    private BaseFragment getOrCreateFragment(String fragmentName) {
+        BaseFragment fragment = (BaseFragment) getFragmentManager().findFragmentByTag(fragmentName);
+        if(fragment == null) {
+            fragment = FragmentFactory.createFragment(fragmentName);
+        }
+        return  fragment;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStackImmediate();
+            return;
+        }
+
+        super.onBackPressed();
+    }
+
+    @Override
+    public void replaceFragmentCallback(BaseFragment fragment) {
+        this.replaceFragment(fragment);
     }
 }

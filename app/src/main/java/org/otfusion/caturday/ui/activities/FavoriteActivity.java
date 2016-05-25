@@ -1,20 +1,17 @@
 package org.otfusion.caturday.ui.activities;
 
-import android.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import org.otfusion.caturday.R;
-import org.otfusion.caturday.common.model.Cat;
-import org.otfusion.caturday.ui.fragments.BaseFragment;
-import org.otfusion.caturday.ui.fragments.FavoriteCatImageFragment;
 import org.otfusion.caturday.ui.fragments.FavoriteCatListFragment;
-import org.otfusion.caturday.ui.fragments.callbacks.FavoriteCallback;
 
 import butterknife.BindView;
 
 
-public class FavoriteActivity extends CatActivity implements FavoriteCallback {
+@Deprecated
+// TODO: 5/25/16 remove for next release
+public class FavoriteActivity extends CatActivity {
 
     public static final String FAVORITE = "favorite";
     public static final String IMAGE = "image";
@@ -39,27 +36,11 @@ public class FavoriteActivity extends CatActivity implements FavoriteCallback {
                 }
             }
         });
-        showFragment(FavoriteCatListFragment.newInstance());
+        startFragment(FavoriteCatListFragment.newInstance(), FAVORITE);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-    }
-
-    private void showFragment(BaseFragment fragment) {
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, fragment, FAVORITE);
-        fragmentTransaction.commit();
-    }
-
-    @Override
-    public void showFavoritedCatImage(Cat cat) {
-        BaseFragment fragment = FavoriteCatImageFragment.newInstance(cat);
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.addToBackStack(FAVORITE);
-        fragmentTransaction.replace(R.id.fragment_container, fragment, IMAGE);
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentTransaction.commit();
     }
 }

@@ -1,6 +1,5 @@
 package org.otfusion.caturday.ui.fragments;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -70,11 +69,6 @@ public class FavoriteCatImageFragment extends BaseFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
     public int getContentLayoutId() {
         return R.layout.fragment_favorite_cat_image;
     }
@@ -90,6 +84,11 @@ public class FavoriteCatImageFragment extends BaseFragment {
             Bitmap bitmap = BitmapFactory.decodeFile(filePath);
             mImageViewTouch.setImageBitmap(bitmap);
         }
+    }
+
+    @Override
+    public int getTitleId() {
+        return R.string.title_activity_favorite;
     }
 
     private Cat getCatFromArguments() {

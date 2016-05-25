@@ -15,7 +15,7 @@ import org.otfusion.caturday.R;
 import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.ui.adapters.FavoriteCatAdapter;
-import org.otfusion.caturday.ui.fragments.callbacks.FavoriteCallback;
+import org.otfusion.caturday.ui.fragments.callbacks.ReplaceFragmentCallback;
 import org.otfusion.caturday.util.ApplicationUtils;
 import org.otfusion.caturday.util.FileUtils;
 import org.otfusion.caturday.util.UIUtils;
@@ -27,7 +27,9 @@ import butterknife.BindView;
 
 public class FavoriteCatListFragment extends BaseFragment {
 
-    private FavoriteCallback callback;
+    private ReplaceFragmentCallback callback;
+
+    public static final String FRAGMENT_TAG = "favorite";
 
     @BindView(R.id.favorite_list_view)
     ListView mFavoriteCatsView;
@@ -43,7 +45,7 @@ public class FavoriteCatListFragment extends BaseFragment {
         super.onAttach(activity);
         VoteCatsApplication voteCatsApplication = ApplicationUtils.getApplication(activity);
         voteCatsApplication.getApplicationComponent().inject(this);
-        callback = ApplicationUtils.castActivityToInterface(activity, FavoriteCallback.class);
+        callback = ApplicationUtils.castActivityToInterface(activity, ReplaceFragmentCallback.class);
     }
 
     @Override
@@ -61,9 +63,15 @@ public class FavoriteCatListFragment extends BaseFragment {
         mFavoriteCatsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                callback.showFavoritedCatImage(mFavoriteCatAdapter.getItem(position));
+                FavoriteCatImageFragment fragment = FavoriteCatImageFragment.newInstance(mFavoriteCatAdapter.getItem(position));
+                callback.replaceFragmentCallback(fragment);
             }
         });
+    }
+
+    @Override
+    public int getTitleId() {
+        return R.string.title_activity_favorite;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package org.otfusion.caturday.util;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -10,10 +9,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.widget.ImageView;
 
-import org.otfusion.caturday.application.ApplicationComponent;
 import org.otfusion.caturday.application.VoteCatsApplication;
-import org.otfusion.caturday.common.model.Cat;
-import org.otfusion.caturday.ui.fragments.callbacks.FavoriteCallback;
 
 import java.io.File;
 import java.io.FileOutputStream;

@@ -71,7 +71,7 @@ public class ApplicationModule {
     @Provides
     @Singleton
     public Bus provideBus() {
-        return new Bus();
+        return new Bus("catApi");
     }
 
 }
