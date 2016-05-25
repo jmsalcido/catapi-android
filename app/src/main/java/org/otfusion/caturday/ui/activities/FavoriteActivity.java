@@ -10,7 +10,7 @@ import butterknife.BindView;
 
 
 @Deprecated
-// this one is going to die
+// TODO: 5/25/16 remove for next release
 public class FavoriteActivity extends CatActivity {
 
     public static final String FAVORITE = "favorite";
