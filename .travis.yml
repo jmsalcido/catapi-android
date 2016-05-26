@@ -1,4 +1,9 @@
 language: android
+
+env:
+  matrix:
+    - ANDROID_TARGET=android-22 ANDROID_ABI=armeabi-v7a
+
 android:
   components:
     - platform-tools
@@ -7,7 +12,7 @@ android:
     - extra
     - sys-img-x86-android-22
 before_script:
-  - echo no | android create avd --force -n test -t android-22 --abi x86
+  - echo no | android create avd --force -n test --target $ANDROID_TARGET --abi $ANDROID_ABI
   - emulator -avd test -no-audio -no-window &
 script:
   - ./gradlew check -PdisablePreDex --continue --stacktrace
