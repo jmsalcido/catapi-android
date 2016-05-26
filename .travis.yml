@@ -10,7 +10,7 @@ android:
     - build-tools-23.0.1
     - android-22
     - extra
-    - sys-img-x86-android-22
+    - sys-img-armeabi-v7a-android-22
 before_script:
   - echo no | android create avd --force -n test --target $ANDROID_TARGET --abi $ANDROID_ABI
   - emulator -avd test -no-audio -no-window &
