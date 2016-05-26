@@ -66,7 +66,6 @@ public class MainActivity extends CatActivity implements ReplaceFragmentCallback
         mDrawerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                getFragmentManager().findFragmentByTag("main");
                 String tag = getFragmentTag(position);
                 replaceFragment(getOrCreateFragment(tag), tag);
                 mDrawerLayout.closeDrawer(mDrawerView);
