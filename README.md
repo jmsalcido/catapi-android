@@ -1,4 +1,4 @@
-# catapi-android
+# catapi-android [![Build Status](https://travis-ci.org/jmsalcido/catapi-android.svg?branch=development)](https://travis-ci.org/jmsalcido/catapi-android)
 Just a small project to learn how does dependency injection and other frameworks work within Android, the idea came from the pair programming excercise at @Nearsoft for Android devs.
 
 Using almost everything from square io to build this.
