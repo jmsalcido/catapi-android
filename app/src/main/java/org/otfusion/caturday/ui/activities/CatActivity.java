@@ -40,24 +40,16 @@ public abstract class CatActivity extends AppCompatActivity {
         loadUIContent();
     }
 
-    public void startFragment(BaseFragment fragment) {
-        startFragment(fragment, null);
-    }
-
-    public void startFragment(BaseFragment fragment, String tag) {
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, fragment, tag);
-        fragmentTransaction.commit();
-    }
-
     public void replaceFragment(BaseFragment fragment) {
-        replaceFragment(fragment, null);
+        replaceFragment(fragment, null, false);
     }
 
-    public void replaceFragment(BaseFragment fragment, String tag) {
+    public void replaceFragment(BaseFragment fragment, String tag, boolean addToBackStack) {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
-        fragmentTransaction.addToBackStack(null);
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack(null);
+        }
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
     }

@@ -1,7 +1,7 @@
 package org.otfusion.caturday.ui.activities;
 
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import org.otfusion.caturday.R;
 import org.otfusion.caturday.ui.fragments.BaseFragment;
+import org.otfusion.caturday.ui.fragments.FavoriteCatImageFragment;
 import org.otfusion.caturday.ui.fragments.FavoriteCatListFragment;
 import org.otfusion.caturday.ui.fragments.FragmentFactory;
 import org.otfusion.caturday.ui.fragments.MainFragment;
@@ -47,7 +48,7 @@ public class MainActivity extends CatActivity implements ReplaceFragmentCallback
     protected void loadUIContent() {
         setSupportActionBar(mToolbar);
         setupDrawer();
-        startFragment(MainFragment.newInstance(), MainFragment.FRAGMENT_TAG);
+        replaceFragment(MainFragment.newInstance(), MainFragment.FRAGMENT_TAG, false);
     }
 
     private void setupDrawer() {
@@ -66,41 +67,43 @@ public class MainActivity extends CatActivity implements ReplaceFragmentCallback
         mDrawerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String tag = getFragmentTag(position);
-                replaceFragment(getOrCreateFragment(tag), tag);
+                moveOrReplaceFragment(position);
                 mDrawerLayout.closeDrawer(mDrawerView);
             }
         });
     }
 
-    @NonNull
-    private String getFragmentTag(int position) {
+    private void moveOrReplaceFragment(int position) {
         String tag;
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         switch (position) {
             case MAIN_FRAGMENT_DRAWER_POSITION:
                 tag = MainFragment.FRAGMENT_TAG;
+                getFragmentManager().popBackStack();
                 break;
             case FAVORITE_FRAGMENT_DRAWER_POSITION:
                 tag = FavoriteCatListFragment.FRAGMENT_TAG;
+                fragmentTransaction.addToBackStack(null);
                 break;
             default:
                 throw new AssertionError("That selection is wrong");
         }
-        return tag;
+        BaseFragment fragment = getOrCreateFragment(tag);
+        fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
     }
 
     private BaseFragment getOrCreateFragment(String fragmentName) {
         BaseFragment fragment = (BaseFragment) getFragmentManager().findFragmentByTag(fragmentName);
-        if(fragment == null) {
+        if (fragment == null) {
             fragment = FragmentFactory.createFragment(fragmentName);
         }
-        return  fragment;
+        return fragment;
     }
 
     @Override
     public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStackImmediate();
+            getFragmentManager().popBackStack();
             return;
         }
 
@@ -109,6 +112,6 @@ public class MainActivity extends CatActivity implements ReplaceFragmentCallback
 
     @Override
     public void replaceFragmentCallback(BaseFragment fragment) {
-        this.replaceFragment(fragment);
+        this.replaceFragment(fragment, "favorite", true);
     }
 }
