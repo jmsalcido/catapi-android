@@ -31,13 +31,4 @@
         android:elevation="100dp"
         android:text="Load Cat"/>
 
-    <Button
-        android:id="@+id/share_cat_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|top"
-        style="@style/AppTheme"
-        android:elevation="100dp"
-        android:text="Share" />
-
 </FrameLayout>
