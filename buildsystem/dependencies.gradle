@@ -18,7 +18,6 @@ ext {
     butterKnifeVersion = '8.0.1'
     supportLibraryVersion = '22.2.1'
     javaxAnnotationVersion = '10.0-b28'
-    reflectionVersion = "0.9.10"
     imageZoomVersion = "+" // from README.md of https://github.com/sephiroth74/ImageViewZoom
 
     // Dependencies per project
@@ -36,7 +35,6 @@ ext {
             butterknife          : "com.jakewharton:butterknife:${butterKnifeVersion}",
             butterknifeCompiler  : "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
             javaxAnnotation      : "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
-            reflection           : "org.reflections:reflections:${reflectionVersion}",
             imageZoom            : "it.sephiroth.android.library.imagezoom:imagezoom:${imageZoomVersion}"
     ]
 }

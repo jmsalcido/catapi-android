@@ -16,9 +16,9 @@ allprojects {
         targetSdkVersion = 22
         minSdkVersion = 16
 
-        // update each release
-        versionCode = 2
-        versionName = "2.0"
+        // update each release on the Play Store
+        versionCode = 4
+        versionName = "3.0"
 
         buildToolsVersion = "23.0.1"
         applicationId = "org.otfusion.caturday"
