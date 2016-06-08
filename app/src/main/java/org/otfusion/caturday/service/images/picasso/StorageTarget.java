@@ -3,6 +3,7 @@ package org.otfusion.caturday.service.images.picasso;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -29,7 +30,10 @@ public class StorageTarget implements Target {
         File file = FileUtils.getFile(cat);
         FileOutputStream fileOutputStream = FileUtils.prepareOutputStream(file);
         if (file == null || fileOutputStream == null) {
-            UIUtils.showToast("Error loading storage");
+            if (file != null) {
+                Log.w("CATURDAY", "Problems reading file: " + file.getAbsolutePath());
+            }
+            Log.w("CATURDAY", "fileOutputStream: " + fileOutputStream);
             return;
         }
 

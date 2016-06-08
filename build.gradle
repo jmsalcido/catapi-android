@@ -12,15 +12,15 @@ buildscript {
 
 allprojects {
     ext {
-        compileSdkVersion = 22
-        targetSdkVersion = 22
+        compileSdkVersion = 23
+        targetSdkVersion = 23
         minSdkVersion = 16
 
         // update each release on the Play Store
         versionCode = 4
         versionName = "3.0"
 
-        buildToolsVersion = "23.0.1"
+        buildToolsVersion = "23.0.3"
         applicationId = "org.otfusion.caturday"
     }
 }
