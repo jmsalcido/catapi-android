@@ -44,18 +44,18 @@ dependencies {
     def appDependencies = rootProject.ext.appDependencies;
 
     apt appDependencies.daggerCompiler
-    compile appDependencies.androidSupport
-    compile appDependencies.designSupport
-    compile appDependencies.retroFit
-    compile appDependencies.okHttp
-    compile appDependencies.okHttpConnection
-    compile appDependencies.picasso
-    compile appDependencies.otto
-    compile appDependencies.butterknife
-    apt appDependencies.butterknifeCompiler
-    compile appDependencies.dagger
-    compile appDependencies.imageZoom
-    provided appDependencies.javaxAnnotation
-    compile group: 'com.squareup.retrofit2', name: 'converter-simplexml', version: appDependencies.retroFitVersion
+    compile     appDependencies.androidSupport
+    compile     appDependencies.designSupport
+    compile     appDependencies.retroFit
+    compile     appDependencies.okHttp
+    compile     appDependencies.okHttpConnection
+    compile     appDependencies.picasso
+    compile     appDependencies.otto
+    compile     appDependencies.butterknife
+    apt         appDependencies.butterknifeCompiler
+    compile     appDependencies.dagger
+    compile     appDependencies.imageZoom
+    provided    appDependencies.javaxAnnotation
+    compile     group: 'com.squareup.retrofit2', name: 'converter-simplexml', version: appDependencies.retroFitVersion
 
 }
