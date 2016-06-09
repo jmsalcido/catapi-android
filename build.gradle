@@ -20,7 +20,7 @@ allprojects {
         versionCode = 4
         versionName = "3.0"
 
-        buildToolsVersion = "23.0.3"
+        buildToolsVersion = "23.0.1"
         applicationId = "org.otfusion.caturday"
     }
 }
