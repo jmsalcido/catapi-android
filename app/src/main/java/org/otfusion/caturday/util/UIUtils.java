@@ -17,6 +17,11 @@ public class UIUtils {
         showSnackbar(view, text, false);
     }
 
+    public static void showSnackbar(View view, String text, String actionText,
+                                    View.OnClickListener listener) {
+        Snackbar.make(view, text, Snackbar.LENGTH_LONG).setAction(actionText, listener).show();
+    }
+
     public static void showToast(String text, boolean longToast) {
         int duration = longToast ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT;
         Toast.makeText(VoteCatsApplication.getContext(), text, duration).show();
