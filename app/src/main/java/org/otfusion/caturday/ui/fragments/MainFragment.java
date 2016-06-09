@@ -1,9 +1,14 @@
 package org.otfusion.caturday.ui.fragments;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,12 +29,18 @@ import org.otfusion.caturday.events.CatLoadedEvent;
 import org.otfusion.caturday.events.FavoriteCatEvent;
 import org.otfusion.caturday.ui.gestures.GestureDoubleTap;
 import org.otfusion.caturday.util.ApplicationUtils;
+import org.otfusion.caturday.util.FileUtils;
 import org.otfusion.caturday.util.UIUtils;
 
 import butterknife.BindView;
 
 public class MainFragment extends BaseFragment {
 
+    public static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     public static final String FRAGMENT_TAG = "main";
 
@@ -113,6 +124,20 @@ public class MainFragment extends BaseFragment {
         });
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case FileUtils.REQUEST_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    saveCat(mCurrentCat);
+                } else {
+                    Log.d("NOT GRANTED", "NOT GRANTED MOTHERFUCKER");
+                }
+                break;
+        }
+    }
 
     @Override
     public int getTitleId() {
@@ -156,14 +181,40 @@ public class MainFragment extends BaseFragment {
         Cat cat = favoriteCatEvent.getCat();
         if (cat != null) {
             if (getCatService().isCatInFavorites(cat)) {
-                UIUtils.showToast("That cat is already in your collection");
+                UIUtils.showSnackbar(getView(), "That cat is already in your collection");
             } else {
-                getCatService().saveCatToFavorites(cat);
-                loadCat();
-                UIUtils.showToast("Saving that right Meow!");
+                saveCat(cat);
             }
-        } else {
-            UIUtils.showToast("There is no cat there.");
         }
+    }
+
+    private void saveCat(Cat cat) {
+        boolean permission = checkWriteExternalStoragePermission();
+        if (permission) {
+            getCatService().saveCatToFavorites(cat);
+            loadCat();
+            UIUtils.showSnackbar(getView(), "Saving right meow!");
+        }
+    }
+
+    private boolean checkWriteExternalStoragePermission() {
+        int permission = ContextCompat.checkSelfPermission(getCatActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                String permissionText = "You will not be able to save kitties if you dont give me permissions to read/write files.";
+                UIUtils.showSnackbar(getView(), permissionText, "Okay",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                requestPermissions(PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+                            }
+                        });
+                return false;
+            }
+            requestPermissions(PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+        }
+
+        return permission == PackageManager.PERMISSION_GRANTED;
     }
 }
