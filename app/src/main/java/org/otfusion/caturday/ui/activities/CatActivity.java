@@ -1,7 +1,7 @@
 package org.otfusion.caturday.ui.activities;
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.squareup.otto.Bus;
@@ -40,17 +40,13 @@ public abstract class CatActivity extends AppCompatActivity {
         loadUIContent();
     }
 
-    public void replaceFragment(BaseFragment fragment) {
-        replaceFragment(fragment, null, false);
-    }
-
     public void replaceFragment(BaseFragment fragment, String tag, boolean addToBackStack) {
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
         if (addToBackStack) {
             fragmentTransaction.addToBackStack(null);
         }
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
     }
 

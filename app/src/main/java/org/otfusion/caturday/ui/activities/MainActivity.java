@@ -1,18 +1,18 @@
 package org.otfusion.caturday.ui.activities;
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import org.otfusion.caturday.R;
 import org.otfusion.caturday.ui.fragments.BaseFragment;
-import org.otfusion.caturday.ui.fragments.FavoriteCatImageFragment;
 import org.otfusion.caturday.ui.fragments.FavoriteCatListFragment;
 import org.otfusion.caturday.ui.fragments.FragmentFactory;
 import org.otfusion.caturday.ui.fragments.MainFragment;
@@ -22,17 +22,16 @@ import butterknife.BindView;
 
 public class MainActivity extends CatActivity implements ReplaceFragmentCallback {
 
-    public static final int MAIN_FRAGMENT_DRAWER_POSITION = 0;
-    public static final int FAVORITE_FRAGMENT_DRAWER_POSITION = 1;
-
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
-    @BindView(R.id.left_drawer)
-    ListView mDrawerView;
+    @BindView(R.id.navigation)
+    NavigationView mNavigationView;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+
+    ActionBarDrawerToggle mActionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,62 +47,66 @@ public class MainActivity extends CatActivity implements ReplaceFragmentCallback
     protected void loadUIContent() {
         setSupportActionBar(mToolbar);
         setupDrawer();
-        replaceFragment(MainFragment.newInstance(), MainFragment.FRAGMENT_TAG, false);
     }
 
     private void setupDrawer() {
-        String[] drawerOptions = {
-                "Start",
-                "Favorites"
-        };
-
-        mDrawerView.setAdapter(new ArrayAdapter<>(getApplicationContext(),
-                android.R.layout.simple_list_item_1, drawerOptions));
-        ActionBarDrawerToggle drawerToggle =
-                new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.app_name,
-                        R.string.app_name);
-
-        mDrawerLayout.setDrawerListener(drawerToggle);
-        mDrawerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
+                R.string.app_name, R.string.app_name);
+        mDrawerLayout.addDrawerListener(mActionBarDrawerToggle);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                moveOrReplaceFragment(position);
-                mDrawerLayout.closeDrawer(mDrawerView);
+            public boolean onNavigationItemSelected(MenuItem item) {
+                selectDrawerItem(item);
+                return true;
             }
         });
+
+        selectMainFragment();
+        mActionBarDrawerToggle.syncState();
     }
 
-    private void moveOrReplaceFragment(int position) {
+    private void selectMainFragment() {
+        Menu menu = mNavigationView.getMenu();
+        MenuItem item = menu.findItem(R.id.navigation_first);
+        selectDrawerItem(item);
+    }
+
+    private void selectDrawerItem(MenuItem menuItem) {
         String tag;
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        switch (position) {
-            case MAIN_FRAGMENT_DRAWER_POSITION:
+        switch (menuItem.getItemId()) {
+            case R.id.navigation_first:
                 tag = MainFragment.FRAGMENT_TAG;
-                getFragmentManager().popBackStack();
                 break;
-            case FAVORITE_FRAGMENT_DRAWER_POSITION:
+            case R.id.navigation_second:
                 tag = FavoriteCatListFragment.FRAGMENT_TAG;
-                fragmentTransaction.addToBackStack(null);
                 break;
             default:
-                throw new AssertionError("That selection is wrong");
+                tag = MainFragment.FRAGMENT_TAG;
         }
-        BaseFragment fragment = getOrCreateFragment(tag);
-        fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
-    }
 
-    private BaseFragment getOrCreateFragment(String fragmentName) {
-        BaseFragment fragment = (BaseFragment) getFragmentManager().findFragmentByTag(fragmentName);
-        if (fragment == null) {
-            fragment = FragmentFactory.createFragment(fragmentName);
+        BaseFragment fragment =  FragmentFactory.createFragment(tag);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        if (MainFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentTransaction.addToBackStack(tag);
         }
-        return fragment;
+        fragmentTransaction.commit();
+        menuItem.setChecked(true);
+        setTitle(menuItem.getTitle());
+        mDrawerLayout.closeDrawer(GravityCompat.START);
     }
 
     @Override
     public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+            return;
+        }
+
         if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
+            selectMainFragment();
             return;
         }
 
