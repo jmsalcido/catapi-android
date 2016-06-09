@@ -129,7 +129,7 @@ public class MainFragment extends BaseFragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         switch (requestCode) {
-            case FileUtils.REQUEST_EXTERNAL_STORAGE:
+            case REQUEST_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     saveCat(mCurrentCat);
                 } else {
