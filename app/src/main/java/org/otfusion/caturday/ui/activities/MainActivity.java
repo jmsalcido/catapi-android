@@ -88,7 +88,7 @@ public class MainActivity extends CatActivity implements ReplaceFragmentCallback
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
-        if (MainFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() > 0) {
+        if (!MainFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() == 0) {
             fragmentTransaction.addToBackStack(tag);
         }
         fragmentTransaction.commit();
@@ -104,8 +104,9 @@ public class MainActivity extends CatActivity implements ReplaceFragmentCallback
             return;
         }
 
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
             selectMainFragment();
             return;
         }
