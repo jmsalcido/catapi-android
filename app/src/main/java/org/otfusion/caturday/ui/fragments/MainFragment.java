@@ -9,14 +9,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Callback;
@@ -27,9 +24,8 @@ import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.events.CatLoadedEvent;
 import org.otfusion.caturday.events.FavoriteCatEvent;
-import org.otfusion.caturday.ui.gestures.GestureDoubleTap;
+import org.otfusion.caturday.ui.views.ImageDoubleTapView;
 import org.otfusion.caturday.util.ApplicationUtils;
-import org.otfusion.caturday.util.FileUtils;
 import org.otfusion.caturday.util.UIUtils;
 
 import butterknife.BindView;
@@ -45,7 +41,7 @@ public class MainFragment extends BaseFragment {
     public static final String FRAGMENT_TAG = "main";
 
     @BindView(R.id.cat_view)
-    ImageView mCatImageView;
+    ImageDoubleTapView mCatImageView;
 
     @BindView(R.id.load_cat_button)
     Button mLoadCatButton;
@@ -110,18 +106,6 @@ public class MainFragment extends BaseFragment {
                 event.executeEvent("button");
             }
         });
-
-        final GestureDoubleTap<FavoriteCatEvent> doubleTapGesture = new GestureDoubleTap<>();
-        mCatImageView.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                doubleTapGesture.setEvent(new FavoriteCatEvent(getBus(), mCurrentCat));
-                GestureDetector gestureDetector = new GestureDetector(getApplicationContext(),
-                        doubleTapGesture);
-                return gestureDetector.onTouchEvent(motionEvent);
-            }
-        });
     }
 
     @Override
@@ -158,6 +142,7 @@ public class MainFragment extends BaseFragment {
                     @Override
                     public void onSuccess() {
                         enableLoadButton();
+                        mCatImageView.setEvent(new FavoriteCatEvent(getBus(), mCurrentCat));
                     }
 
                     @Override
