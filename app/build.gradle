@@ -47,6 +47,7 @@ dependencies {
     apt appDependencies.daggerCompiler
     compile     appDependencies.androidSupport
     compile     appDependencies.designSupport
+    compile     appDependencies.recyclerViewSupport
     compile     appDependencies.retroFit
     compile     appDependencies.okHttp
     compile     appDependencies.okHttpConnection

@@ -1,52 +1,49 @@
 package org.otfusion.caturday.ui.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import org.otfusion.caturday.R;
-import org.otfusion.caturday.util.FileUtils;
-import org.otfusion.caturday.util.ImageUtils;
-import org.otfusion.caturday.util.ViewHolder;
 import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.common.model.Cat;
+import org.otfusion.caturday.ui.activities.FavoriteImageActivity;
+import org.otfusion.caturday.util.FileUtils;
+import org.otfusion.caturday.util.ImageUtils;
 
 import java.util.Collections;
 import java.util.List;
 
-public class FavoriteCatAdapter extends BaseAdapter {
+public class FavoriteCatAdapter extends RecyclerView.Adapter<FavoriteCatAdapter.ViewHolder> {
 
-    private List<Cat> cats;
+    private OnItemClickListener<Cat> mOnClickListener;
+    private List<Cat> dataSet;
 
-    public FavoriteCatAdapter() {
-        cats = Collections.emptyList();
-    }
-
-    public void updateCats(List<Cat> cats) {
-        this.cats = cats;
-        notifyDataSetChanged();
-    }
-
-    public List<Cat> getCats() {
-        return cats;
+    public FavoriteCatAdapter(OnItemClickListener<Cat> onClickListener) {
+        dataSet = Collections.emptyList();
+        mOnClickListener = onClickListener;
     }
 
     @Override
-    public int getCount() {
-        return cats.size();
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_favorite_item, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public Cat getItem(int position) {
-        return cats.get(position);
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        Cat cat = dataSet.get(position);
+        holder.bind(cat, mOnClickListener);
     }
 
     @Override
@@ -54,31 +51,51 @@ public class FavoriteCatAdapter extends BaseAdapter {
         return position;
     }
 
+    @Override
+    public int getItemCount() {
+        return dataSet.size();
+    }
+
+    public void updateCats(List<Cat> cats) {
+        dataSet = cats;
+        notifyDataSetChanged();
+    }
+
+    public List<Cat> getDataSet() {
+        return dataSet;
+    }
+
     private Context getContext() {
         return VoteCatsApplication.getContext();
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext())
-                    .inflate(R.layout.list_favorite_item, parent, false);
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView textView;
+
+        public ViewHolder(View view) {
+            super(view);
+            textView = (TextView) view.findViewById(R.id.favorite_cat_list_text);
         }
 
-        TextView favoriteCat = ViewHolder.get(convertView, R.id.favorite_cat_list_text);
+        public void bind(final Cat cat, final OnItemClickListener<Cat> listener) {
+            textView.setText(cat.getName());
+            String filePath = FileUtils.getFileName(cat, true);
+            if (!filePath.isEmpty()) {
+                Bitmap bitmap = ImageUtils.cropBitmap(BitmapFactory.decodeFile(filePath));
+                Resources resources = VoteCatsApplication.getContext().getResources();
+                RoundedBitmapDrawable img =
+                        RoundedBitmapDrawableFactory.create(resources, ImageUtils.resizeBitmap(bitmap, 128, 128));
+                img.setCornerRadius(Math.max(128, 128) / 2.0f);
+                textView.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+            }
 
-        Cat cat = getItem(position);
-        favoriteCat.setText(cat.getName());
-        String filePath = FileUtils.getFileName(cat, true);
-        if (!filePath.isEmpty()) {
-            Bitmap bitmap = ImageUtils.cropBitmap(BitmapFactory.decodeFile(filePath));
-            Resources resources = VoteCatsApplication.getContext().getResources();
-            RoundedBitmapDrawable img =
-                    RoundedBitmapDrawableFactory.create(resources, ImageUtils.resizeBitmap(bitmap, 128, 128));
-            img.setCornerRadius(Math.max(128, 128) / 2.0f);
-            favoriteCat.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(cat);
+                }
+            });
         }
-
-        return convertView;
     }
 }

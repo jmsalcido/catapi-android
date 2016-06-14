@@ -111,13 +111,17 @@ public class MainActivity extends CatActivity {
                 tag = MainFragment.FRAGMENT_TAG;
         }
 
-        BaseFragment fragment =  FragmentFactory.createFragment(tag);
         FragmentManager fragmentManager = getSupportFragmentManager();
+        BaseFragment fragment = (BaseFragment) fragmentManager.findFragmentByTag(tag);
+        if (fragment == null) {
+            fragment =  FragmentFactory.createFragment(tag);
+        }
+
         if(MainFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStack();
         } else {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
             if (!MainFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() == 0) {
                 fragmentTransaction.addToBackStack(tag);
             }
