@@ -5,6 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,8 +25,9 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
 
 public class FavoriteCatImageFragment extends BaseFragment {
 
-    public static final String CAT_KEY = "cat";
-    @BindView(R.id.favorite_cat)
+    public static final String MODEL_KEY = "cat";
+
+    @BindView(R.id.favorite_image_view)
     ImageViewTouch mImageViewTouch;
 
     public static FavoriteCatImageFragment newInstance(Cat cat) {
@@ -45,6 +49,9 @@ public class FavoriteCatImageFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(getActivity());
+                return true;
             case R.id.action_favorite_menu_share:
                 Cat cat = getCatFromArguments();
                 String filePath = FileUtils.getFileName(cat, true);
@@ -70,7 +77,7 @@ public class FavoriteCatImageFragment extends BaseFragment {
 
     @Override
     public int getContentLayoutId() {
-        return R.layout.fragment_favorite_cat_image;
+        return R.layout.fragment_favorite_image;
     }
 
     @Override
@@ -92,6 +99,6 @@ public class FavoriteCatImageFragment extends BaseFragment {
     }
 
     private Cat getCatFromArguments() {
-        return (Cat) getArguments().getSerializable(CAT_KEY);
+        return (Cat) getArguments().getSerializable(MODEL_KEY);
     }
 }

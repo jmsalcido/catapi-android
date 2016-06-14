@@ -4,6 +4,8 @@ package org.otfusion.caturday.ui.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,8 +16,8 @@ import android.widget.ListView;
 import org.otfusion.caturday.R;
 import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.common.model.Cat;
+import org.otfusion.caturday.ui.activities.FavoriteImageActivity;
 import org.otfusion.caturday.ui.adapters.FavoriteCatAdapter;
-import org.otfusion.caturday.ui.fragments.callbacks.ReplaceFragmentCallback;
 import org.otfusion.caturday.util.ApplicationUtils;
 import org.otfusion.caturday.util.FileUtils;
 import org.otfusion.caturday.util.UIUtils;
@@ -26,8 +28,6 @@ import butterknife.BindView;
 
 
 public class FavoriteCatListFragment extends BaseFragment {
-
-    private ReplaceFragmentCallback callback;
 
     public static final String FRAGMENT_TAG = "favorite";
 
@@ -45,12 +45,17 @@ public class FavoriteCatListFragment extends BaseFragment {
         super.onAttach(activity);
         VoteCatsApplication voteCatsApplication = ApplicationUtils.getApplication(activity);
         voteCatsApplication.getApplicationComponent().inject(this);
-        callback = ApplicationUtils.castActivityToInterface(activity, ReplaceFragmentCallback.class);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
     public int getContentLayoutId() {
-        return R.layout.fragment_favorite_cat_list;
+        return R.layout.fragment_favorite_list;
     }
 
     @Override
@@ -63,8 +68,9 @@ public class FavoriteCatListFragment extends BaseFragment {
         mFavoriteCatsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FavoriteCatImageFragment fragment = FavoriteCatImageFragment.newInstance(mFavoriteCatAdapter.getItem(position));
-                callback.replaceFragmentCallback(fragment);
+                Intent intent = new Intent(getContext(), FavoriteImageActivity.class);
+                intent.putExtra(FavoriteImageActivity.MODEL_KEY, mFavoriteCatAdapter.getItem(position));
+                startActivity(intent);
             }
         });
     }

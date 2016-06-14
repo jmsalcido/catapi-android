@@ -16,12 +16,12 @@ import org.otfusion.caturday.ui.fragments.BaseFragment;
 import org.otfusion.caturday.ui.fragments.FavoriteCatListFragment;
 import org.otfusion.caturday.ui.fragments.FragmentFactory;
 import org.otfusion.caturday.ui.fragments.MainFragment;
-import org.otfusion.caturday.ui.fragments.callbacks.ReplaceFragmentCallback;
 
 import butterknife.BindView;
 
-public class MainActivity extends CatActivity implements ReplaceFragmentCallback {
+public class MainActivity extends CatActivity {
 
+    public static final String NAVIGATION_DRAWER_STATE = "navigation_drawer_state";
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
@@ -32,10 +32,12 @@ public class MainActivity extends CatActivity implements ReplaceFragmentCallback
     Toolbar mToolbar;
 
     ActionBarDrawerToggle mActionBarDrawerToggle;
+    int mSelectedNavigationIndex = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        selectDrawerOption(savedInstanceState);
     }
 
     @Override
@@ -47,6 +49,12 @@ public class MainActivity extends CatActivity implements ReplaceFragmentCallback
     protected void loadUIContent() {
         setSupportActionBar(mToolbar);
         setupDrawer();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(NAVIGATION_DRAWER_STATE, mSelectedNavigationIndex);
+        super.onSaveInstanceState(outState);
     }
 
     private void setupDrawer() {
@@ -61,13 +69,32 @@ public class MainActivity extends CatActivity implements ReplaceFragmentCallback
             }
         });
 
-        selectMainFragment();
         mActionBarDrawerToggle.syncState();
     }
 
-    private void selectMainFragment() {
+    @Override
+    protected void onPause() {
+        super.onPause();
         Menu menu = mNavigationView.getMenu();
-        MenuItem item = menu.findItem(R.id.navigation_first);
+        for(int i = 0; i < menu.size(); i++) {
+            if(menu.getItem(i).isChecked()) {
+                mSelectedNavigationIndex = i;
+                break;
+            }
+        }
+    }
+
+    private void selectDrawerOption(Bundle savedInstanceState) {
+        Menu menu = mNavigationView.getMenu();
+        MenuItem item;
+        if (savedInstanceState != null) {
+            int index = savedInstanceState.getInt(NAVIGATION_DRAWER_STATE);
+            item = menu.getItem(index);
+        } else if(mSelectedNavigationIndex >= 0) {
+                item = menu.getItem(mSelectedNavigationIndex);
+        } else {
+            item = menu.findItem(R.id.navigation_first);
+        }
         selectDrawerItem(item);
     }
 
@@ -86,12 +113,16 @@ public class MainActivity extends CatActivity implements ReplaceFragmentCallback
 
         BaseFragment fragment =  FragmentFactory.createFragment(tag);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        if (!MainFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() == 0) {
-            fragmentTransaction.addToBackStack(tag);
+        if(MainFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            if (!MainFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() == 0) {
+                fragmentTransaction.addToBackStack(tag);
+            }
+            fragmentTransaction.commit();
         }
-        fragmentTransaction.commit();
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());
         mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -107,15 +138,11 @@ public class MainActivity extends CatActivity implements ReplaceFragmentCallback
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStack();
-            selectMainFragment();
+            selectDrawerItem(mNavigationView.getMenu().findItem(R.id.navigation_first));
             return;
         }
 
         super.onBackPressed();
     }
 
-    @Override
-    public void replaceFragmentCallback(BaseFragment fragment) {
-        this.replaceFragment(fragment, "favorite", true);
-    }
 }
