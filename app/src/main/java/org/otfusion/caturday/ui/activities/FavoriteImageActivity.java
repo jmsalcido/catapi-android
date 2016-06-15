@@ -7,10 +7,6 @@ import org.otfusion.caturday.R;
 import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.ui.fragments.BaseFragment;
 import org.otfusion.caturday.ui.fragments.FavoriteCatImageFragment;
-import org.otfusion.caturday.ui.fragments.FragmentFactory;
-
-import butterknife.BindView;
-import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 
 public class FavoriteImageActivity extends CatActivity {
 

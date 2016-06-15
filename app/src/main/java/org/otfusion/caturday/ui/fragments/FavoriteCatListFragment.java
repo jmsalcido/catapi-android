@@ -143,13 +143,6 @@ public class FavoriteCatListFragment extends BaseFragment {
         return true;
     }
 
-    private Cat getObjectForMenuItem(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo menuInfo;
-        List<Cat> catFromsAdapter = Collections.emptyList();
-        menuInfo = getAdapterContextMenuInfo(item.getMenuInfo());
-        return catFromsAdapter.get(menuInfo.position);
-    }
-
     private boolean handleActionShareOption(Cat cat) {
         String filePath = FileUtils.getFileName(cat, true);
         if (filePath.isEmpty()) {

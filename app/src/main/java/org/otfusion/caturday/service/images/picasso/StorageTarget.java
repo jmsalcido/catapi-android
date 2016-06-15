@@ -10,7 +10,6 @@ import com.squareup.picasso.Target;
 
 import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.util.FileUtils;
-import org.otfusion.caturday.util.UIUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
