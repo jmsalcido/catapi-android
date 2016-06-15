@@ -27,4 +27,13 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="AppTheme.FavoriteListBottomSheetDialog" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
+    </style>
+
+    <style name="AppTheme.FavoriteListBottomSheetDialog.Text" parent="AppTheme.FavoriteListBottomSheetDialog">
+        <item name="android:layout_marginLeft">16dp</item>
+    </style>
+
 </resources>

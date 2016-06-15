@@ -36,9 +36,9 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    public CatService provideCatService(Bus bus, CatApiProvider catApiProvider,
+    public CatService provideCatService(CatApiProvider catApiProvider,
                                         FavoriteCatRepository favoriteCatRepository, StorageImageService storageImageService) {
-        return new CatServiceImpl(bus, catApiProvider, favoriteCatRepository, storageImageService);
+        return new CatServiceImpl(catApiProvider, favoriteCatRepository, storageImageService);
     }
 
     @Provides
@@ -49,8 +49,8 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    public CatApiProvider provideCatApiProvider(CatApiService catApiService) {
-        return new CatApiProvider(catApiService);
+    public CatApiProvider provideCatApiProvider(CatApiService catApiService, Bus bus) {
+        return new CatApiProvider(catApiService, bus);
     }
 
     @Provides

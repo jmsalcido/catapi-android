@@ -1,7 +1,6 @@
 package org.otfusion.caturday.ui.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import org.otfusion.caturday.R;
 import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.common.model.Cat;
-import org.otfusion.caturday.ui.activities.FavoriteImageActivity;
 import org.otfusion.caturday.util.FileUtils;
 import org.otfusion.caturday.util.ImageUtils;
 
@@ -25,12 +23,10 @@ import java.util.List;
 
 public class FavoriteCatAdapter extends RecyclerView.Adapter<FavoriteCatAdapter.ViewHolder> {
 
-    private OnItemClickListener<Cat> mOnClickListener;
     private List<Cat> dataSet;
 
-    public FavoriteCatAdapter(OnItemClickListener<Cat> onClickListener) {
+    public FavoriteCatAdapter() {
         dataSet = Collections.emptyList();
-        mOnClickListener = onClickListener;
     }
 
     @Override
@@ -43,7 +39,7 @@ public class FavoriteCatAdapter extends RecyclerView.Adapter<FavoriteCatAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         Cat cat = dataSet.get(position);
-        holder.bind(cat, mOnClickListener);
+        holder.bind(cat);
     }
 
     @Override
@@ -78,7 +74,7 @@ public class FavoriteCatAdapter extends RecyclerView.Adapter<FavoriteCatAdapter.
             textView = (TextView) view.findViewById(R.id.favorite_cat_list_text);
         }
 
-        public void bind(final Cat cat, final OnItemClickListener<Cat> listener) {
+        public void bind(Cat cat) {
             textView.setText(cat.getName());
             String filePath = FileUtils.getFileName(cat, true);
             if (!filePath.isEmpty()) {
@@ -89,13 +85,6 @@ public class FavoriteCatAdapter extends RecyclerView.Adapter<FavoriteCatAdapter.
                 img.setCornerRadius(Math.max(128, 128) / 2.0f);
                 textView.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
             }
-
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(cat);
-                }
-            });
         }
     }
 }

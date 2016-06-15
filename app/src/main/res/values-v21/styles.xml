@@ -23,4 +23,9 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:elevation">100dp</item>
     </style>
+
+    <style name="AppTheme.FavoriteListBottomSheetDialog" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Material.Medium</item>
+    </style>
 </resources>

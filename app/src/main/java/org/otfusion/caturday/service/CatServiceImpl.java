@@ -2,11 +2,8 @@ package org.otfusion.caturday.service;
 
 import android.support.annotation.NonNull;
 
-import com.squareup.otto.Bus;
-
-import org.otfusion.caturday.db.repository.FavoriteCatRepository;
 import org.otfusion.caturday.common.model.Cat;
-import org.otfusion.caturday.providers.catapi.CatApiAsyncTask;
+import org.otfusion.caturday.db.repository.FavoriteCatRepository;
 import org.otfusion.caturday.providers.catapi.CatApiProvider;
 import org.otfusion.caturday.service.images.StorageImageService;
 
@@ -17,15 +14,13 @@ import javax.inject.Inject;
 
 public class CatServiceImpl implements CatService {
 
-    private Bus bus;
     private CatApiProvider catApiProvider;
     private final FavoriteCatRepository favoriteCatRepository;
     private final StorageImageService storageImageService;
 
     @Inject
-    public CatServiceImpl(Bus bus, CatApiProvider catApiProvider, FavoriteCatRepository
+    public CatServiceImpl(CatApiProvider catApiProvider, FavoriteCatRepository
             favoriteCatRepository, StorageImageService storageImageService) {
-        this.bus = bus;
         this.catApiProvider = catApiProvider;
         this.favoriteCatRepository = favoriteCatRepository;
         this.storageImageService = storageImageService;
@@ -33,8 +28,7 @@ public class CatServiceImpl implements CatService {
 
     @Override
     public void getCatFromApi() {
-        CatApiAsyncTask catApiAsyncTask = new CatApiAsyncTask(bus, catApiProvider);
-        catApiAsyncTask.execute();
+        catApiProvider.loadCatFromProvider();
     }
 
     @Override

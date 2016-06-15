@@ -24,6 +24,7 @@ import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.events.CatLoadedEvent;
 import org.otfusion.caturday.events.FavoriteCatEvent;
+import org.otfusion.caturday.events.LoadErrorEvent;
 import org.otfusion.caturday.ui.views.ImageDoubleTapView;
 import org.otfusion.caturday.util.ApplicationUtils;
 import org.otfusion.caturday.util.UIUtils;
@@ -165,13 +166,20 @@ public class MainFragment extends BaseFragment {
     @SuppressWarnings("unused") // used by the bus
     public void handleFavoriteCatEvent(FavoriteCatEvent favoriteCatEvent) {
         Cat cat = favoriteCatEvent.getCat();
-        if (cat != null) {
-            if (getCatService().isCatInFavorites(cat)) {
-                UIUtils.showSnackbar(getView(), "That cat is already in your collection");
-            } else {
-                saveCat(cat);
-            }
+        if (getCatService().isCatInFavorites(cat)) {
+            UIUtils.showSnackbar(getView(), "That cat is already in your collection");
+        } else {
+            saveCat(cat);
         }
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused") // used by the bus
+    public void handleLoadingErrorEvent(LoadErrorEvent loadErrorEvent) {
+        UIUtils.showSnackbar(getView(), "Error while fetching cats, try again please.");
+        mLoadCatButton.setEnabled(true);
+        // show error kitty?
+        // nudge 'load' button for more "visual" info?
     }
 
     private void saveCat(Cat cat) {
