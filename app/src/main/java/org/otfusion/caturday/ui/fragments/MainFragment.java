@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Callback;
@@ -50,6 +51,9 @@ public class MainFragment extends BaseFragment {
     @BindView(R.id.favorite_cat_button)
     Button mFavoriteCatButton;
 
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
+
     private Cat mCurrentCat;
 
     public static MainFragment newInstance() {
@@ -69,6 +73,7 @@ public class MainFragment extends BaseFragment {
     }
 
     private void loadCat() {
+        mProgressBar.setVisibility(View.VISIBLE);
         mLoadCatButton.setEnabled(false);
         getCatService().getCatFromApi();
     }
@@ -145,11 +150,13 @@ public class MainFragment extends BaseFragment {
                     public void onSuccess() {
                         enableLoadButton();
                         mCatImageView.setEvent(new FavoriteCatEvent(getBus(), mCurrentCat));
+                        mProgressBar.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onError() {
                         enableLoadButton();
+                        mProgressBar.setVisibility(View.GONE);
                     }
 
                     private void enableLoadButton() {
@@ -178,6 +185,7 @@ public class MainFragment extends BaseFragment {
     public void handleLoadingErrorEvent(LoadErrorEvent loadErrorEvent) {
         UIUtils.showSnackbar(getView(), "Error while fetching cats, try again please.");
         mLoadCatButton.setEnabled(true);
+        mProgressBar.setVisibility(View.GONE);
         // show error kitty?
         // nudge 'load' button for more "visual" info?
     }

@@ -1,6 +1,6 @@
 package org.otfusion.caturday.ui.fragments;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,9 +31,9 @@ public abstract class BaseFragment extends Fragment {
     CatService catService;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        VoteCatsApplication voteCatsApplication = ApplicationUtils.getApplication(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        VoteCatsApplication voteCatsApplication = ApplicationUtils.getApplication(getActivity());
         voteCatsApplication.getApplicationComponent().inject(this);
     }
 

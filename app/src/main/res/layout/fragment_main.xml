@@ -6,27 +6,36 @@
         android:id="@+id/cat_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_below="@+id/favorite_cat_button"
         android:layout_gravity="center"
-        android:layout_below="@+id/favorite_cat_button" />
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp" />
 
     <Button
         android:id="@+id/favorite_cat_button"
-        android:layout_gravity="right|top"
         style="@style/AppTheme.MainButtons"
-        android:text="Favorite Cat"
+        android:layout_alignEnd="@+id/cat_view"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/cat_view"
-        android:layout_alignEnd="@+id/cat_view" />
+        android:layout_gravity="right|top"
+        android:text="Favorite Cat" />
 
     <Button
         android:id="@+id/load_cat_button"
         style="@style/AppTheme.MainButtons"
-        android:text="Load Cat"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="Load Cat" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:indeterminate="true"/>
 
 </RelativeLayout>
