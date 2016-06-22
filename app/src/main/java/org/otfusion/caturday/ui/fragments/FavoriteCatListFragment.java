@@ -3,8 +3,11 @@ package org.otfusion.caturday.ui.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -149,7 +152,9 @@ public class FavoriteCatListFragment extends BaseFragment {
             UIUtils.showToast("Could not retrieve the image, try saving it again.");
             return false;
         } else {
-            Intent shareImageIntent = ApplicationUtils.getShareImageIntent(Uri.parse(filePath));
+            Bitmap bmp = BitmapFactory.decodeFile(filePath);
+            String mediaStoreFilePath = FileUtils.getFilePathFromMediaStore(bmp);
+            Intent shareImageIntent = ApplicationUtils.getShareImageIntent(Uri.parse(mediaStoreFilePath));
             startActivity(Intent.createChooser(shareImageIntent, "Share a cat!"));
             return true;
         }

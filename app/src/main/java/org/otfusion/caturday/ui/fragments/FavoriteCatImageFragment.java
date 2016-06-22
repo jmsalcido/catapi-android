@@ -3,8 +3,10 @@ package org.otfusion.caturday.ui.fragments;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +22,7 @@ import org.otfusion.caturday.util.FileUtils;
 import butterknife.BindView;
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
+import it.sephiroth.android.library.imagezoom.graphics.FastBitmapDrawable;
 
 public class FavoriteCatImageFragment extends BaseFragment {
 
@@ -51,15 +54,9 @@ public class FavoriteCatImageFragment extends BaseFragment {
                 NavUtils.navigateUpFromSameTask(getActivity());
                 return true;
             case R.id.action_favorite_menu_share:
-                Cat cat = getCatFromArguments();
-                String filePath = FileUtils.getFileName(cat, true);
-                Uri fileUri;
-                if (filePath.isEmpty()) {
-                    fileUri = ApplicationUtils.getLocalBitmapUri(mImageViewTouch);
-                } else {
-                    fileUri = Uri.parse(filePath);
-                }
-                Intent shareImageIntent = ApplicationUtils.getShareImageIntent(fileUri);
+                FastBitmapDrawable bmpDrawable = (FastBitmapDrawable) mImageViewTouch.getDrawable();
+                String filePathMediaStore = FileUtils.getFilePathFromMediaStore(bmpDrawable.getBitmap());
+                Intent shareImageIntent = ApplicationUtils.getShareImageIntent(Uri.parse(filePathMediaStore));
                 startActivity(Intent.createChooser(shareImageIntent, "Share a cat!"));
                 return false;
             default:

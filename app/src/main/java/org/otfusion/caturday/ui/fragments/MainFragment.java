@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,13 +23,13 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.otfusion.caturday.R;
-import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.events.CatLoadedEvent;
 import org.otfusion.caturday.events.FavoriteCatEvent;
 import org.otfusion.caturday.events.LoadErrorEvent;
 import org.otfusion.caturday.ui.views.ImageDoubleTapView;
 import org.otfusion.caturday.util.ApplicationUtils;
+import org.otfusion.caturday.util.FileUtils;
 import org.otfusion.caturday.util.UIUtils;
 
 import butterknife.BindView;
@@ -87,9 +89,15 @@ public class MainFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_share:
-                Uri imageUri = ApplicationUtils.getLocalBitmapUri(mCatImageView);
-                Intent shareImageIntent = ApplicationUtils.getShareImageIntent(imageUri);
-                startActivity(Intent.createChooser(shareImageIntent, "Share this cat:"));
+                BitmapDrawable drawable = (BitmapDrawable) mCatImageView.getDrawable();
+                Bitmap bitmap = drawable.getBitmap();
+                if (bitmap != null) {
+                    String filePathFromMediaStore = FileUtils.getFilePathFromMediaStore(bitmap);
+                    Intent shareImageIntent = ApplicationUtils.getShareImageIntent(Uri.parse(filePathFromMediaStore));
+                    startActivity(Intent.createChooser(shareImageIntent, "Share this cat:"));
+                } else {
+                    UIUtils.showSnackbar(getView(), "Could not share cat");
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -135,15 +143,8 @@ public class MainFragment extends BaseFragment {
         return R.string.app_name;
     }
 
-    @Subscribe
-    @SuppressWarnings("unused") // used by the bus
-    public void handleCatLoadedEvent(CatLoadedEvent catLoadedEvent) {
-        mCurrentCat = catLoadedEvent.getCat();
-        loadImage();
-    }
-
     private void loadImage() {
-        Context context = getApplicationContext();
+        Context context = getContext();
         Picasso.with(context).load(mCurrentCat.getImageUrl()).into(mCatImageView,
                 new Callback() {
                     @Override
@@ -163,31 +164,6 @@ public class MainFragment extends BaseFragment {
                         mLoadCatButton.setEnabled(true);
                     }
                 });
-    }
-
-    private Context getApplicationContext() {
-        return VoteCatsApplication.getContext();
-    }
-
-    @Subscribe
-    @SuppressWarnings("unused") // used by the bus
-    public void handleFavoriteCatEvent(FavoriteCatEvent favoriteCatEvent) {
-        Cat cat = favoriteCatEvent.getCat();
-        if (getCatService().isCatInFavorites(cat)) {
-            UIUtils.showSnackbar(getView(), "That cat is already in your collection");
-        } else {
-            saveCat(cat);
-        }
-    }
-
-    @Subscribe
-    @SuppressWarnings("unused") // used by the bus
-    public void handleLoadingErrorEvent(LoadErrorEvent loadErrorEvent) {
-        UIUtils.showSnackbar(getView(), "Error while fetching cats, try again please.");
-        mLoadCatButton.setEnabled(true);
-        mProgressBar.setVisibility(View.GONE);
-        // show error kitty?
-        // nudge 'load' button for more "visual" info?
     }
 
     private void saveCat(Cat cat) {
@@ -218,5 +194,33 @@ public class MainFragment extends BaseFragment {
         }
 
         return permission == PackageManager.PERMISSION_GRANTED;
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused") // used by the bus
+    public void handleCatLoadedEvent(CatLoadedEvent catLoadedEvent) {
+        mCurrentCat = catLoadedEvent.getCat();
+        loadImage();
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused") // used by the bus
+    public void handleFavoriteCatEvent(FavoriteCatEvent favoriteCatEvent) {
+        Cat cat = favoriteCatEvent.getCat();
+        if (getCatService().isCatInFavorites(cat)) {
+            UIUtils.showSnackbar(getView(), "That cat is already in your collection");
+        } else {
+            saveCat(cat);
+        }
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused") // used by the bus
+    public void handleLoadingErrorEvent(LoadErrorEvent loadErrorEvent) {
+        UIUtils.showSnackbar(getView(), "Error while fetching cats, try again please.");
+        mLoadCatButton.setEnabled(true);
+        mProgressBar.setVisibility(View.GONE);
+        // show error kitty?
+        // nudge 'load' button for more "visual" info?
     }
 }

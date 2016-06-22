@@ -36,14 +36,7 @@ public class CatApiProvider implements CatProvider {
         catApiElementFromEndPoint.enqueue(new Callback<CatApiElement>() {
             @Override
             public void onResponse(Call<CatApiElement> call, Response<CatApiElement> response) {
-                CatApiElement catApiElement = response.body();
-                Cat cat = new Cat();
-                cat.setImageUrl(catApiElement.getUrl());
-                String catName = ApplicationUtils.generateRandomCatName(catApiElement.getId());
-                cat.setName(catName);
-                cat.setProviderId(catApiElement.getId());
-                cat.setProviderName(PROVIDER_NAME);
-
+                Cat cat = buildCatFromApi(response.body());
                 new CatLoadedEvent(cat, bus).executeEvent(PROVIDER_NAME);
             }
 
@@ -53,6 +46,16 @@ public class CatApiProvider implements CatProvider {
                 new LoadErrorEvent(bus, t.getMessage()).executeEvent("fail-" + PROVIDER_NAME);
             }
         });
+    }
+
+    private Cat buildCatFromApi(CatApiElement catApiElement) {
+        Cat cat = new Cat();
+        cat.setImageUrl(catApiElement.getUrl());
+        String catName = ApplicationUtils.generateRandomCatName(catApiElement.getId());
+        cat.setName(catName);
+        cat.setProviderId(catApiElement.getId());
+        cat.setProviderName(PROVIDER_NAME);
+        return cat;
     }
 
 }

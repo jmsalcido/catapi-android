@@ -1,6 +1,8 @@
 package org.otfusion.caturday.util;
 
+import android.graphics.Bitmap;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -27,6 +29,12 @@ public class FileUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static String getFilePathFromMediaStore(Bitmap bitmap) {
+        VoteCatsApplication context = VoteCatsApplication.getContext();
+        return MediaStore.Images.Media.insertImage(context.getContentResolver(),
+                bitmap, "share_image", "share_image");
     }
 
     @Nullable
