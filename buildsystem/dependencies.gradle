@@ -24,7 +24,8 @@ ext {
     appDependencies = [
             daggerCompiler       : "com.google.dagger:dagger-compiler:${daggerVersion}",
             dagger               : "com.google.dagger:dagger:${daggerVersion}",
-            androidSupport       : "com.android.support:appcompat-v7:${supportLibraryVersion}",
+            androidSupport       : "com.android.support:support-v13:${supportLibraryVersion}",
+            appCompatSupport     : "com.android.support:appcompat-v7:${supportLibraryVersion}",
             designSupport        : "com.android.support:design:${supportLibraryVersion}",
             recyclerViewSupport  : "com.android.support:recyclerview-v7:${supportLibraryVersion}",
             retroFit             : "com.squareup.retrofit2:retrofit:${retrofitVersion}",

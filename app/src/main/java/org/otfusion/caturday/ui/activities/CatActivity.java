@@ -1,14 +1,11 @@
 package org.otfusion.caturday.ui.activities;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.squareup.otto.Bus;
 
-import org.otfusion.caturday.R;
 import org.otfusion.caturday.application.VoteCatsApplication;
-import org.otfusion.caturday.ui.fragments.BaseFragment;
 import org.otfusion.caturday.util.ApplicationUtils;
 
 import javax.inject.Inject;
@@ -38,16 +35,7 @@ public abstract class CatActivity extends AppCompatActivity {
         setContentView(getContentLayoutId());
         ButterKnife.bind(this);
         loadUIContent();
-    }
-
-    public void replaceFragment(BaseFragment fragment, String tag, boolean addToBackStack) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
-        if (addToBackStack) {
-            fragmentTransaction.addToBackStack(null);
-        }
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
+        getSupportFragmentManager();
     }
 
     protected Bus getBus() {
