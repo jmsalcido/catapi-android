@@ -8,9 +8,10 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -132,7 +133,16 @@ public class MainFragment extends BaseFragment {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     saveCat(mCurrentCat);
                 } else {
-                    Log.d("NOT GRANTED", "NOT GRANTED MOTHERFUCKER");
+                    String message = "You will not be able to save kitties if you dont give me permissions to read/write files.";
+                    Snackbar.make(getView(), message, Snackbar.LENGTH_LONG)
+                            .setAction("Settings", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    intent.setData(Uri.parse("package:" + getContext().getPackageName()));
+                                    startActivity(intent);
+                                }
+                            }).show();
                 }
                 break;
         }
