@@ -45,6 +45,7 @@ dependencies {
     def appDependencies = rootProject.ext.appDependencies;
 
     apt appDependencies.daggerCompiler
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile     appDependencies.androidSupport
     compile     appDependencies.appCompatSupport
     compile     appDependencies.designSupport
