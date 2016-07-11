@@ -7,6 +7,11 @@ env:
 sudo: false
 cache: false
 
+branches:
+  only:
+    - master # this one should not break NEVER.
+    - development # this one can break. :)
+
 android:
   components:
     - platform-tools
