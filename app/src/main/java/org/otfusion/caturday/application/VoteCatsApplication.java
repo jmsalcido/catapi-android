@@ -2,6 +2,10 @@ package org.otfusion.caturday.application;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
+
 public class VoteCatsApplication extends Application {
 
     private ApplicationComponent applicationComponent;
@@ -10,6 +14,7 @@ public class VoteCatsApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         initializeInjector();
         app = this;
     }
