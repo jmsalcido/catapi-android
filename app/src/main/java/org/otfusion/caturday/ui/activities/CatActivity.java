@@ -25,7 +25,7 @@ public abstract class CatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Inject dependencies
-        VoteCatsApplication voteCatsApplication = ApplicationUtils.getApplication(this);
+        VoteCatsApplication voteCatsApplication = (VoteCatsApplication) getApplication();
         voteCatsApplication.getApplicationComponent().inject(this);
 
         // Otto bus registration

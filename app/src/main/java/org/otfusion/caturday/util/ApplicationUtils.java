@@ -25,11 +25,6 @@ public class ApplicationUtils {
     private ApplicationUtils() {
     }
 
-    // todo move to CatActivity.
-    public static VoteCatsApplication getApplication(Activity activity) {
-        return (VoteCatsApplication) activity.getApplication();
-    }
-
     // todo move from here
     public static Intent getShareImageIntent(Uri fileUri) {
         Intent shareIntent = new Intent();

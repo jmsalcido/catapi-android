@@ -33,7 +33,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        VoteCatsApplication voteCatsApplication = ApplicationUtils.getApplication(getActivity());
+        VoteCatsApplication voteCatsApplication = (VoteCatsApplication)getActivity().getApplication();
         voteCatsApplication.getApplicationComponent().inject(this);
     }
 

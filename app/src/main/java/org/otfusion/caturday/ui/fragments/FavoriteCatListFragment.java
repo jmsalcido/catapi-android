@@ -42,7 +42,6 @@ public class FavoriteCatListFragment extends BaseFragment {
     @BindView(R.id.list_view)
     RecyclerView mFavoritedView;
 
-    private RecyclerView.LayoutManager mFavoritedLayoutManager;
     private FavoriteCatAdapter mAdapter;
 
     private BottomSheetDialog mBottomSheetDialog;
@@ -55,10 +54,8 @@ public class FavoriteCatListFragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof  Activity) {
-            VoteCatsApplication voteCatsApplication = ApplicationUtils.getApplication((Activity)context);
-            voteCatsApplication.getApplicationComponent().inject(this);
-        }
+        VoteCatsApplication voteCatsApplication = (VoteCatsApplication) getActivity().getApplication();
+        voteCatsApplication.getApplicationComponent().inject(this);
     }
 
     @Override
@@ -79,7 +76,7 @@ public class FavoriteCatListFragment extends BaseFragment {
     }
 
     private void setupRecycleView() {
-        mFavoritedLayoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager mFavoritedLayoutManager = new LinearLayoutManager(getContext());
         mFavoritedView.setLayoutManager(mFavoritedLayoutManager);
         registerForContextMenu(mFavoritedView);
         mAdapter = new FavoriteCatAdapter();
