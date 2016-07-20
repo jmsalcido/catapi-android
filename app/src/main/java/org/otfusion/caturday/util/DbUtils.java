@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// todo should be moved to another class, utils are a bad design.
 public class DbUtils {
 
     private DbUtils() {}

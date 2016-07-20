@@ -19,25 +19,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+// todo remove this class
 public class ApplicationUtils {
 
     private ApplicationUtils() {
     }
 
+    // todo move to CatActivity.
     public static VoteCatsApplication getApplication(Activity activity) {
         return (VoteCatsApplication) activity.getApplication();
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T> T castActivityToInterface(Activity activity, Class<T> interfaceType) {
-        try {
-            return (T) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement " + interfaceType.getClass().getName() + " interface");
-        }
-    }
-
+    // todo move from here
     public static Intent getShareImageIntent(Uri fileUri) {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
@@ -46,6 +39,7 @@ public class ApplicationUtils {
         return shareIntent;
     }
 
+    // todo could have this on a CatNameGenerator class instead of static
     public static String generateRandomCatName(String suffix) {
         List<String> differentNames = Arrays.asList(
                 "aegean",

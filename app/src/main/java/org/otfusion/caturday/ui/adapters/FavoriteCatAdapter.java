@@ -1,11 +1,5 @@
 package org.otfusion.caturday.ui.adapters;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.otfusion.caturday.R;
-import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.util.FileUtils;
-import org.otfusion.caturday.util.ImageUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -59,10 +51,6 @@ public class FavoriteCatAdapter extends RecyclerView.Adapter<FavoriteCatAdapter.
 
     public List<Cat> getDataSet() {
         return dataSet;
-    }
-
-    private Context getContext() {
-        return VoteCatsApplication.getContext();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

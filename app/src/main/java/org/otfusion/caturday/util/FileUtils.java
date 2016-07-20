@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+// todo move
 public class FileUtils {
 
     private FileUtils() {
@@ -62,7 +63,7 @@ public class FileUtils {
                 return file.getPath();
             }
         }
-        return StringUtils.EMPTY;
+        return "";
     }
 
     private static File getStorageFile(Cat cat, File directory) throws IOException {
