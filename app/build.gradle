@@ -67,7 +67,7 @@ dependencies {
     compile     appDependencies.imageZoom
     provided    appDependencies.javaxAnnotation
     compile     group: 'com.squareup.retrofit2', name: 'converter-simplexml', version: appDependencies.retroFitVersion
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.0@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {
         transitive = true;
     }
 

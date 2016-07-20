@@ -3,7 +3,7 @@
     android:id="@+id/navigation_header_layout"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@drawable/side_nav_bar"
+    android:background="@color/colorPrimary"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:gravity="bottom"
     android:padding="16dp"
@@ -13,14 +13,15 @@
         android:id="@+id/navigation_header_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:layout_marginTop="@dimen/nav_header_vertical_spacing"
         android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/navigation_header"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_marginTop="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@android:color/white" />
 
 </LinearLayout>

@@ -9,7 +9,7 @@
     <string name="action_favorite">Favorite Cats</string>
 
     <!-- Main Activity -->
-    <string name="navigation_header">Caturday App</string>
+    <string name="navigation_header">Every day is caturday</string>
     <string name="navigation_first_item">Caturday</string>
     <string name="navigation_second_item">Favorited Cats</string>
 </resources>

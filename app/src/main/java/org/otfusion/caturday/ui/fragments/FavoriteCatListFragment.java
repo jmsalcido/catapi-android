@@ -2,6 +2,7 @@ package org.otfusion.caturday.ui.fragments;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -52,10 +53,12 @@ public class FavoriteCatListFragment extends BaseFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        VoteCatsApplication voteCatsApplication = ApplicationUtils.getApplication(activity);
-        voteCatsApplication.getApplicationComponent().inject(this);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(context instanceof  Activity) {
+            VoteCatsApplication voteCatsApplication = ApplicationUtils.getApplication((Activity)context);
+            voteCatsApplication.getApplicationComponent().inject(this);
+        }
     }
 
     @Override
