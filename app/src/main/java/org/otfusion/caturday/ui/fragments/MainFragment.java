@@ -29,7 +29,6 @@ import org.otfusion.caturday.events.CatLoadedEvent;
 import org.otfusion.caturday.events.FavoriteCatEvent;
 import org.otfusion.caturday.events.LoadErrorEvent;
 import org.otfusion.caturday.ui.views.ImageDoubleTapView;
-import org.otfusion.caturday.util.ApplicationUtils;
 import org.otfusion.caturday.util.FileUtils;
 import org.otfusion.caturday.util.UIUtils;
 
@@ -94,7 +93,7 @@ public class MainFragment extends BaseFragment {
                 Bitmap bitmap = drawable.getBitmap();
                 if (bitmap != null) {
                     String filePathFromMediaStore = FileUtils.getFilePathFromMediaStore(bitmap);
-                    Intent shareImageIntent = ApplicationUtils.getShareImageIntent(Uri.parse(filePathFromMediaStore));
+                    Intent shareImageIntent = obtainShareImageIntent(Uri.parse(filePathFromMediaStore));
                     startActivity(Intent.createChooser(shareImageIntent, "Share this cat:"));
                 } else {
                     UIUtils.showSnackbar(getView(), "Could not share cat");

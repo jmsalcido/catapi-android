@@ -1,21 +1,17 @@
 package org.otfusion.caturday.ui.fragments;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
 import org.otfusion.caturday.R;
@@ -25,12 +21,8 @@ import org.otfusion.caturday.ui.activities.FavoriteImageActivity;
 import org.otfusion.caturday.ui.adapters.DividerItemDecoration;
 import org.otfusion.caturday.ui.adapters.FavoriteCatAdapter;
 import org.otfusion.caturday.ui.adapters.ItemClickSupport;
-import org.otfusion.caturday.util.ApplicationUtils;
 import org.otfusion.caturday.util.FileUtils;
 import org.otfusion.caturday.util.UIUtils;
-
-import java.util.Collections;
-import java.util.List;
 
 import butterknife.BindView;
 
@@ -154,7 +146,7 @@ public class FavoriteCatListFragment extends BaseFragment {
         } else {
             Bitmap bmp = BitmapFactory.decodeFile(filePath);
             String mediaStoreFilePath = FileUtils.getFilePathFromMediaStore(bmp);
-            Intent shareImageIntent = ApplicationUtils.getShareImageIntent(Uri.parse(mediaStoreFilePath));
+            Intent shareImageIntent = obtainShareImageIntent(Uri.parse(mediaStoreFilePath));
             startActivity(Intent.createChooser(shareImageIntent, "Share a cat!"));
             return true;
         }

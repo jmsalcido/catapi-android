@@ -1,6 +1,8 @@
 package org.otfusion.caturday.ui.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,7 +18,6 @@ import com.squareup.otto.Bus;
 import org.otfusion.caturday.application.VoteCatsApplication;
 import org.otfusion.caturday.service.CatService;
 import org.otfusion.caturday.ui.activities.CatActivity;
-import org.otfusion.caturday.util.ApplicationUtils;
 
 import javax.inject.Inject;
 
@@ -74,6 +75,14 @@ public abstract class BaseFragment extends Fragment {
     protected AdapterView.AdapterContextMenuInfo getAdapterContextMenuInfo(
             ContextMenu.ContextMenuInfo menuInfo) {
         return (AdapterView.AdapterContextMenuInfo) menuInfo;
+    }
+
+    protected Intent obtainShareImageIntent(Uri fileUri) {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+        shareIntent.setType("image/jpeg");
+        return shareIntent;
     }
 
     protected Bus getBus() {

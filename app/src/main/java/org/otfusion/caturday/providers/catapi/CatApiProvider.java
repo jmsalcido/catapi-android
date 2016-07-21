@@ -8,7 +8,6 @@ import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.events.CatLoadedEvent;
 import org.otfusion.caturday.events.LoadErrorEvent;
 import org.otfusion.caturday.providers.CatProvider;
-import org.otfusion.caturday.util.ApplicationUtils;
 import org.otfusion.caturday.util.CatNameGenerator;
 
 import javax.inject.Inject;

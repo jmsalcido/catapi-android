@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.squareup.otto.Bus;
 
 import org.otfusion.caturday.application.VoteCatsApplication;
-import org.otfusion.caturday.util.ApplicationUtils;
 
 import javax.inject.Inject;
 

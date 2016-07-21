@@ -3,10 +3,8 @@ package org.otfusion.caturday.ui.fragments;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +14,6 @@ import com.squareup.picasso.Picasso;
 
 import org.otfusion.caturday.R;
 import org.otfusion.caturday.common.model.Cat;
-import org.otfusion.caturday.util.ApplicationUtils;
 import org.otfusion.caturday.util.FileUtils;
 
 import butterknife.BindView;
@@ -56,7 +53,7 @@ public class FavoriteCatImageFragment extends BaseFragment {
             case R.id.action_favorite_menu_share:
                 FastBitmapDrawable bmpDrawable = (FastBitmapDrawable) mImageViewTouch.getDrawable();
                 String filePathMediaStore = FileUtils.getFilePathFromMediaStore(bmpDrawable.getBitmap());
-                Intent shareImageIntent = ApplicationUtils.getShareImageIntent(Uri.parse(filePathMediaStore));
+                Intent shareImageIntent = obtainShareImageIntent(Uri.parse(filePathMediaStore));
                 startActivity(Intent.createChooser(shareImageIntent, "Share a cat!"));
                 return false;
             default:
