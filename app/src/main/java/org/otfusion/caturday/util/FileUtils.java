@@ -1,8 +1,6 @@
 package org.otfusion.caturday.util;
 
-import android.graphics.Bitmap;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -11,11 +9,9 @@ import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.service.images.StorageImageService;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
-// todo move
+// todo remove
 public class FileUtils {
 
     private FileUtils() {
@@ -23,25 +19,10 @@ public class FileUtils {
     }
 
     @Nullable
-    public static FileOutputStream prepareOutputStream(File file) {
-        try {
-            return new FileOutputStream(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static String getFilePathFromMediaStore(Bitmap bitmap) {
-        VoteCatsApplication context = VoteCatsApplication.getContext();
-        return MediaStore.Images.Media.insertImage(context.getContentResolver(),
-                bitmap, "share_image", "share_image");
-    }
-
-    @Nullable
+    // todo remove this CatService maybe?
     public static File getFile(Cat cat) {
         try {
-            if (isExternalStorageWritable()) {
+            if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
                 return getStorageFile(cat, Environment.getExternalStoragePublicDirectory
                         (Environment.DIRECTORY_PICTURES));
             } else {
@@ -54,6 +35,7 @@ public class FileUtils {
     }
 
     @NonNull
+    // todo remove this CatService maybe?
     public static String getFileName(Cat cat, boolean absolute) {
         File file = getFile(cat);
         if (file != null && file.exists()) {
@@ -66,6 +48,7 @@ public class FileUtils {
         return "";
     }
 
+    // todo remove this
     private static File getStorageFile(Cat cat, File directory) throws IOException {
         File folder = new File(directory, StorageImageService.FOLDER_NAME);
         if (!folder.exists()) {
@@ -74,11 +57,6 @@ public class FileUtils {
         String externalPath = folder.getPath();
         File file = new File(externalPath, cat.getName() + ".jpg");
         return file;
-    }
-
-    public static boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
 }

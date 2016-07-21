@@ -12,6 +12,7 @@ import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.util.FileUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 public class StorageTarget implements Target {
@@ -27,7 +28,7 @@ public class StorageTarget implements Target {
     @Override
     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
         File file = FileUtils.getFile(cat);
-        FileOutputStream fileOutputStream = FileUtils.prepareOutputStream(file);
+        FileOutputStream fileOutputStream = prepareOutputStream(file);
         if (file == null || fileOutputStream == null) {
             if (file != null) {
                 Log.w("CATURDAY", "Problems reading file: " + file.getAbsolutePath());
@@ -39,6 +40,15 @@ public class StorageTarget implements Target {
         SaveImageAsyncTask asyncTask = new SaveImageAsyncTask(context, bitmap, file,
                 fileOutputStream);
         asyncTask.execute();
+    }
+
+    private FileOutputStream prepareOutputStream(File file) {
+        try {
+            return new FileOutputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override

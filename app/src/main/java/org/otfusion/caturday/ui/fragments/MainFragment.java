@@ -92,7 +92,7 @@ public class MainFragment extends BaseFragment {
                 BitmapDrawable drawable = (BitmapDrawable) mCatImageView.getDrawable();
                 Bitmap bitmap = drawable.getBitmap();
                 if (bitmap != null) {
-                    String filePathFromMediaStore = FileUtils.getFilePathFromMediaStore(bitmap);
+                    String filePathFromMediaStore = getFilePathFromMediaStore(bitmap);
                     Intent shareImageIntent = obtainShareImageIntent(Uri.parse(filePathFromMediaStore));
                     startActivity(Intent.createChooser(shareImageIntent, "Share this cat:"));
                 } else {

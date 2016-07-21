@@ -141,11 +141,11 @@ public class FavoriteCatListFragment extends BaseFragment {
     private boolean handleActionShareOption(Cat cat) {
         String filePath = FileUtils.getFileName(cat, true);
         if (filePath.isEmpty()) {
-            UIUtils.showToast("Could not retrieve the image, try saving it again.");
+            UIUtils.showToast(getContext(), "Could not retrieve the image, try saving it again.");
             return false;
         } else {
             Bitmap bmp = BitmapFactory.decodeFile(filePath);
-            String mediaStoreFilePath = FileUtils.getFilePathFromMediaStore(bmp);
+            String mediaStoreFilePath = getFilePathFromMediaStore(bmp);
             Intent shareImageIntent = obtainShareImageIntent(Uri.parse(mediaStoreFilePath));
             startActivity(Intent.createChooser(shareImageIntent, "Share a cat!"));
             return true;

@@ -2,8 +2,10 @@ package org.otfusion.caturday.ui.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -34,7 +36,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        VoteCatsApplication voteCatsApplication = (VoteCatsApplication)getActivity().getApplication();
+        VoteCatsApplication voteCatsApplication = (VoteCatsApplication) getActivity().getApplication();
         voteCatsApplication.getApplicationComponent().inject(this);
     }
 
@@ -83,6 +85,11 @@ public abstract class BaseFragment extends Fragment {
         shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
         shareIntent.setType("image/jpeg");
         return shareIntent;
+    }
+
+    String getFilePathFromMediaStore(Bitmap bitmap) {
+        return MediaStore.Images.Media.insertImage(getContext().getContentResolver(),
+                bitmap, "share_image", "share_image");
     }
 
     protected Bus getBus() {

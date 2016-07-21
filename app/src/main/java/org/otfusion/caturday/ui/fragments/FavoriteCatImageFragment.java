@@ -52,7 +52,7 @@ public class FavoriteCatImageFragment extends BaseFragment {
                 return true;
             case R.id.action_favorite_menu_share:
                 FastBitmapDrawable bmpDrawable = (FastBitmapDrawable) mImageViewTouch.getDrawable();
-                String filePathMediaStore = FileUtils.getFilePathFromMediaStore(bmpDrawable.getBitmap());
+                String filePathMediaStore = getFilePathFromMediaStore(bmpDrawable.getBitmap());
                 Intent shareImageIntent = obtainShareImageIntent(Uri.parse(filePathMediaStore));
                 startActivity(Intent.createChooser(shareImageIntent, "Share a cat!"));
                 return false;
