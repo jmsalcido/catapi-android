@@ -64,7 +64,7 @@ public abstract class BaseFragment extends Fragment {
         getBus().unregister(this);
     }
 
-    protected CatActivity getCatActivity() {
+    CatActivity getCatActivity() {
         return (CatActivity) getActivity();
     }
 
@@ -77,7 +77,7 @@ public abstract class BaseFragment extends Fragment {
         return (AdapterView.AdapterContextMenuInfo) menuInfo;
     }
 
-    protected Intent obtainShareImageIntent(Uri fileUri) {
+    Intent obtainShareImageIntent(Uri fileUri) {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
@@ -89,7 +89,7 @@ public abstract class BaseFragment extends Fragment {
         return bus;
     }
 
-    protected CatService getCatService() {
+    CatService getCatService() {
         return catService;
     }
 

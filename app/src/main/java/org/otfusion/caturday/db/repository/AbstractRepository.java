@@ -1,21 +1,16 @@
-package org.otfusion.caturday.util;
+package org.otfusion.caturday.db.repository;
 
 import android.database.Cursor;
 import android.support.annotation.NonNull;
-
-import org.otfusion.caturday.db.repository.DbBuilder;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// todo should be moved to another class, utils are a bad design.
-public class DbUtils {
-
-    private DbUtils() {}
+abstract class AbstractRepository {
 
     @NonNull
-    public static <T> List<T> selectList(Cursor cursor, DbBuilder<T> dbBuilder) {
+    <T> List<T> selectList(Cursor cursor, DbBuilder<T> dbBuilder) {
         if (isCursorEmpty(cursor)) {
             return Collections.emptyList();
         }
@@ -28,11 +23,11 @@ public class DbUtils {
         return list;
     }
 
-    public static boolean isCursorEmpty(Cursor cursor) {
+    private boolean isCursorEmpty(Cursor cursor) {
         return cursor == null || cursor.getCount() <= 0;
     }
 
-    public static <T> T selectObject(Cursor cursor, DbBuilder<T> dbBuilder) {
+    <T> T selectObject(Cursor cursor, DbBuilder<T> dbBuilder) {
         if (isCursorEmpty(cursor)) {
             return null;
         }
@@ -41,11 +36,12 @@ public class DbUtils {
         return object;
     }
 
-    public static String getString(Cursor cursor, String columnName) {
+    String getString(Cursor cursor, String columnName) {
         return cursor.getString(cursor.getColumnIndex(columnName));
     }
 
-    public static long getLong(Cursor cursor, String columnName) {
+    long getLong(Cursor cursor, String columnName) {
         return cursor.getLong(cursor.getColumnIndex(columnName));
     }
+
 }

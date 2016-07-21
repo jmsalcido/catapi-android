@@ -6,7 +6,6 @@ import android.widget.Toast;
 
 import org.otfusion.caturday.application.VoteCatsApplication;
 
-// todo remove this
 public class UIUtils {
 
     private static void showSnackbar(View view, String text, boolean longDuration) {
