@@ -9,6 +9,7 @@ import org.otfusion.caturday.events.CatLoadedEvent;
 import org.otfusion.caturday.events.LoadErrorEvent;
 import org.otfusion.caturday.providers.CatProvider;
 import org.otfusion.caturday.util.ApplicationUtils;
+import org.otfusion.caturday.util.CatNameGenerator;
 
 import javax.inject.Inject;
 
@@ -21,13 +22,15 @@ public class CatApiProvider implements CatProvider {
     public static final String PROVIDER_NAME = "catapi";
     public static final String ENDPOINT = "http://thecatapi.com";
 
-    private CatApiService catApiService;
-    private Bus bus;
+    private final CatApiService catApiService;
+    private final Bus bus;
+    private final CatNameGenerator catNameGenerator;
 
     @Inject
-    public CatApiProvider(CatApiService catApiService, Bus bus) {
+    public CatApiProvider(CatApiService catApiService, Bus bus, CatNameGenerator catNameGenerator) {
         this.catApiService = catApiService;
         this.bus = bus;
+        this.catNameGenerator = catNameGenerator;
     }
 
     @Override
@@ -51,7 +54,7 @@ public class CatApiProvider implements CatProvider {
     private Cat buildCatFromApi(CatApiElement catApiElement) {
         Cat cat = new Cat();
         cat.setImageUrl(catApiElement.getUrl());
-        String catName = ApplicationUtils.generateRandomCatName(catApiElement.getId());
+        String catName = catNameGenerator.generateName(catApiElement.getId());
         cat.setName(catName);
         cat.setProviderId(catApiElement.getId());
         cat.setProviderName(PROVIDER_NAME);

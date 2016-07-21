@@ -11,6 +11,8 @@ import org.otfusion.caturday.service.CatService;
 import org.otfusion.caturday.service.CatServiceImpl;
 import org.otfusion.caturday.service.images.StorageImageService;
 import org.otfusion.caturday.service.images.picasso.StorageImagePicassoServiceImpl;
+import org.otfusion.caturday.util.CatNameGenerator;
+import org.otfusion.caturday.util.RandomCatNameGenerator;
 
 import javax.inject.Singleton;
 
@@ -49,8 +51,14 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    public CatApiProvider provideCatApiProvider(CatApiService catApiService, Bus bus) {
-        return new CatApiProvider(catApiService, bus);
+    public CatApiProvider provideCatApiProvider(CatApiService catApiService, Bus bus, CatNameGenerator catNameGenerator) {
+        return new CatApiProvider(catApiService, bus, catNameGenerator);
+    }
+
+    @Provides
+    @Singleton
+    public CatNameGenerator provideCatNameGenerator() {
+        return new RandomCatNameGenerator();
     }
 
     @Provides
