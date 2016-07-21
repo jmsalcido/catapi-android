@@ -14,7 +14,6 @@ import com.squareup.picasso.Picasso;
 
 import org.otfusion.caturday.R;
 import org.otfusion.caturday.common.model.Cat;
-import org.otfusion.caturday.util.FileUtils;
 
 import butterknife.BindView;
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
@@ -32,7 +31,7 @@ public class FavoriteCatImageFragment extends BaseFragment {
         FavoriteCatImageFragment fragment = new FavoriteCatImageFragment();
         Bundle args = new Bundle();
 
-        // if the object starts to grow, lets use Parcelable.
+        // if the object starts to grow, lets use Parcelable or JSON.
         args.putSerializable("cat", cat);
         fragment.setArguments(args);
         return fragment;
@@ -76,7 +75,7 @@ public class FavoriteCatImageFragment extends BaseFragment {
     public void loadUIContent() {
         Cat cat = getCatFromArguments();
         mImageViewTouch.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
-        String filePath = FileUtils.getFileName(cat, true);
+        String filePath = getCatService().getCatFileName(cat, true);
         if (filePath.isEmpty()) {
             Picasso.with(getActivity()).load(cat.getImageUrl()).into(mImageViewTouch);
         } else {

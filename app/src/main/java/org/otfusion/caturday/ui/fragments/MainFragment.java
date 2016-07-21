@@ -29,7 +29,6 @@ import org.otfusion.caturday.events.CatLoadedEvent;
 import org.otfusion.caturday.events.FavoriteCatEvent;
 import org.otfusion.caturday.events.LoadErrorEvent;
 import org.otfusion.caturday.ui.views.ImageDoubleTapView;
-import org.otfusion.caturday.util.FileUtils;
 import org.otfusion.caturday.util.UIUtils;
 
 import butterknife.BindView;

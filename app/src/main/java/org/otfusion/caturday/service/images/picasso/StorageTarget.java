@@ -9,25 +9,25 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import org.otfusion.caturday.common.model.Cat;
-import org.otfusion.caturday.util.FileUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-public class StorageTarget implements Target {
+class StorageTarget implements Target {
 
     private final Cat cat;
     private final Context context;
+    private final File file;
 
-    public StorageTarget(Cat cat, Context context) {
+    StorageTarget(Cat cat, Context context, File file) {
         this.cat = cat;
         this.context = context;
+        this.file = file;
     }
 
     @Override
     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-        File file = FileUtils.getFile(cat);
         FileOutputStream fileOutputStream = prepareOutputStream(file);
         if (file == null || fileOutputStream == null) {
             if (file != null) {

@@ -7,8 +7,10 @@ import com.squareup.otto.Bus;
 import org.otfusion.caturday.db.repository.FavoriteCatRepository;
 import org.otfusion.caturday.providers.catapi.CatApiProvider;
 import org.otfusion.caturday.providers.catapi.CatApiService;
+import org.otfusion.caturday.service.AndroidFileService;
 import org.otfusion.caturday.service.CatService;
 import org.otfusion.caturday.service.CatServiceImpl;
+import org.otfusion.caturday.service.FileService;
 import org.otfusion.caturday.service.images.StorageImageService;
 import org.otfusion.caturday.service.images.picasso.StorageImagePicassoServiceImpl;
 import org.otfusion.caturday.util.CatNameGenerator;
@@ -39,14 +41,16 @@ public class ApplicationModule {
     @Provides
     @Singleton
     public CatService provideCatService(CatApiProvider catApiProvider,
-                                        FavoriteCatRepository favoriteCatRepository, StorageImageService storageImageService) {
-        return new CatServiceImpl(catApiProvider, favoriteCatRepository, storageImageService);
+                                        FavoriteCatRepository favoriteCatRepository,
+                                        StorageImageService storageImageService,
+                                        FileService fileService) {
+        return new CatServiceImpl(catApiProvider, favoriteCatRepository, storageImageService, fileService);
     }
 
     @Provides
     @Singleton
-    public StorageImageService provideStorageImageService(Context context) {
-        return new StorageImagePicassoServiceImpl(context);
+    public StorageImageService provideStorageImageService(FileService fileService) {
+        return new StorageImagePicassoServiceImpl(application, fileService);
     }
 
     @Provides
@@ -57,14 +61,20 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
+    public FileService provideFileService() {
+        return new AndroidFileService(application);
+    }
+
+    @Provides
+    @Singleton
     public CatNameGenerator provideCatNameGenerator() {
         return new RandomCatNameGenerator();
     }
 
     @Provides
     @Singleton
-    public FavoriteCatRepository provideFavoriteCatRepository(Context context) {
-        return new FavoriteCatRepository(context);
+    public FavoriteCatRepository provideFavoriteCatRepository() {
+        return new FavoriteCatRepository(application);
     }
 
     @Provides

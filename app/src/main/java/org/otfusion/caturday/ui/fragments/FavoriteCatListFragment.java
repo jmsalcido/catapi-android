@@ -21,7 +21,6 @@ import org.otfusion.caturday.ui.activities.FavoriteImageActivity;
 import org.otfusion.caturday.ui.adapters.DividerItemDecoration;
 import org.otfusion.caturday.ui.adapters.FavoriteCatAdapter;
 import org.otfusion.caturday.ui.adapters.ItemClickSupport;
-import org.otfusion.caturday.util.FileUtils;
 import org.otfusion.caturday.util.UIUtils;
 
 import butterknife.BindView;
@@ -139,7 +138,7 @@ public class FavoriteCatListFragment extends BaseFragment {
     }
 
     private boolean handleActionShareOption(Cat cat) {
-        String filePath = FileUtils.getFileName(cat, true);
+        String filePath = getCatService().getCatFileName(cat, true);
         if (filePath.isEmpty()) {
             UIUtils.showToast(getContext(), "Could not retrieve the image, try saving it again.");
             return false;

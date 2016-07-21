@@ -7,6 +7,7 @@ import org.otfusion.caturday.db.repository.FavoriteCatRepository;
 import org.otfusion.caturday.providers.CatProvider;
 import org.otfusion.caturday.service.images.StorageImageService;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -17,13 +18,15 @@ public class CatServiceImpl implements CatService {
     private CatProvider catProvider;
     private final FavoriteCatRepository favoriteCatRepository;
     private final StorageImageService storageImageService;
+    private final FileService fileService;
 
     @Inject
     public CatServiceImpl(CatProvider catProvider, FavoriteCatRepository
-            favoriteCatRepository, StorageImageService storageImageService) {
+            favoriteCatRepository, StorageImageService storageImageService, FileService fileService) {
         this.catProvider = catProvider;
         this.favoriteCatRepository = favoriteCatRepository;
         this.storageImageService = storageImageService;
+        this.fileService = fileService;
     }
 
     @Override
@@ -53,5 +56,14 @@ public class CatServiceImpl implements CatService {
     @Override
     public List<Cat> getFavoriteCats() {
         return favoriteCatRepository.getFavoriteCats();
+    }
+
+    @Override
+    public String getCatFileName(Cat cat, boolean absolute) {
+        File file = fileService.getFile(cat);
+        if(!fileService.doesFileExist(file)) {
+            return "";
+        }
+        return absolute ? file.getAbsolutePath() : file.getPath();
     }
 }
