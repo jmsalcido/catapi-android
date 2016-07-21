@@ -1,8 +1,15 @@
 <resources>
     <string name="app_name">Caturday</string>
-    <string name="action_main_goto_favorite">Favorite Cats</string>
     <string name="title_activity_favorite">Favorites</string>
 
-    <string name="action_favorite_context_delete">Delete</string>
-    <string name="action_favorite_context_share">Share</string>
+    <!-- Actions -->
+    <string name="action_delete">Delete</string>
+    <string name="action_share">Share</string>
+    <string name="action_load_coat">Load Coat</string>
+    <string name="action_favorite">Favorite Cats</string>
+
+    <!-- Main Activity -->
+    <string name="navigation_header">Every day is caturday</string>
+    <string name="navigation_first_item">Caturday</string>
+    <string name="navigation_second_item">Favorited Cats</string>
 </resources>

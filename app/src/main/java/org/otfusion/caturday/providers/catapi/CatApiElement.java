@@ -7,6 +7,9 @@ import org.simpleframework.xml.Root;
 @Root(name = "response")
 public class CatApiElement {
 
+    public CatApiElement() {
+    }
+
     @Element(name = "image")
     @Path("data/images/")
     private Image image;

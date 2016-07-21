@@ -3,6 +3,7 @@ package org.otfusion.caturday.service.images.picasso;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
+import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
 
 import java.io.File;
@@ -15,6 +16,7 @@ public class SaveImageAsyncTask extends AsyncTask<Void, Void, Void> {
     private final Bitmap bitmap;
     private final File file;
     private final FileOutputStream fileOutputStream;
+    private Bitmap thumbnail;
 
     public SaveImageAsyncTask(Context context, Bitmap bitmap, File file, FileOutputStream fileOutputStream) {
         this.context = context;
@@ -27,6 +29,7 @@ public class SaveImageAsyncTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+//        thumbnail = ThumbnailUtils.extractThumbnail(bitmap, 64, 64);
         return null;
     }
 

@@ -1,10 +1,11 @@
 package org.otfusion.caturday.providers.catapi;
 
-import retrofit.http.GET;
+import retrofit2.Call;
+import retrofit2.http.GET;
 
 public interface CatApiService {
 
     @GET("/api/images/get?format=xml")
-    public CatApiElement getCatApiElementFromEndPoint();
+    Call<CatApiElement> getCatApiElementFromEndPoint();
 
 }

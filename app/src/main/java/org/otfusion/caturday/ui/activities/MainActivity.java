@@ -1,43 +1,44 @@
 package org.otfusion.caturday.ui.activities;
 
-import android.content.Intent;
+import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-
-import com.squareup.otto.Subscribe;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import org.otfusion.caturday.R;
-import org.otfusion.caturday.common.model.Cat;
-import org.otfusion.caturday.events.CatLoadedEvent;
-import org.otfusion.caturday.events.FavoriteCatEvent;
-import org.otfusion.caturday.ui.gestures.GestureDoubleTap;
-import org.otfusion.caturday.util.UIUtils;
+import org.otfusion.caturday.ui.fragments.BaseFragment;
+import org.otfusion.caturday.ui.fragments.FavoriteCatListFragment;
+import org.otfusion.caturday.ui.fragments.FragmentFactory;
+import org.otfusion.caturday.ui.fragments.MainFragment;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 public class MainActivity extends CatActivity {
 
-    @Bind(R.id.cat_view)
-    ImageView mCatImageView;
+    public static final String NAVIGATION_DRAWER_STATE = "navigation_drawer_state";
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
 
-    @Bind(R.id.load_cat_button)
-    Button mLoadCatButton;
+    @BindView(R.id.navigation)
+    NavigationView mNavigationView;
 
-    @Bind(R.id.favorite_cat_button)
-    Button mFavoriteCatButton;
-
-    @Bind(R.id.main_toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    private Cat mCurrentCat;
+    ActionBarDrawerToggle mActionBarDrawerToggle;
+    int mSelectedNavigationIndex = -1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        selectDrawerOption(savedInstanceState);
+    }
 
     @Override
     protected int getContentLayoutId() {
@@ -45,103 +46,107 @@ public class MainActivity extends CatActivity {
     }
 
     @Override
-    protected void loadContent() {
-        loadCat();
-        mLoadCatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadCat();
-            }
-        });
-
-        mFavoriteCatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FavoriteCatEvent event = new FavoriteCatEvent(getBus(), mCurrentCat);
-                event.executeEvent("button");
-            }
-        });
-
-        final GestureDoubleTap<FavoriteCatEvent> doubleTapGesture = new GestureDoubleTap<>();
-        mCatImageView.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                doubleTapGesture.setEvent(new FavoriteCatEvent(getBus(), mCurrentCat));
-                GestureDetector gestureDetector = new GestureDetector(getApplicationContext(),
-                        doubleTapGesture);
-                return gestureDetector.onTouchEvent(motionEvent);
-            }
-        });
-
+    protected void loadUIContent() {
         setSupportActionBar(mToolbar);
-    }
-
-    private void loadCat() {
-        mLoadCatButton.setEnabled(false);
-        getCatService().getCatFromApi();
+        setupDrawer();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(NAVIGATION_DRAWER_STATE, mSelectedNavigationIndex);
+        super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_main_goto_favorite) {
-            Intent intent = new Intent(this, FavoriteActivity.class);
-            startActivity(intent);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Subscribe
-    @SuppressWarnings("unused") // used by the bus
-    public void handleCatLoadedEvent(CatLoadedEvent catLoadedEvent) {
-        mCurrentCat = catLoadedEvent.getCat();
-        loadImage();
-    }
-
-    private void loadImage() {
-        Picasso.with(getApplicationContext()).load(mCurrentCat.getImageUrl()).into(mCatImageView,
-                new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        enableLoadButton();
-                    }
-
-                    @Override
-                    public void onError() {
-                        enableLoadButton();
-                    }
-
-                    private void enableLoadButton() {
-                        mLoadCatButton.setEnabled(true);
-                    }
-                });
-    }
-
-    @Subscribe
-    @SuppressWarnings("unused") // used by the bus
-    public void handleFavoriteCatEvent(FavoriteCatEvent favoriteCatEvent) {
-        Cat cat = favoriteCatEvent.getCat();
-        if (cat != null) {
-            if (getCatService().isCatInFavorites(cat)) {
-                UIUtils.showToast("That cat is already in your collection");
-            } else {
-                getCatService().saveCatToFavorites(cat);
-                loadCat();
-                UIUtils.showToast("Saving that right Meow!");
+    private void setupDrawer() {
+        mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
+                R.string.app_name, R.string.app_name);
+        mDrawerLayout.addDrawerListener(mActionBarDrawerToggle);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                selectDrawerItem(item);
+                return true;
             }
-        } else {
-            UIUtils.showToast("There is no cat there.");
+        });
+
+        mActionBarDrawerToggle.syncState();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Menu menu = mNavigationView.getMenu();
+        for(int i = 0; i < menu.size(); i++) {
+            if(menu.getItem(i).isChecked()) {
+                mSelectedNavigationIndex = i;
+                break;
+            }
         }
     }
+
+    private void selectDrawerOption(Bundle savedInstanceState) {
+        Menu menu = mNavigationView.getMenu();
+        MenuItem item;
+        if (savedInstanceState != null) {
+            int index = savedInstanceState.getInt(NAVIGATION_DRAWER_STATE);
+            item = menu.getItem(index);
+        } else if(mSelectedNavigationIndex >= 0) {
+                item = menu.getItem(mSelectedNavigationIndex);
+        } else {
+            item = menu.findItem(R.id.navigation_first);
+        }
+        selectDrawerItem(item);
+    }
+
+    private void selectDrawerItem(MenuItem menuItem) {
+        String tag;
+        switch (menuItem.getItemId()) {
+            case R.id.navigation_first:
+                tag = MainFragment.FRAGMENT_TAG;
+                break;
+            case R.id.navigation_second:
+                tag = FavoriteCatListFragment.FRAGMENT_TAG;
+                break;
+            default:
+                tag = MainFragment.FRAGMENT_TAG;
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        BaseFragment fragment = (BaseFragment) fragmentManager.findFragmentByTag(tag);
+        if (fragment == null) {
+            fragment =  FragmentFactory.createFragment(tag);
+        }
+
+        if(MainFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
+            if (!MainFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() == 0) {
+                fragmentTransaction.addToBackStack(tag);
+            }
+            fragmentTransaction.commit();
+        }
+        menuItem.setChecked(true);
+        setTitle(menuItem.getTitle());
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+            return;
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+            selectDrawerItem(mNavigationView.getMenu().findItem(R.id.navigation_first));
+            return;
+        }
+
+        super.onBackPressed();
+    }
+
 }

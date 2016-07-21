@@ -1,4 +1,7 @@
-# catapi-android
+# catapi-android [![Build Status](https://travis-ci.org/jmsalcido/catapi-android.svg?branch=development)](https://travis-ci.org/jmsalcido/catapi-android)
+
+[![Join the chat at https://gitter.im/jmsalcido/catapi-android](https://badges.gitter.im/jmsalcido/catapi-android.svg)](https://gitter.im/jmsalcido/catapi-android?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Just a small project to learn how does dependency injection and other frameworks work within Android, the idea came from the pair programming excercise at @Nearsoft for Android devs.
 
 Using almost everything from square io to build this.

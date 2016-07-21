@@ -7,36 +7,36 @@ allprojects {
 ext {
 
     // base urls
-    okHttpUrl = "com.squareup.okhttp:okhttp"
+    okHttpUrl = "com.squareup.okhttp3:okhttp"
 
     // Dependencies versions
     daggerVersion = '2.0'
-    retrofitVersion = '1.9.0'
-    okHttpVersion = '2.4.0'
-    picassoVersion = '2.5.0'
+    retrofitVersion = '2.0.2'
+    okHttpVersion = '3.4.1'
+    picassoVersion = '2.5.2'
     ottoVersion = '1.3.6'
-    butterKnifeVersion = '7.0.1'
-    supportLibraryVersion = '22.2.1'
-    simpleFmwVersion = "2.7.1"
-    simpleXmlConverterVersion = "1.1"
+    butterKnifeVersion = '8.0.1'
+    supportLibraryVersion = '23.4.0'
     javaxAnnotationVersion = '10.0-b28'
-    reflectionVersion = "0.9.10"
+    imageZoomVersion = "+" // from README.md of https://github.com/sephiroth74/ImageViewZoom
 
     // Dependencies per project
     appDependencies = [
             daggerCompiler       : "com.google.dagger:dagger-compiler:${daggerVersion}",
             dagger               : "com.google.dagger:dagger:${daggerVersion}",
-            androidSupport       : "com.android.support:appcompat-v7:${supportLibraryVersion}",
+            androidSupport       : "com.android.support:support-v13:${supportLibraryVersion}",
+            appCompatSupport     : "com.android.support:appcompat-v7:${supportLibraryVersion}",
             designSupport        : "com.android.support:design:${supportLibraryVersion}",
-            simpleFmw            : "org.simpleframework:simple-xml:${simpleFmwVersion}",
-            simpleFmwXmlConverter: "com.mobprofs:retrofit-simplexmlconverter:${simpleXmlConverterVersion}",
-            retroFit             : "com.squareup.retrofit:retrofit:${retrofitVersion}",
+            recyclerViewSupport  : "com.android.support:recyclerview-v7:${supportLibraryVersion}",
+            retroFit             : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+            retroFitVersion      : "${retrofitVersion}",
             okHttp               : "${okHttpUrl}:${okHttpVersion}",
             okHttpConnection     : "${okHttpUrl}-urlconnection:${okHttpVersion}",
             picasso              : "com.squareup.picasso:picasso:${picassoVersion}",
             otto                 : "com.squareup:otto:${ottoVersion}",
             butterknife          : "com.jakewharton:butterknife:${butterKnifeVersion}",
+            butterknifeCompiler  : "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
             javaxAnnotation      : "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
-            reflection           : "org.reflections:reflections:${reflectionVersion}"
+            imageZoom            : "it.sephiroth.android.library.imagezoom:imagezoom:${imageZoomVersion}",
     ]
 }

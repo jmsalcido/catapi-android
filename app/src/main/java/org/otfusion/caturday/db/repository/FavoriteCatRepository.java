@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 
 import org.otfusion.caturday.common.model.Cat;
 import org.otfusion.caturday.migrations.DatabaseTableName;
-import org.otfusion.caturday.util.DbUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,7 +16,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-public class FavoriteCatRepository {
+public class FavoriteCatRepository extends AbstractRepository {
 
     private final Context context;
 
@@ -41,42 +40,44 @@ public class FavoriteCatRepository {
 
     public Map<String, Cat> getFavoriteCatsMap() {
         Cursor query = readDatabaseCursor();
-        final Map<String, Cat> cats =
-                DbUtils.selectObject(query, new DbBuilder<Map<String, Cat>>() {
-                    @Override
-                    public Map<String, Cat> buildFromCursor(Cursor cursor) {
-                        Map<String, Cat> result = new HashMap<>();
-                        while (cursor.moveToNext()) {
-                            Cat cat = buildCatFromCursor(cursor);
-                            result.put(cat.getProviderId(), cat);
-                        }
-                        return result;
-                    }
-                });
+        final Map<String, Cat> cats = selectObject(query, new DbBuilder<Map<String, Cat>>() {
+            @Override
+            public Map<String, Cat> buildFromCursor(Cursor cursor) {
+                Map<String, Cat> result = new HashMap<>();
+                while (cursor.moveToNext()) {
+                    Cat cat = buildCatFromCursor(cursor);
+                    result.put(cat.getProviderId(), cat);
+                }
+                return result;
+            }
+        });
         if (cats == null) {
             return Collections.emptyMap();
         }
+        query.close();
         return cats;
     }
 
     @NonNull
     public List<Cat> getFavoriteCats() {
         Cursor query = readDatabaseCursor();
-        return DbUtils.selectList(query, new DbBuilder<Cat>() {
+        List<Cat> cats = selectList(query, new DbBuilder<Cat>() {
             @Override
             public Cat buildFromCursor(Cursor cursor) {
                 return buildCatFromCursor(cursor);
             }
         });
+        query.close();
+        return cats;
     }
 
     private Cat buildCatFromCursor(Cursor cursor) {
         Cat cat = new Cat();
-        cat.setId(DbUtils.getLong(cursor, "id"));
-        cat.setImageUrl(DbUtils.getString(cursor, "image_url"));
-        cat.setName(DbUtils.getString(cursor, "name"));
-        cat.setProviderId(DbUtils.getString(cursor, "provider_id"));
-        cat.setProviderName(DbUtils.getString(cursor, "provider_name"));
+        cat.setId(getLong(cursor, "id"));
+        cat.setImageUrl(getString(cursor, "image_url"));
+        cat.setName(getString(cursor, "name"));
+        cat.setProviderId(getString(cursor, "provider_id"));
+        cat.setProviderName(getString(cursor, "provider_name"));
         return cat;
     }
 

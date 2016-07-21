@@ -1,0 +1,43 @@
+language: android
+
+env:
+  matrix:
+    - ANDROID_TARGET=android-23 ANDROID_ABI=armeabi-v7a ADB_INSTALL_TIMEOUT=8
+
+sudo: false
+cache: false
+
+branches:
+  only:
+    - master # this one should not break NEVER.
+    - development # this one can break. :)
+
+android:
+  components:
+    - platform-tools
+    - tools
+    - build-tools-23.0.1
+    - android-23
+    - extra
+    - sys-img-armeabi-v7a-android-23
+before_script:
+  - echo no | android create avd --force -n test --target $ANDROID_TARGET --abi $ANDROID_ABI
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - android-wait-for-emulator
+script:
+  - ./gradlew check -PdisablePreDex --continue --stacktrace
+  - adb shell input keyevent 82 &
+  - adb devices
+  - ./gradlew connectedAndroidTest -PdisablePreDex --continue --stacktrace
+after_failure:
+  - wget http://imgur.com/tools/imgurbash.sh
+  - chmod a+x imgurbash.sh
+  - adb shell screencap -p | sed 's/\r$//' > screen.png
+  - ./imgurbash.sh screen.png
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/7ea91cba42123d5aeeb6
+    on_success: change # options: [always|never|change] default: always
+    on_failure: always # options: [always|never|change] default: always
+    on_start: never    # options: [always|never|change] default: always

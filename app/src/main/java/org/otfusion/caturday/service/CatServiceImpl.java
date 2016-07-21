@@ -2,14 +2,12 @@ package org.otfusion.caturday.service;
 
 import android.support.annotation.NonNull;
 
-import com.squareup.otto.Bus;
-
-import org.otfusion.caturday.db.repository.FavoriteCatRepository;
 import org.otfusion.caturday.common.model.Cat;
-import org.otfusion.caturday.providers.catapi.CatApiAsyncTask;
-import org.otfusion.caturday.providers.catapi.CatApiProvider;
+import org.otfusion.caturday.db.repository.FavoriteCatRepository;
+import org.otfusion.caturday.providers.CatProvider;
 import org.otfusion.caturday.service.images.StorageImageService;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -17,24 +15,23 @@ import javax.inject.Inject;
 
 public class CatServiceImpl implements CatService {
 
-    private Bus bus;
-    private CatApiProvider catApiProvider;
+    private CatProvider catProvider;
     private final FavoriteCatRepository favoriteCatRepository;
     private final StorageImageService storageImageService;
+    private final FileService fileService;
 
     @Inject
-    public CatServiceImpl(Bus bus, CatApiProvider catApiProvider, FavoriteCatRepository
-            favoriteCatRepository, StorageImageService storageImageService) {
-        this.bus = bus;
-        this.catApiProvider = catApiProvider;
+    public CatServiceImpl(CatProvider catProvider, FavoriteCatRepository
+            favoriteCatRepository, StorageImageService storageImageService, FileService fileService) {
+        this.catProvider = catProvider;
         this.favoriteCatRepository = favoriteCatRepository;
         this.storageImageService = storageImageService;
+        this.fileService = fileService;
     }
 
     @Override
     public void getCatFromApi() {
-        CatApiAsyncTask catApiAsyncTask = new CatApiAsyncTask(bus, catApiProvider);
-        catApiAsyncTask.execute();
+        catProvider.loadCatFromProvider();
     }
 
     @Override
@@ -59,5 +56,14 @@ public class CatServiceImpl implements CatService {
     @Override
     public List<Cat> getFavoriteCats() {
         return favoriteCatRepository.getFavoriteCats();
+    }
+
+    @Override
+    public String getCatFileName(Cat cat, boolean absolute) {
+        File file = fileService.getFile(cat);
+        if(!fileService.doesFileExist(file)) {
+            return "";
+        }
+        return absolute ? file.getAbsolutePath() : file.getPath();
     }
 }

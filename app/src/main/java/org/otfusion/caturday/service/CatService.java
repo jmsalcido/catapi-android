@@ -16,4 +16,6 @@ public interface CatService {
 
     List<Cat> getFavoriteCats();
 
+    String getCatFileName(Cat cat, boolean absolute);
+
 }

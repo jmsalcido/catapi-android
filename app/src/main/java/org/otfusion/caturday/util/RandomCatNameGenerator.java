@@ -4,12 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class ApplicationUtils {
+public class RandomCatNameGenerator implements CatNameGenerator {
 
-    private ApplicationUtils() {
-    }
-
-    public static String generateRandomCatName(String suffix) {
+    @Override
+    public String generateName(String suffix) {
         List<String> differentNames = Arrays.asList(
                 "aegean",
                 "bambino",
@@ -35,5 +33,4 @@ public class ApplicationUtils {
         String prefix = differentNames.get(randomInt) + "_";
         return prefix + suffix;
     }
-
 }
