@@ -25,9 +25,10 @@ before_script:
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
 script:
-  - ./gradlew check -PdisablePreDex --continue --stacktrace
-  - adb shell input keyevent 82 &
   - adb devices
+  - ./gradlew check -PdisablePreDex --continue --stacktrace
+  - ./gradlew test --PdisablePreDex --continue --stacktrace
+  - adb shell input keyevent 82 &
   - ./gradlew connectedAndroidTest -PdisablePreDex --continue --stacktrace
 after_failure:
   - wget http://imgur.com/tools/imgurbash.sh

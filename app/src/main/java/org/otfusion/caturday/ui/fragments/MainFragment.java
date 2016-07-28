@@ -24,12 +24,12 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.otfusion.caturday.R;
-import org.otfusion.caturday.common.model.Cat;
-import org.otfusion.caturday.events.CatLoadedEvent;
-import org.otfusion.caturday.events.FavoriteCatEvent;
-import org.otfusion.caturday.events.LoadErrorEvent;
-import org.otfusion.caturday.ui.views.ImageDoubleTapView;
-import org.otfusion.caturday.util.UIUtils;
+import org.otfusion.caturday.common.domain.Cat;
+import org.otfusion.caturday.view.common.events.CatLoadedEvent;
+import org.otfusion.caturday.view.common.events.FavoriteCatEvent;
+import org.otfusion.caturday.view.common.events.LoadErrorEvent;
+import org.otfusion.caturday.view.common.customviews.ImageDoubleTapView;
+import org.otfusion.caturday.view.common.util.UIUtils;
 
 import butterknife.BindView;
 

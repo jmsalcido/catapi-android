@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import com.squareup.picasso.Picasso;
 
 import org.otfusion.caturday.R;
-import org.otfusion.caturday.common.model.Cat;
+import org.otfusion.caturday.common.domain.Cat;
 
 import butterknife.BindView;
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
@@ -30,8 +30,6 @@ public class FavoriteCatImageFragment extends BaseFragment {
     public static FavoriteCatImageFragment newInstance(Cat cat) {
         FavoriteCatImageFragment fragment = new FavoriteCatImageFragment();
         Bundle args = new Bundle();
-
-        // if the object starts to grow, lets use Parcelable or JSON.
         args.putSerializable("cat", cat);
         fragment.setArguments(args);
         return fragment;

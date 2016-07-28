@@ -60,7 +60,7 @@
 -keep class org.simpleframework.xml.** { *; }
 -keep class org.simpleframework.xml.core.** { *; }
 -keep class org.simpleframework.xml.util.** { *; }
--keep class org.otfusion.caturday.providers.catapi.** { *; }
+-keep class org.otfusion.caturday.model.providers.catapi.** { *; }
 
 -keepattributes ElementList, Root
 

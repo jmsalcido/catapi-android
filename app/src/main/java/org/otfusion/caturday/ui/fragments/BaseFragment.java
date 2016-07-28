@@ -17,9 +17,9 @@ import android.widget.AdapterView;
 
 import com.squareup.otto.Bus;
 
-import org.otfusion.caturday.application.VoteCatsApplication;
-import org.otfusion.caturday.service.CatService;
-import org.otfusion.caturday.ui.activities.CatActivity;
+import org.otfusion.caturday.application.CaturdayApplication;
+import org.otfusion.caturday.model.service.CatService;
+import org.otfusion.caturday.view.common.activity.CatActivity;
 
 import javax.inject.Inject;
 
@@ -36,8 +36,8 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        VoteCatsApplication voteCatsApplication = (VoteCatsApplication) getActivity().getApplication();
-        voteCatsApplication.getApplicationComponent().inject(this);
+        CaturdayApplication caturdayApplication = (CaturdayApplication) getActivity().getApplication();
+        caturdayApplication.getApplicationComponent().inject(this);
     }
 
     @Nullable

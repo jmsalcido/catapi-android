@@ -15,13 +15,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import org.otfusion.caturday.R;
-import org.otfusion.caturday.application.VoteCatsApplication;
-import org.otfusion.caturday.common.model.Cat;
+import org.otfusion.caturday.application.CaturdayApplication;
+import org.otfusion.caturday.common.domain.Cat;
 import org.otfusion.caturday.ui.activities.FavoriteImageActivity;
 import org.otfusion.caturday.ui.adapters.DividerItemDecoration;
 import org.otfusion.caturday.ui.adapters.FavoriteCatAdapter;
 import org.otfusion.caturday.ui.adapters.ItemClickSupport;
-import org.otfusion.caturday.util.UIUtils;
+import org.otfusion.caturday.view.common.util.UIUtils;
 
 import butterknife.BindView;
 
@@ -45,8 +45,8 @@ public class FavoriteCatListFragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        VoteCatsApplication voteCatsApplication = (VoteCatsApplication) getActivity().getApplication();
-        voteCatsApplication.getApplicationComponent().inject(this);
+        CaturdayApplication caturdayApplication = (CaturdayApplication) getActivity().getApplication();
+        caturdayApplication.getApplicationComponent().inject(this);
     }
 
     @Override
