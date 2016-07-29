@@ -33,7 +33,7 @@ import org.otfusion.caturday.view.common.util.UIUtils;
 
 import butterknife.BindView;
 
-public class MainFragment extends BaseFragment {
+public class MainDaggerFragment extends BaseDaggerFragment {
 
     public static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -57,8 +57,8 @@ public class MainFragment extends BaseFragment {
 
     private Cat mCurrentCat;
 
-    public static MainFragment newInstance() {
-        return new MainFragment();
+    public static MainDaggerFragment newInstance() {
+        return new MainDaggerFragment();
     }
 
     @Override
@@ -184,7 +184,7 @@ public class MainFragment extends BaseFragment {
     }
 
     private boolean checkWriteExternalStoragePermission() {
-        int permission = ContextCompat.checkSelfPermission(getCatActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         if (permission != PackageManager.PERMISSION_GRANTED) {
             if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {

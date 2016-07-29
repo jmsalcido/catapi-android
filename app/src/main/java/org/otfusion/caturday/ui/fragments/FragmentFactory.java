@@ -6,12 +6,12 @@ public final class FragmentFactory {
 
     }
 
-    public static BaseFragment createFragment(String fragmentName) {
+    public static BaseDaggerFragment createFragment(String fragmentName) {
         switch(fragmentName) {
-            case MainFragment.FRAGMENT_TAG:
-                return MainFragment.newInstance();
-            case FavoriteCatListFragment.FRAGMENT_TAG:
-                return FavoriteCatListFragment.newInstance();
+            case MainDaggerFragment.FRAGMENT_TAG:
+                return MainDaggerFragment.newInstance();
+            case FavoriteCatListDaggerFragment.FRAGMENT_TAG:
+                return FavoriteCatListDaggerFragment.newInstance();
             default:
                 return null;
         }

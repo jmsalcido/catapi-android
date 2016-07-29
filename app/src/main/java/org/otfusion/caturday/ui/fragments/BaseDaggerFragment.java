@@ -19,13 +19,13 @@ import com.squareup.otto.Bus;
 
 import org.otfusion.caturday.application.CaturdayApplication;
 import org.otfusion.caturday.model.service.CatService;
-import org.otfusion.caturday.view.common.activity.CatActivity;
+import org.otfusion.caturday.view.common.activity.BaseDaggerActivity;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseDaggerFragment extends Fragment {
 
     @Inject
     Bus bus;
@@ -48,7 +48,7 @@ public abstract class BaseFragment extends Fragment {
         ButterKnife.bind(this, view);
         getBus().register(this);
         loadUIContent();
-        ActionBar supportActionBar = getCatActivity().getSupportActionBar();
+        ActionBar supportActionBar = getBaseActivity().getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setTitle(getTitle());
         }
@@ -66,8 +66,8 @@ public abstract class BaseFragment extends Fragment {
         getBus().unregister(this);
     }
 
-    CatActivity getCatActivity() {
-        return (CatActivity) getActivity();
+    BaseDaggerActivity getBaseActivity() {
+        return (BaseDaggerActivity) getActivity();
     }
 
     public String getTitle() {

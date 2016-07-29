@@ -4,9 +4,9 @@ import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
 
-import org.otfusion.caturday.application.dagger.ApplicationComponent;
-import org.otfusion.caturday.application.dagger.ApplicationModule;
-import org.otfusion.caturday.application.dagger.DaggerApplicationComponent;
+import org.otfusion.caturday.application.dagger.component.ApplicationComponent;
+import org.otfusion.caturday.application.dagger.component.DaggerApplicationComponent;
+import org.otfusion.caturday.application.dagger.module.ApplicationModule;
 
 import io.fabric.sdk.android.Fabric;
 

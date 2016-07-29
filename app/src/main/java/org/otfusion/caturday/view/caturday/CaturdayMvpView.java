@@ -8,4 +8,6 @@ public interface CaturdayMvpView extends MvpView {
 
     void selectDrawerItem(int drawerItemId);
 
+//    void saveMenuIndex();
+
 }

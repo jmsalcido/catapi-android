@@ -1,4 +1,4 @@
-package org.otfusion.caturday.application.dagger;
+package org.otfusion.caturday.application.dagger.module;
 
 import android.content.Context;
 
@@ -90,7 +90,7 @@ public class ApplicationModule {
     @Provides
     @Singleton
     public Bus provideBus() {
-        return new Bus("catApi");
+        return new Bus("caturday");
     }
 
 }

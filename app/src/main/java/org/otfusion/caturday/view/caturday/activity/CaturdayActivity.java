@@ -13,19 +13,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.otfusion.caturday.R;
-import org.otfusion.caturday.view.common.activity.CatActivity;
-import org.otfusion.caturday.ui.fragments.BaseFragment;
-import org.otfusion.caturday.ui.fragments.FavoriteCatListFragment;
+import org.otfusion.caturday.application.dagger.component.ActivityComponent;
+import org.otfusion.caturday.application.dagger.module.ActivityModule;
+import org.otfusion.caturday.presenter.caturday.CaturdayPresenter;
+import org.otfusion.caturday.ui.fragments.BaseDaggerFragment;
+import org.otfusion.caturday.ui.fragments.FavoriteCatListDaggerFragment;
 import org.otfusion.caturday.ui.fragments.FragmentFactory;
-import org.otfusion.caturday.ui.fragments.MainFragment;
+import org.otfusion.caturday.ui.fragments.MainDaggerFragment;
 import org.otfusion.caturday.view.caturday.CaturdayMvpView;
+import org.otfusion.caturday.view.common.activity.BaseDaggerActivity;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CaturdayActivity extends CatActivity implements CaturdayMvpView {
+public class CaturdayActivity extends BaseDaggerActivity<ActivityComponent>
+        implements CaturdayMvpView {
 
-    public static final String NAVIGATION_DRAWER_STATE = "navigation_drawer_state";
+    private static final String NAVIGATION_DRAWER_STATE = "navigation_drawer_state";
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -34,23 +40,48 @@ public class CaturdayActivity extends CatActivity implements CaturdayMvpView {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    ActionBarDrawerToggle mActionBarDrawerToggle;
-    int mSelectedNavigationIndex = -1;
+    private ActionBarDrawerToggle mActionBarDrawerToggle;
+
+    @Inject
+    CaturdayPresenter caturdayPresenter;
+    private int selectedNavigationIndex = -1;
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    protected ActivityComponent getDaggerComponent() {
+        return getApplicationComponent().with(new ActivityModule(this));
+    }
+
+    @Override
+    protected void init() {
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        getDaggerComponent().inject(this);
+        caturdayPresenter.attachView(this);
+    }
+
+    @Override
+    protected void destroy() {
+        caturdayPresenter.detachView();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        init();
         setSupportActionBar(mToolbar);
         loadNavigationDrawer();
-        selectDrawerOption(savedInstanceState);
+        selectDrawerOption();
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(NAVIGATION_DRAWER_STATE, mSelectedNavigationIndex);
-        super.onSaveInstanceState(outState);
+    protected void onDestroy() {
+        destroy();
+        super.onDestroy();
     }
 
     @Override
@@ -59,22 +90,32 @@ public class CaturdayActivity extends CatActivity implements CaturdayMvpView {
         Menu menu = mNavigationView.getMenu();
         for (int i = 0; i < menu.size(); i++) {
             if (menu.getItem(i).isChecked()) {
-                mSelectedNavigationIndex = i;
+                selectedNavigationIndex = i;
                 break;
             }
         }
     }
 
-    private void selectDrawerOption(Bundle savedInstanceState) {
-        Menu menu = mNavigationView.getMenu();
-        MenuItem item;
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState != null) {
-            int index = savedInstanceState.getInt(NAVIGATION_DRAWER_STATE);
-            item = menu.getItem(index);
-        } else if (mSelectedNavigationIndex >= 0) {
-            item = menu.getItem(mSelectedNavigationIndex);
-        } else {
-            item = menu.findItem(R.id.navigation_first);
+            selectedNavigationIndex = savedInstanceState.getInt(NAVIGATION_DRAWER_STATE);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(NAVIGATION_DRAWER_STATE, selectedNavigationIndex);
+        super.onSaveInstanceState(outState);
+    }
+
+    private void selectDrawerOption() {
+        Menu menu = mNavigationView.getMenu();
+
+        MenuItem item = menu.findItem(R.id.navigation_first);
+        if (selectedNavigationIndex >= 0) {
+            item = menu.getItem(selectedNavigationIndex);
         }
 
         selectDrawerItem(item.getItemId());
@@ -82,17 +123,17 @@ public class CaturdayActivity extends CatActivity implements CaturdayMvpView {
 
     private void loadFragment(String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        BaseFragment fragment = (BaseFragment) fragmentManager.findFragmentByTag(tag);
+        BaseDaggerFragment fragment = (BaseDaggerFragment) fragmentManager.findFragmentByTag(tag);
         if (fragment == null) {
             fragment = FragmentFactory.createFragment(tag);
         }
 
-        if (MainFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() > 0) {
+        if (MainDaggerFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStack();
         } else {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
-            if (!MainFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() == 0) {
+            if (!MainDaggerFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() == 0) {
                 fragmentTransaction.addToBackStack(tag);
             }
             fragmentTransaction.commit();
@@ -139,23 +180,18 @@ public class CaturdayActivity extends CatActivity implements CaturdayMvpView {
         String tag;
         switch (drawerItemId) {
             case R.id.navigation_first:
-                tag = MainFragment.FRAGMENT_TAG;
+                tag = MainDaggerFragment.FRAGMENT_TAG;
                 break;
             case R.id.navigation_second:
-                tag = FavoriteCatListFragment.FRAGMENT_TAG;
+                tag = FavoriteCatListDaggerFragment.FRAGMENT_TAG;
                 break;
             default:
-                tag = MainFragment.FRAGMENT_TAG;
+                tag = MainDaggerFragment.FRAGMENT_TAG;
         }
 
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());
         loadFragment(tag);
         mDrawerLayout.closeDrawer(GravityCompat.START);
-    }
-
-    @Override
-    public Context getContext() {
-        return this;
     }
 }
