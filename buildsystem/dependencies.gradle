@@ -8,6 +8,7 @@ ext {
 
     // base urls
     okHttpUrl = "com.squareup.okhttp3:okhttp"
+    rxUrl = "io.reactivex"
 
     // Dependencies versions
     daggerVersion = '2.0'
@@ -19,6 +20,7 @@ ext {
     supportLibraryVersion = '23.4.0'
     javaxAnnotationVersion = '10.0-b28'
     imageZoomVersion = "+" // from README.md of https://github.com/sephiroth74/ImageViewZoom
+    rxversion = '1.1.0'
 
     // Dependencies per project
     appDependencies = [
@@ -38,5 +40,7 @@ ext {
             butterknifeCompiler  : "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
             javaxAnnotation      : "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
             imageZoom            : "it.sephiroth.android.library.imagezoom:imagezoom:${imageZoomVersion}",
+            rxjava               : "${rxUrl}:rxjava:${rxversion}",
+            rxandroid            : "${rxUrl}:rxandroid:${rxversion}",
     ]
 }

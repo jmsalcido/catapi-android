@@ -101,6 +101,7 @@ public class CaturdayActivity extends BaseDaggerActivity<ActivityComponent>
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState != null) {
             selectedNavigationIndex = savedInstanceState.getInt(NAVIGATION_DRAWER_STATE);
+            selectDrawerOption();
         }
     }
 

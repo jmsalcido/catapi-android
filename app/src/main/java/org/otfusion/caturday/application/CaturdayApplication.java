@@ -2,13 +2,9 @@ package org.otfusion.caturday.application;
 
 import android.app.Application;
 
-import com.crashlytics.android.Crashlytics;
-
 import org.otfusion.caturday.application.dagger.component.ApplicationComponent;
 import org.otfusion.caturday.application.dagger.component.DaggerApplicationComponent;
 import org.otfusion.caturday.application.dagger.module.ApplicationModule;
-
-import io.fabric.sdk.android.Fabric;
 
 public class CaturdayApplication extends Application {
 
@@ -17,7 +13,6 @@ public class CaturdayApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
         initializeInjector();
     }
 
