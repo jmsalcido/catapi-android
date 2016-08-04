@@ -28,9 +28,17 @@ android {
     }
     buildTypes {
         debug {
+            def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+            def buildTime = new GregorianCalendar().format("MM-dd-yyyy' 'h:mm:ss a z")
+            buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
+            buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
             minifyEnabled false
         }
         release {
+            def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+            def buildTime = new GregorianCalendar().format("MM-dd-yyyy' 'h:mm:ss a z")
+            buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
+            buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
