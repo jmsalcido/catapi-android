@@ -11,7 +11,14 @@ android {
     def androidConfiguration = rootProject.extensions.getByName("ext")
 
     compileSdkVersion androidConfiguration.getAt("compileSdkVersion")
-    buildToolsVersion androidConfiguration.getAt("buildToolsVersion")
+
+    // use latest android build tools on local, 23.0.1 on travis.
+    if (travisBuild) {
+        buildToolsVersion androidConfiguration.getAt("travisBuildToolsVersion")
+    } else {
+        buildToolsVersion androidConfiguration.getAt("buildToolsVersion")
+    }
+
     defaultConfig {
         applicationId androidConfiguration.getAt("applicationId")
         minSdkVersion androidConfiguration.getAt("minSdkVersion")
@@ -43,7 +50,6 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
-    buildToolsVersion '24'
 }
 
 configurations {
