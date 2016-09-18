@@ -1,4 +1,4 @@
-package org.otfusion.caturday.ui.fragments;
+package org.otfusion.caturday.view.caturday.fragment;
 
 import android.Manifest;
 import android.content.Context;
@@ -25,15 +25,16 @@ import com.squareup.picasso.Picasso;
 
 import org.otfusion.caturday.R;
 import org.otfusion.caturday.common.domain.Cat;
+import org.otfusion.caturday.ui.fragments.BaseDaggerFragment;
+import org.otfusion.caturday.view.common.customviews.ImageDoubleTapView;
 import org.otfusion.caturday.view.common.events.CatLoadedEvent;
 import org.otfusion.caturday.view.common.events.FavoriteCatEvent;
 import org.otfusion.caturday.view.common.events.LoadErrorEvent;
-import org.otfusion.caturday.view.common.customviews.ImageDoubleTapView;
 import org.otfusion.caturday.view.common.util.UIUtils;
 
 import butterknife.BindView;
 
-public class MainDaggerFragment extends BaseDaggerFragment {
+public class MainFragment extends BaseDaggerFragment {
 
     public static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -57,8 +58,8 @@ public class MainDaggerFragment extends BaseDaggerFragment {
 
     private Cat mCurrentCat;
 
-    public static MainDaggerFragment newInstance() {
-        return new MainDaggerFragment();
+    public static MainFragment newInstance() {
+        return new MainFragment();
     }
 
     @Override

@@ -17,9 +17,9 @@ import org.otfusion.caturday.application.dagger.component.ActivityComponent;
 import org.otfusion.caturday.application.dagger.module.ActivityModule;
 import org.otfusion.caturday.presenter.caturday.CaturdayPresenter;
 import org.otfusion.caturday.ui.fragments.BaseDaggerFragment;
-import org.otfusion.caturday.ui.fragments.FavoriteCatListDaggerFragment;
+import org.otfusion.caturday.ui.fragments.FavoriteCatListFragment;
 import org.otfusion.caturday.ui.fragments.FragmentFactory;
-import org.otfusion.caturday.ui.fragments.MainDaggerFragment;
+import org.otfusion.caturday.view.caturday.fragment.MainFragment;
 import org.otfusion.caturday.view.caturday.CaturdayMvpView;
 import org.otfusion.caturday.view.common.activity.BaseDaggerActivity;
 
@@ -129,12 +129,12 @@ public class CaturdayActivity extends BaseDaggerActivity<ActivityComponent>
             fragment = FragmentFactory.createFragment(tag);
         }
 
-        if (MainDaggerFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() > 0) {
+        if (MainFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStack();
         } else {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
-            if (!MainDaggerFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() == 0) {
+            if (!MainFragment.FRAGMENT_TAG.equals(tag) && fragmentManager.getBackStackEntryCount() == 0) {
                 fragmentTransaction.addToBackStack(tag);
             }
             fragmentTransaction.commit();
@@ -181,13 +181,13 @@ public class CaturdayActivity extends BaseDaggerActivity<ActivityComponent>
         String tag;
         switch (drawerItemId) {
             case R.id.navigation_first:
-                tag = MainDaggerFragment.FRAGMENT_TAG;
+                tag = MainFragment.FRAGMENT_TAG;
                 break;
             case R.id.navigation_second:
-                tag = FavoriteCatListDaggerFragment.FRAGMENT_TAG;
+                tag = FavoriteCatListFragment.FRAGMENT_TAG;
                 break;
             default:
-                tag = MainDaggerFragment.FRAGMENT_TAG;
+                tag = MainFragment.FRAGMENT_TAG;
         }
 
         menuItem.setChecked(true);

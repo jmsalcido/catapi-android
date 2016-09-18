@@ -79,7 +79,7 @@ public abstract class BaseDaggerFragment extends Fragment {
         return (AdapterView.AdapterContextMenuInfo) menuInfo;
     }
 
-    Intent obtainShareImageIntent(Uri fileUri) {
+    protected Intent obtainShareImageIntent(Uri fileUri) {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
@@ -87,7 +87,7 @@ public abstract class BaseDaggerFragment extends Fragment {
         return shareIntent;
     }
 
-    String getFilePathFromMediaStore(Bitmap bitmap) {
+    protected String getFilePathFromMediaStore(Bitmap bitmap) {
         return MediaStore.Images.Media.insertImage(getContext().getContentResolver(),
                 bitmap, "share_image", "share_image");
     }
@@ -96,7 +96,7 @@ public abstract class BaseDaggerFragment extends Fragment {
         return bus;
     }
 
-    CatService getCatService() {
+    protected CatService getCatService() {
         return catService;
     }
 

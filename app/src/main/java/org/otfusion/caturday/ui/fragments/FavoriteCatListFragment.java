@@ -26,7 +26,7 @@ import org.otfusion.caturday.view.common.util.UIUtils;
 import butterknife.BindView;
 
 
-public class FavoriteCatListDaggerFragment extends BaseDaggerFragment {
+public class FavoriteCatListFragment extends BaseDaggerFragment {
 
     public static final String FRAGMENT_TAG = "favorite";
 
@@ -38,8 +38,8 @@ public class FavoriteCatListDaggerFragment extends BaseDaggerFragment {
     private BottomSheetDialog mBottomSheetDialog;
     private Cat selectedCat;
 
-    public static FavoriteCatListDaggerFragment newInstance() {
-        return new FavoriteCatListDaggerFragment();
+    public static FavoriteCatListFragment newInstance() {
+        return new FavoriteCatListFragment();
     }
 
     @Override

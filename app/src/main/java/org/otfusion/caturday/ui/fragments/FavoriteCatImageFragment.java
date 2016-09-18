@@ -20,15 +20,15 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
 import it.sephiroth.android.library.imagezoom.graphics.FastBitmapDrawable;
 
-public class FavoriteCatImageDaggerFragment extends BaseDaggerFragment {
+public class FavoriteCatImageFragment extends BaseDaggerFragment {
 
     public static final String MODEL_KEY = "cat";
 
     @BindView(R.id.favorite_image_view)
     ImageViewTouch mImageViewTouch;
 
-    public static FavoriteCatImageDaggerFragment newInstance(Cat cat) {
-        FavoriteCatImageDaggerFragment fragment = new FavoriteCatImageDaggerFragment();
+    public static FavoriteCatImageFragment newInstance(Cat cat) {
+        FavoriteCatImageFragment fragment = new FavoriteCatImageFragment();
         Bundle args = new Bundle();
         args.putSerializable("cat", cat);
         fragment.setArguments(args);

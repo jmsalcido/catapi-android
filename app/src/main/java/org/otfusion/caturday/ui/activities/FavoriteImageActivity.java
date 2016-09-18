@@ -7,7 +7,7 @@ import org.otfusion.caturday.R;
 import org.otfusion.caturday.application.dagger.component.ApplicationComponent;
 import org.otfusion.caturday.common.domain.Cat;
 import org.otfusion.caturday.ui.fragments.BaseDaggerFragment;
-import org.otfusion.caturday.ui.fragments.FavoriteCatImageDaggerFragment;
+import org.otfusion.caturday.ui.fragments.FavoriteCatImageFragment;
 import org.otfusion.caturday.view.common.activity.BaseDaggerActivity;
 
 public class FavoriteImageActivity extends BaseDaggerActivity<ApplicationComponent> {
@@ -20,7 +20,7 @@ public class FavoriteImageActivity extends BaseDaggerActivity<ApplicationCompone
         init();
         Bundle extras = getIntent().getExtras();
         Cat cat = (Cat) extras.get(MODEL_KEY);
-        BaseDaggerFragment fragment = FavoriteCatImageDaggerFragment.newInstance(cat);
+        BaseDaggerFragment fragment = FavoriteCatImageFragment.newInstance(cat);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
