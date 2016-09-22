@@ -1,15 +1,23 @@
 package org.otfusion.caturday.view.caturday.adapter;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import org.otfusion.caturday.ui.fragments.BaseDaggerFragment;
+import org.otfusion.caturday.ui.fragments.FavoriteCatListFragment;
+import org.otfusion.caturday.ui.fragments.FragmentFactory;
+import org.otfusion.caturday.view.caturday.fragment.MainFragment;
+
 public class CaturdayFragmentPagerAdapter extends FragmentPagerAdapter {
 
     public static final int NUMBER_OF_FRAGMENTS_IN_MAIN = 2;
+    private final Context context;
 
-    public CaturdayFragmentPagerAdapter(FragmentManager fm) {
+    public CaturdayFragmentPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
+        this.context = context;
     }
 
     @Override
@@ -17,8 +25,10 @@ public class CaturdayFragmentPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         switch (position) {
             case 0:
+                fragment = FragmentFactory.createFragment(MainFragment.FRAGMENT_TAG);
                 break;
             case 1:
+                fragment = FragmentFactory.createFragment(FavoriteCatListFragment.FRAGMENT_TAG);
                 break;
             default:
                 break;
@@ -34,6 +44,7 @@ public class CaturdayFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return super.getPageTitle(position);
+        BaseDaggerFragment fragment = (BaseDaggerFragment) getItem(position);
+        return context.getString(fragment.getTitleId());
     }
 }

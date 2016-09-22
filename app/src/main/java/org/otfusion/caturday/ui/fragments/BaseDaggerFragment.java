@@ -71,7 +71,7 @@ public abstract class BaseDaggerFragment extends Fragment {
     }
 
     public String getTitle() {
-        return getActivity().getResources().getString(getTitleId());
+        return getContext().getString(getTitleId());
     }
 
     protected AdapterView.AdapterContextMenuInfo getAdapterContextMenuInfo(
